@@ -130,7 +130,7 @@ public class FixturesManager : MonoBehaviour
                 }
                 else
                 {
-                    stringBuilder.AppendLine(m_FixturesList[i % getMatchesPerFixture(), j, 1].GetName() + " v " + m_FixturesList[i % getMatchesPerFixture(), j, 0].GetName());
+                    stringBuilder.AppendLine(m_FixturesList[i % getFixturesPerRound(), j, 1].GetName() + " v " + m_FixturesList[i % getFixturesPerRound(), j, 0].GetName());
                 }
             }
             stringBuilder.AppendLine();
