@@ -3,7 +3,7 @@ using System.Collections;
 
 public enum eResult {Won, Lost, Draw}
 
-public class TeamScript : MonoBehaviour {
+public class TeamScript {
 
 	float m_fansLevel;
 	float m_facilitiesLevel;
@@ -15,8 +15,10 @@ public class TeamScript : MonoBehaviour {
 	int m_for;
 	int m_against;
 	int m_points;
-	float averageCrowd;
+	int m_TotalCrowd;
 	int m_homeGames;
+    string m_Name;
+    MatchInfo m_LastGameInfo;
 	
 
 	public void UpdateFansLevel(float i_fans)
@@ -34,7 +36,7 @@ public class TeamScript : MonoBehaviour {
 		m_stadiumLevel += i_stadiumLevel;
 	}
 
-    public void UpdateMatchPlayed(eResult i_result, int i_for, int i_against, int i_crowd, bool i_isHomeMatch)
+    public void UpdateMatchPlayed(eResult i_result, MatchInfo i_matchInfo, bool i_isHomeMatch)
 	{
 		switch (i_result) 
 		{
@@ -51,14 +53,15 @@ public class TeamScript : MonoBehaviour {
 			break;
 		}
 
-		m_for += i_for;
-		m_against += i_against;
+		m_for += i_matchInfo.GetHomeGoals();
+        m_against += i_matchInfo.GetAwayGoals();
 
 		if (i_isHomeMatch) 
 		{
 			m_homeGames++;
+            m_TotalCrowd += i_matchInfo.GetTotalCrowd();
 		}
-
+        m_LastGameInfo = i_matchInfo;
 	}
 
 	public void UpdateMatchLost()
@@ -82,6 +85,11 @@ public class TeamScript : MonoBehaviour {
 		m_against += i_against;
 		
 	}
+
+    public float GetAverageCrowd()
+    {
+        return (float) m_TotalCrowd/m_homeGames;
+    }
 
 	public float GetFansLevel()
 	{
@@ -148,5 +156,20 @@ public class TeamScript : MonoBehaviour {
 		//Temp solution
 		return (int)m_fansLevel * 10;
 	}
+
+    public string GetName()
+    {
+        return m_Name;
+    }
+
+    public void SetName(string i_Name)
+    {
+        m_Name = i_Name;
+    }
+
+    public MatchInfo GetLastMatchInfo()
+    {
+        return m_LastGameInfo;
+    }
 
 }
