@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-enum eResult {Won, Lost, Drawn}
+public enum eResult {Won, Lost, Draw}
 
 public class TeamScript : MonoBehaviour {
 
@@ -34,7 +34,7 @@ public class TeamScript : MonoBehaviour {
 		m_stadiumLevel += i_stadiumLevel;
 	}
 
-	public void UpdateMatchPlayed(Result i_result,int i_for, int i_against, int i_crowd, bool i_isHomeMatch)
+    public void UpdateMatchPlayed(eResult i_result, int i_for, int i_against, int i_crowd, bool i_isHomeMatch)
 	{
 		switch (i_result) 
 		{
@@ -46,7 +46,7 @@ public class TeamScript : MonoBehaviour {
 			m_lost++;
 			break;
 
-		case eResult.Drawn:
+		case eResult.Draw:
 			m_drawn++;
 			break;
 		}
@@ -112,7 +112,7 @@ public class TeamScript : MonoBehaviour {
 		return m_lost;
 	}
 
-	public int GetFansDrawn()
+    public int GetMatchDrawn()
 	{
 		return m_drawn;
 	}
