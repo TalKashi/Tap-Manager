@@ -169,4 +169,24 @@ public class FixturesManager : MonoBehaviour
     {
         return m_FixturesList.GetLength(1);
     }
+
+    // If Given wrong parameters, returns NULL
+    private TeamScript getTeamByFixtureAndMatch(int i_Fixture, int i_Match, bool i_IsHomeTeam)
+    {
+        int fixturesPerRound = m_FixturesList.GetLength(0);
+        int matchesPerFixture = m_FixturesList.GetLength(1);
+        if (i_Fixture + 1 > fixturesPerRound*2 || i_Match + 1 > matchesPerFixture)
+        {
+            return null;
+        }
+        bool isSecondRound = i_Fixture >= fixturesPerRound;
+        int teamIndex;
+        if (isSecondRound)
+        {
+            teamIndex = i_IsHomeTeam ? 1 : 0;
+            return m_FixturesList[i_Fixture%fixturesPerRound, i_Match, teamIndex];
+        }
+        teamIndex = i_IsHomeTeam ? 0 : 1;
+        return m_FixturesList[i_Fixture % fixturesPerRound, i_Match, teamIndex];
+    }
 }
