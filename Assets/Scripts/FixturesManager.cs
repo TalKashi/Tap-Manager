@@ -91,27 +91,21 @@ public class FixturesManager : MonoBehaviour
                 m_FixturesList[fixture, 0, 1] = tempTeam;
             }
         }
-
-        // FOR TEST
-        print(PrintFullFixtures());
     }
 
     public void ExecuteNextFixture()
     {
-        // Needed for next round to switch home and away teams
-        int currentFixture = m_CurrentFixture % getFixturesPerRound();
+        const bool v_IsHomeTeam = true;
+
+        // Validate not end of season
+        if (m_CurrentFixture == getTotalNumOfFixtures())
+        { 
+            return; 
+        }
         for (int i = 0; i < getMatchesPerFixture(); i++)
         {
-            if (m_CurrentFixture < getFixturesPerRound())
-            {
-                MatchManager.s_MatchManager.CalcResult(m_FixturesList[currentFixture, i, 0],
-                                                         m_FixturesList[currentFixture, i, 1]);
-            }
-            else
-            {
-                MatchManager.s_MatchManager.CalcResult(m_FixturesList[currentFixture, i, 1],
-                                                         m_FixturesList[currentFixture, i, 0]);
-            }
+            MatchManager.s_MatchManager.CalcResult(getTeamByFixtureAndMatch(m_CurrentFixture, i, v_IsHomeTeam),
+                                                    getTeamByFixtureAndMatch(m_CurrentFixture, i, !v_IsHomeTeam));
         }
         m_CurrentFixture++;
     }
@@ -119,19 +113,14 @@ public class FixturesManager : MonoBehaviour
     public string PrintFullFixtures()
     {
         StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < getFixturesPerRound() * 2; i++)
+        const bool v_IsHomeTeam = true;
+
+        for (int i = 0; i < getTotalNumOfFixtures(); i++) 
         {
             stringBuilder.AppendLine("Fixture " + (i + 1));
             for (int j = 0; j < getMatchesPerFixture(); j++)
             {
-                if (i < getFixturesPerRound())
-                {
-                    stringBuilder.AppendLine(m_FixturesList[i, j, 0].GetName() + " v " + m_FixturesList[i, j, 1].GetName());
-                }
-                else
-                {
-                    stringBuilder.AppendLine(m_FixturesList[i % getFixturesPerRound(), j, 1].GetName() + " v " + m_FixturesList[i % getFixturesPerRound(), j, 0].GetName());
-                }
+                stringBuilder.AppendLine(getTeamByFixtureAndMatch(i, j, v_IsHomeTeam).GetName() + " v " + getTeamByFixtureAndMatch(i, j, !v_IsHomeTeam).GetName());
             }
             stringBuilder.AppendLine();
         }
@@ -147,10 +136,11 @@ public class FixturesManager : MonoBehaviour
             return "No Matches Yet";
         }
         StringBuilder stringBuilder = new StringBuilder();
-        // TODO: Support modulu here!
+
+        stringBuilder.AppendLine("FIXTURE " + m_CurrentFixture);
         for (int i = 0; i < getMatchesPerFixture(); i++)
         {
-            MatchInfo lastMatch = m_FixturesList[m_CurrentFixture - 1, i, 0].GetLastMatchInfo();
+            MatchInfo lastMatch = getTeamByFixtureAndMatch(m_CurrentFixture - 1, i, true).GetLastMatchInfo();
             stringBuilder.AppendLine(lastMatch.GetHomeTeamString() + ": " + lastMatch.GetHomeGoals() + "\n" +
                                      lastMatch.GetAwayTeamString() + ": " + lastMatch.GetAwayGoals() + "\n" +
                                      "Crowd: " + lastMatch.GetTotalCrowd());
@@ -163,6 +153,11 @@ public class FixturesManager : MonoBehaviour
     private int getFixturesPerRound()
     {
         return m_FixturesList.GetLength(0);
+    }
+
+    private int getTotalNumOfFixtures()
+    {
+        return getFixturesPerRound() * 2;
     }
 
     private int getMatchesPerFixture()
@@ -184,7 +179,7 @@ public class FixturesManager : MonoBehaviour
         if (isSecondRound)
         {
             teamIndex = i_IsHomeTeam ? 1 : 0;
-            return m_FixturesList[i_Fixture%fixturesPerRound, i_Match, teamIndex];
+            return m_FixturesList[i_Fixture % fixturesPerRound, i_Match, teamIndex];
         }
         teamIndex = i_IsHomeTeam ? 0 : 1;
         return m_FixturesList[i_Fixture % fixturesPerRound, i_Match, teamIndex];

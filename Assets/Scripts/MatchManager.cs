@@ -31,7 +31,8 @@ public class MatchManager : MonoBehaviour
         int crowdAtMatch = (int) (i_HomeTeam.GetFanBase() * randomCrowdMultiplier); // / 100000 * randomFansMultiplier;
         // crowdAtMatch should be bounded by stadium size
 
-        float outcome = Random.Range(0, 1);
+        float outcome = Random.Range(0f, 1f);
+        //Debug.Log("oucome=" + outcome);
 
 
         int homeTeamGoals;
