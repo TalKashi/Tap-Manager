@@ -5,18 +5,18 @@ public enum eResult {Won, Lost, Draw}
 
 public class TeamScript {
 
-	float m_fansLevel;
-	float m_facilitiesLevel;
-	float m_stadiumLevel;
-	int m_played;
-	int m_won;
-	int m_lost;
-	int m_drawn;
-	int m_for;
-	int m_against;
-	int m_points;
-	int m_TotalCrowd;
-	int m_homeGames;
+	float m_fansLevel = 0 ;
+	float m_facilitiesLevel = 0;
+	float m_stadiumLevel = 0;
+	int m_played = 0;
+	int m_won = 0;
+	int m_lost = 0;
+	int m_drawn = 0;
+	int m_for = 0;
+	int m_against = 0;
+	int m_points = 0;
+	int m_TotalCrowd = 0;
+	int m_homeGames = 0;
     string m_Name;
     MatchInfo m_LastGameInfo;
 	
