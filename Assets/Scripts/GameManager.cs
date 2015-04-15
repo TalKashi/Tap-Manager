@@ -7,8 +7,9 @@ public class GameManager : MonoBehaviour {
 
 	public static GameManager s_GameManger;
 
+    public TeamScript m_myTeam;
+    public int m_Cash = 1000;
     private TeamScript[] m_AllTeams;
-	public TeamScript m_myTeam;
 	private TableScript m_table;
 
 	void Awake () {
@@ -18,7 +19,9 @@ public class GameManager : MonoBehaviour {
             m_myTeam = new TeamScript();
 			DontDestroyOnLoad (gameObject);
 
-		} else {
+		}
+        else
+        {
 			Destroy (gameObject);
 		}
 
@@ -41,6 +44,11 @@ public class GameManager : MonoBehaviour {
 			updateTableLeague();
 		}
 
+    }
+
+    public void AddCash(int i_Value)
+    {
+        m_Cash += i_Value;
     }
 
 	public void FansUpdate(float i_Value)
