@@ -16,4 +16,6 @@ public class Tap : MonoBehaviour {
     {
         GameManager.s_GameManger.AddCash(m_Value);
     }
+
+
 }
