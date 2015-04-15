@@ -8,7 +8,7 @@ public class TableScript : MonoBehaviour {
 
 	void Start()
 	{
-		GameManager.s_GameManger.updateTableLeague ();
+		//GameManager.s_GameManger.updateTableLeague ();
 	}
 
 	public void UpdateLine(int i_lineNum,int i_place,string i_team,int
