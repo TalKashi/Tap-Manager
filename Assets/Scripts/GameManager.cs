@@ -38,6 +38,10 @@ public class GameManager : MonoBehaviour {
             FixturesManager.s_FixturesManager.ExecuteNextFixture();
             print(FixturesManager.s_FixturesManager.PrintLastFixturesResults());
         }
+		if (Input.GetKeyDown(KeyCode.S)){
+			updateTableLeague();
+		}
+
     }
 
 	public void FansUpdate(float i_Value)
