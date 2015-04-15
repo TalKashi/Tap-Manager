@@ -118,7 +118,13 @@ public class GameManager : MonoBehaviour {
 		
 	}
 
-	public TeamScript GetTeamByName(string i_teamName){
+    public int GetCash()
+    {
+        return m_Cash;
+    }
+
+	public TeamScript GetTeamByName(string i_teamName)
+    {
 		return Array.Find(m_AllTeams,team=> team.GetName() == i_teamName);
 
 	}
