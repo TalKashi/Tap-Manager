@@ -33,11 +33,10 @@ public class GameManager : MonoBehaviour {
 
     void Update()
     {
-        if (m_ForDebug)
+        if (Input.GetKeyDown(KeyCode.A))
         {
             FixturesManager.s_FixturesManager.ExecuteNextFixture();
             print(FixturesManager.s_FixturesManager.PrintLastFixturesResults());
-            m_ForDebug = false;
         }
     }
 
