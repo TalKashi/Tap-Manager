@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour {
 	public static GameManager s_GameManger;
 
     private TeamScript[] m_AllTeams;
-	TeamScript m_myTeam;
+	public TeamScript m_myTeam;
     private bool m_ForDebug = true;
 	private TableScript m_table;
 
@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour {
 			Destroy(gameObject);
 		}
 
+		m_myTeam = new TeamScript();
 	}
 
     void Start()
