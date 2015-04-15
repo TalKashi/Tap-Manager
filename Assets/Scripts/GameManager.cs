@@ -17,12 +17,10 @@ public class GameManager : MonoBehaviour {
 			s_GameManger = this;
 			DontDestroyOnLoad (gameObject);
 
+		} else {
+			Destroy (gameObject);
 		}
-		else 
-		{
-			Destroy(gameObject);
-		}
-
+		//Temp should load player's team
 		m_myTeam = new TeamScript();
 	}
 
@@ -64,7 +62,12 @@ public class GameManager : MonoBehaviour {
     private void initTeams(int i_NumOfTeams)
     {
         m_AllTeams = new TeamScript[i_NumOfTeams];
-        for (int i = 0; i < i_NumOfTeams; i++)
+
+		//Temp 
+		m_AllTeams [0] = m_myTeam;	
+		m_AllTeams[0].SetName("Your Team ");
+
+        for (int i = 1; i < i_NumOfTeams; i++)
         {
             m_AllTeams[i] = new TeamScript();
             m_AllTeams[i].SetName("Team " + (i + 1));
