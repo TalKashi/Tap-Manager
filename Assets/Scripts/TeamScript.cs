@@ -17,8 +17,10 @@ public class TeamScript {
 	int m_points = 0;
 	int m_TotalCrowd = 0;
 	int m_homeGames = 0;
+    int m_AdditionalFans = 0;
     string m_Name;
     MatchInfo m_LastGameInfo;
+    bool m_IsLastGameIsHomeGame;
 	
 
 	public void UpdateFansLevel(float i_fans)
@@ -42,14 +44,17 @@ public class TeamScript {
 		{
 		case eResult.Won:
 			m_won++;
+            m_AdditionalFans += 10;
 			break;
 
 		case eResult.Lost:
 			m_lost++;
+            m_AdditionalFans -= 10;
 			break;
 
 		case eResult.Draw:
 			m_drawn++;
+            m_AdditionalFans++;
 			break;
 		}
 
@@ -65,6 +70,7 @@ public class TeamScript {
             m_against += i_matchInfo.GetHomeGoals();
             m_for += i_matchInfo.GetAwayGoals();
         }
+        m_IsLastGameIsHomeGame = i_isHomeMatch;
         m_LastGameInfo = i_matchInfo;
 	}
 
@@ -149,6 +155,20 @@ public class TeamScript {
 		return 3*m_won + m_drawn;
 	}
 
+    public int GetCrowdAtLastMatch()
+    {
+        if (m_IsLastGameIsHomeGame)
+        {
+            return m_LastGameInfo.GetTotalCrowd();
+        }
+        return 0;
+    }
+
+    public int GetTicketPrice()
+    {
+        return 10;
+    }
+
 	public float GetWinOdds()
 	{
 		/* Temp solution should returnssome function of(
@@ -163,7 +183,7 @@ public class TeamScript {
 	public int GetFanBase()
 	{
 		//Temp solution
-		return (int)m_fansLevel * 10;
+		return (int)m_fansLevel * 10 + m_AdditionalFans;
 	}
 
     public string GetName()
@@ -179,6 +199,19 @@ public class TeamScript {
     public MatchInfo GetLastMatchInfo()
     {
         return m_LastGameInfo;
+    }
+
+    public int GetMerchandisePrice()
+    {
+        return 5;
+    }
+
+    public int GetSalary()
+    {
+        // 400 is avrage player salary
+        // 15 is num of player
+        // 600 is coach salary
+        return 400 * 15 + 600;
     }
 
 }
