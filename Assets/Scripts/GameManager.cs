@@ -11,6 +11,10 @@ public class GameManager : MonoBehaviour {
     public int m_Cash = 1000;
     private TeamScript[] m_AllTeams;
 	private TableScript m_table;
+	public int[] m_fansLevelPrice = {0,1000,2000,3000,4000,5000};
+	public int[] m_facilitiesLevelPrice = {0,1000,2000,3000,4000,5000};
+	public int[] m_stadiumLevelPrice = {0,1000,2000,3000,4000,5000};
+
 
 	void Awake () {
 		if (s_GameManger == null)
@@ -53,18 +57,43 @@ public class GameManager : MonoBehaviour {
 
 	public void FansUpdate(float i_Value)
 	{
-        m_myTeam.UpdateFansLevel(i_Value);
+		if ((m_myTeam.GetFansLevel () + 1) >= m_fansLevelPrice.Length)
+		{
+			return;
+		}
+
+		if (m_Cash >= m_fansLevelPrice [(int)m_myTeam.GetFansLevel () + 1]) {
+			m_myTeam.UpdateFansLevel (i_Value);
+			AddCash(-m_fansLevelPrice [(int)(m_myTeam.GetFansLevel () + 1)]);
+		}
 	}
 
 	public void StadiumUpdate(float i_Value)
 	{
-        m_myTeam.UpdateStadiumLevel(i_Value);
+		if ((m_myTeam.GetStadiumLevel () + 1) >= m_stadiumLevelPrice.Length)
+		{
+			return;
+		}
+		if (m_Cash >= m_stadiumLevelPrice [(int)(m_myTeam.GetStadiumLevel () + 1)])
+		{
+			m_myTeam.UpdateStadiumLevel (i_Value);
+			AddCash (-m_stadiumLevelPrice [(int)(m_myTeam.GetStadiumLevel () + 1)]);
+		}
+
 	}
 
 
 	public void FacilitiesUpdate(float i_Value)
 	{
-        m_myTeam.UpdateFacilitiesLevel(i_Value);
+		if ((m_myTeam.GetFacilitiesLevel () + 1) >= m_facilitiesLevelPrice.Length)
+		{
+			return;
+		}
+		if (m_Cash >= m_facilitiesLevelPrice [(int)(m_myTeam.GetFacilitiesLevel () + 1)])
+		{
+			m_myTeam.UpdateFacilitiesLevel (i_Value);
+			AddCash (-m_facilitiesLevelPrice [(int)(m_myTeam.GetFacilitiesLevel () + 1)]);
+		}
 	}
 
     private void initTeams(int i_NumOfTeams)
