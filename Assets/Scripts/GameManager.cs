@@ -13,8 +13,10 @@ public class GameManager : MonoBehaviour {
 	private TableScript m_table;
 
 	void Awake () {
-		if (s_GameManger == null) {
+		if (s_GameManger == null)
+        {
 			s_GameManger = this;
+            m_myTeam = new TeamScript();
 			DontDestroyOnLoad (gameObject);
 
 		}
@@ -23,7 +25,7 @@ public class GameManager : MonoBehaviour {
 			Destroy(gameObject);
 		}
 
-		m_myTeam = new TeamScript();
+		
 	}
 
     void Start()
@@ -72,9 +74,28 @@ public class GameManager : MonoBehaviour {
     }
 
 	//Team in the first place is the team in the last place in the array.
-	public void updateTableLeague(){
-		Array.Sort(m_AllTeams, delegate(TeamScript team1, TeamScript team2) {
-			return team1.GetPoints().CompareTo(team2.GetPoints());
+	public void updateTableLeague()
+    {
+		Array.Sort(m_AllTeams, delegate(TeamScript team1, TeamScript team2) 
+        {
+            if (team1.GetPoints() < team2.GetPoints()) 
+            {
+                return -2;
+            }
+            else if(team1.GetPoints() > team2.GetPoints())
+            {
+                return 2;
+            }
+            else if (team1.GetGoalDiff() < team2.GetGoalDiff())
+            {
+                return -1;
+            }
+            else if (team1.GetGoalDiff() > team2.GetGoalDiff())
+            {
+                return 1;
+            }
+            
+			return team1.GetName().CompareTo(team2.GetName());
 		});
 		
 		m_table = GameObject.FindGameObjectWithTag("Table").GetComponent<TableScript>();

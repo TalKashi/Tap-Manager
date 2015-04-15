@@ -53,14 +53,18 @@ public class TeamScript {
 			break;
 		}
 
-		m_for += i_matchInfo.GetHomeGoals();
-        m_against += i_matchInfo.GetAwayGoals();
-
-		if (i_isHomeMatch) 
-		{
-			m_homeGames++;
+        if (i_isHomeMatch)
+        {
+            m_for += i_matchInfo.GetHomeGoals();
+            m_against += i_matchInfo.GetAwayGoals();
+            m_homeGames++;
             m_TotalCrowd += i_matchInfo.GetTotalCrowd();
-		}
+        }
+        else
+        {
+            m_against += i_matchInfo.GetHomeGoals();
+            m_for += i_matchInfo.GetAwayGoals();
+        }
         m_LastGameInfo = i_matchInfo;
 	}
 
@@ -108,7 +112,7 @@ public class TeamScript {
 
 	public int GetMatchPlayed()
 	{
-		return m_played;
+		return m_won + m_lost + m_drawn;
 	}
 
 	public int GetMatchWon()
@@ -134,6 +138,11 @@ public class TeamScript {
 	{
 		return m_against;
 	}
+
+    public int GetGoalDiff()
+    {
+        return GetGoalsFor() - GetGoalsAgainst();
+    }
 
 	public int GetPoints()
 	{
