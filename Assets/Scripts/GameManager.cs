@@ -1,6 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
-using System;
 
 
 public class GameManager : MonoBehaviour {
@@ -79,7 +79,7 @@ public class GameManager : MonoBehaviour {
 		
 		m_table = GameObject.FindGameObjectWithTag("Table").GetComponent<TableScript>();
 		for(int i = 0; i< m_AllTeams.Length; i++){
-			m_table.UpdateLine((m_AllTeams.Length - i - 1),(m_AllTeams.Length - i - 1),
+			m_table.UpdateLine((m_AllTeams.Length - i - 1),(m_AllTeams.Length - i),
 			                   m_AllTeams[i].GetName(),m_AllTeams[i].GetMatchPlayed(),m_AllTeams[i].GetMatchWon(),
 			                   m_AllTeams[i].GetMatchLost(),m_AllTeams[i].GetMatchDrawn(),m_AllTeams[i].GetGoalsFor(),
 			                   m_AllTeams[i].GetGoalsAgainst(),m_AllTeams[i].GetPoints());
