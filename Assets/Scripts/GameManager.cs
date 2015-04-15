@@ -9,7 +9,6 @@ public class GameManager : MonoBehaviour {
 
     private TeamScript[] m_AllTeams;
 	public TeamScript m_myTeam;
-    private bool m_ForDebug = true;
 	private TableScript m_table;
 
 	void Awake () {
@@ -22,17 +21,7 @@ public class GameManager : MonoBehaviour {
 		} else {
 			Destroy (gameObject);
 		}
-<<<<<<< HEAD
-		//Temp should load player's team
-		m_myTeam = new TeamScript();
-=======
-		else 
-		{
-			Destroy(gameObject);
-		}
 
-		
->>>>>>> origin/master
 	}
 
     void Start()
