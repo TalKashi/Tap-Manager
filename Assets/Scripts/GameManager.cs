@@ -137,7 +137,7 @@ public class GameManager : MonoBehaviour {
 
 		if (m_Cash >= m_fansLevelPrice [(int)m_myTeam.GetFansLevel () + 1]) {
 			m_myTeam.UpdateFansLevel (i_Value);
-			AddCash(-m_fansLevelPrice [(int)(m_myTeam.GetFansLevel () + 1)]);
+			AddCash(-m_fansLevelPrice [(int)(m_myTeam.GetFansLevel ())]);
 		}
 	}
 
@@ -150,7 +150,7 @@ public class GameManager : MonoBehaviour {
 		if (m_Cash >= m_stadiumLevelPrice [(int)(m_myTeam.GetStadiumLevel () + 1)])
 		{
 			m_myTeam.UpdateStadiumLevel (i_Value);
-			AddCash (-m_stadiumLevelPrice [(int)(m_myTeam.GetStadiumLevel () + 1)]);
+			AddCash (-m_stadiumLevelPrice [(int)(m_myTeam.GetStadiumLevel ())]);
 		}
 
 	}
@@ -165,7 +165,7 @@ public class GameManager : MonoBehaviour {
 		if (m_Cash >= m_facilitiesLevelPrice [(int)(m_myTeam.GetFacilitiesLevel () + 1)])
 		{
 			m_myTeam.UpdateFacilitiesLevel (i_Value);
-			AddCash (-m_facilitiesLevelPrice [(int)(m_myTeam.GetFacilitiesLevel () + 1)]);
+			AddCash (-m_facilitiesLevelPrice [(int)(m_myTeam.GetFacilitiesLevel () )]);
 		}
 	}
 
