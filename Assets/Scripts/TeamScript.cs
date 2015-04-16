@@ -21,6 +21,7 @@ public class TeamScript {
 	int m_homeGames = 0;
     int m_AdditionalFans = 0;
     string m_Name;
+    string m_StadiumName;
     [SerializeField]
     MatchInfo m_LastGameInfo;
     bool m_IsLastGameIsHomeGame;
@@ -215,6 +216,11 @@ public class TeamScript {
         // 15 is num of player
         // 600 is coach salary
         return 400 * 15 + 600;
+    }
+
+    public void SetStadiumName(string i_StadiumName)
+    {
+        m_StadiumName = i_StadiumName;
     }
 
 }
