@@ -42,30 +42,17 @@ public class GameManager : MonoBehaviour {
         
     }
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            FixturesManager.s_FixturesManager.ExecuteNextFixture();
-            print(FixturesManager.s_FixturesManager.PrintLastFixturesResults());
-        }
-		if (Input.GetKeyDown(KeyCode.S)){
-			updateTableLeague();
-		}
-
-    }
-
     private void loadData()
     {
         Debug.Log("LOADING DATA");
         BinaryFormatter binaryFormatter = new BinaryFormatter();
         if (File.Exists(Application.persistentDataPath + "/team.dat"))
         {
-            FileStream file = File.OpenRead(Application.persistentDataPath + "/team.dat");
-            m_myTeam = (TeamScript)binaryFormatter.Deserialize(file);
-            Debug.Log("Last game home goals=" + m_myTeam.GetLastMatchInfo().GetHomeGoals());
-            file.Close();
-            Debug.Log("Loaded My Team");
+            //FileStream file = File.OpenRead(Application.persistentDataPath + "/team.dat");
+            //m_myTeam = (TeamScript)binaryFormatter.Deserialize(file);
+            //Debug.Log("Last game home goals=" + m_myTeam.GetLastMatchInfo().GetHomeGoals());
+            //file.Close();
+            //Debug.Log("Loaded My Team");
         }
         else
         {
@@ -90,8 +77,18 @@ public class GameManager : MonoBehaviour {
             FileStream file = File.OpenRead(Application.persistentDataPath + "/gamedata.dat");
             GameData gameData = (GameData)binaryFormatter.Deserialize(file);
             m_Cash = gameData.m_Cash;
+            m_myTeam = m_AllTeams[gameData.m_MyTeamIndex];
             file.Close();
             Debug.Log("Loaded Game Data");
+        }
+
+        // Test code
+        for (int i = 0; i < m_AllTeams.Length; i++)
+        {
+            if (m_myTeam == m_AllTeams[i])
+            {
+                Debug.Log("FOUND MATCH, index=" + i);
+            }
         }
     }
 
@@ -100,16 +97,24 @@ public class GameManager : MonoBehaviour {
         Debug.Log("SAVING FILES");
         BinaryFormatter binaryFormatter = new BinaryFormatter();
 
-        FileStream file = File.Create(Application.persistentDataPath + "/team.dat");
-        binaryFormatter.Serialize(file, m_myTeam);
-        file.Close();
+        //FileStream file = File.Create(Application.persistentDataPath + "/team.dat");
+        //binaryFormatter.Serialize(file, m_myTeam);
+        //file.Close();
 
-        file = File.Create(Application.persistentDataPath + "/allteams.dat");
+        FileStream file = File.Create(Application.persistentDataPath + "/allteams.dat");
         binaryFormatter.Serialize(file, m_AllTeams);
         file.Close();
 
         file = File.Create(Application.persistentDataPath + "/gamedata.dat");
         GameData gameData = new GameData();
+        for (int i = 0; i < m_AllTeams.Length; i++)
+        {
+            if (m_myTeam == m_AllTeams[i])
+            {
+                Debug.Log("Match on index=" + i);
+                gameData.m_MyTeamIndex = i;
+            }
+        }
         gameData.m_Cash = m_Cash;
         binaryFormatter.Serialize(file, gameData);
         file.Close();
@@ -236,4 +241,5 @@ public class GameManager : MonoBehaviour {
 class GameData
 {
     public int m_Cash;
+    public int m_MyTeamIndex;
 }
