@@ -7,6 +7,11 @@ public class FinanceManager : MonoBehaviour {
 
     public int m_FacilitiesMultiplier = 5000;
     public int m_StadiumMultiplier = 40000;
+	private int m_incomeFromTickets;
+	private int m_incomeFromMerchandise;
+	private int m_facilitiesCost;
+	private int m_stadiumCost;
+	private int m_salary;
 
     void Awake()
     {
@@ -26,10 +31,10 @@ public class FinanceManager : MonoBehaviour {
         int fanBase = i_Team.GetFanBase();
         int crowdAtLastMatch = i_Team.GetCrowdAtLastMatch();
 
-        int incomeFromTickets = crowdAtLastMatch * i_Team.GetTicketPrice();
-        int incomeFromMerchandise = (int) (fanBase * Random.Range(0f, 0.8f) * i_Team.GetMerchandisePrice());
+        m_incomeFromTickets = crowdAtLastMatch * i_Team.GetTicketPrice();
+        m_incomeFromMerchandise = (int) (fanBase * Random.Range(0f, 0.8f) * i_Team.GetMerchandisePrice());
 
-        return incomeFromTickets + incomeFromMerchandise;
+        return m_incomeFromTickets + m_incomeFromMerchandise;
     }
 
     // Return as positive number!!
@@ -37,11 +42,35 @@ public class FinanceManager : MonoBehaviour {
     {
         int facilitiesLevel = (int) i_Team.GetFacilitiesLevel();
         int stadiumLevel = (int)i_Team.GetStadiumLevel();
-        int salary = i_Team.GetSalary();
+        m_salary = i_Team.GetSalary();
 
-        int facilitiesCost = facilitiesLevel * m_FacilitiesMultiplier;
-        int stadiumCost = stadiumLevel * m_StadiumMultiplier;
+        m_facilitiesCost = facilitiesLevel * m_FacilitiesMultiplier;
+        m_stadiumCost = stadiumLevel * m_StadiumMultiplier;
 
-        return facilitiesCost + stadiumCost + salary;
+        return m_facilitiesCost + m_stadiumCost + m_salary;
     }
+
+	public int GetStadiumCost()
+	{
+		return m_stadiumCost;
+	}
+
+	public int GetFacilitiesCost()
+	{
+		return m_facilitiesCost;
+	}
+
+	public int GetIncomeFromTickets()
+	{
+		return m_incomeFromTickets;
+	}
+
+	public int GetIncomeFromMerchandise(){
+		return m_incomeFromMerchandise;
+	}
+
+	public int GetSalary()
+	{
+		return m_salary;
+	}
 }

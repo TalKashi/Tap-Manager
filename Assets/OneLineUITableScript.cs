@@ -18,5 +18,6 @@ public class OneLineUITableScript : MonoBehaviour {
 	void Start()
 	{
 		m_place.text =""+ place;
+
 	}
 }
