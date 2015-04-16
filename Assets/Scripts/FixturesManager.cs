@@ -1,12 +1,15 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 
 public class FixturesManager : MonoBehaviour
 {
     public static FixturesManager s_FixturesManager;
 
-    public int m_CurrentFixture = 1;
+    public int m_CurrentFixture = 0;
     // First array - for fixture number - for 20 teams should be 19
     // Second array - for match in fixture - for 20 teams should be 10
     // Third array - for pointer to teams - always should be 2
@@ -17,11 +20,52 @@ public class FixturesManager : MonoBehaviour
         if (s_FixturesManager == null)
         {
             s_FixturesManager = this;
+            loadData();
             DontDestroyOnLoad(gameObject);
         }
         else
         {
             Destroy(gameObject);
+        }
+    }
+
+    private void loadData()
+    {
+        Debug.Log("LOADING DATA");
+        BinaryFormatter binaryFormatter = new BinaryFormatter();
+        if (File.Exists(Application.persistentDataPath + "/fixturesdata.dat"))
+        {
+            FileStream file = File.OpenRead(Application.persistentDataPath + "/fixturesdata.dat");
+            FixturesData fixturesData = (FixturesData)binaryFormatter.Deserialize(file);
+            m_FixturesList = fixturesData.m_FixturesList;
+            m_CurrentFixture = fixturesData.m_currentFixture;
+            file.Close();
+            Debug.Log("Loaded Fixtures Data");
+        }
+        else
+        {
+            m_CurrentFixture = 0;
+        }
+    }
+
+    private void saveData()
+    {
+        Debug.Log("SAVING FILES");
+        BinaryFormatter binaryFormatter = new BinaryFormatter();
+
+        FileStream file = File.Create(Application.persistentDataPath + "/fixturesdata.dat");
+        FixturesData fixturesData = new FixturesData();
+        fixturesData.m_FixturesList = m_FixturesList;
+        fixturesData.m_currentFixture = m_CurrentFixture;
+        binaryFormatter.Serialize(file, fixturesData);
+        file.Close();
+    }
+
+    void OnDisable()
+    {
+        if (s_FixturesManager == this)
+        {
+            saveData();
         }
     }
 
@@ -184,4 +228,11 @@ public class FixturesManager : MonoBehaviour
         teamIndex = i_IsHomeTeam ? 0 : 1;
         return m_FixturesList[i_Fixture % fixturesPerRound, i_Match, teamIndex];
     }
+}
+
+[Serializable]
+class FixturesData
+{
+    public int m_currentFixture;
+    public TeamScript[, ,] m_FixturesList;
 }

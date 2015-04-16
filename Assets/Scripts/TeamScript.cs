@@ -1,8 +1,10 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 
 public enum eResult {Won, Lost, Draw}
 
+[Serializable]
 public class TeamScript {
 
 	float m_fansLevel = 0 ;
@@ -19,6 +21,7 @@ public class TeamScript {
 	int m_homeGames = 0;
     int m_AdditionalFans = 0;
     string m_Name;
+    [SerializeField]
     MatchInfo m_LastGameInfo;
     bool m_IsLastGameIsHomeGame;
 	

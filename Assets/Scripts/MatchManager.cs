@@ -1,5 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
+using Random = UnityEngine.Random;
 
 public class MatchManager : MonoBehaviour
 {
@@ -64,21 +66,22 @@ public class MatchManager : MonoBehaviour
             eAwayResult = eResult.Won;
         }
         bool v_isHomeTeam = true;
-        MatchInfo matchInfo = new MatchInfo(i_HomeTeam, i_AwayTeam, homeTeamGoals, awayTeamGoals, crowdAtMatch);
+        MatchInfo matchInfo = new MatchInfo(i_HomeTeam.GetName(), i_AwayTeam.GetName(), homeTeamGoals, awayTeamGoals, crowdAtMatch);
         i_HomeTeam.UpdateMatchPlayed(eHomeResult, matchInfo, v_isHomeTeam);
         i_AwayTeam.UpdateMatchPlayed(eAwayResult, matchInfo, !v_isHomeTeam);
     }
 }
 
+[Serializable]
 public class MatchInfo
 {
-    private TeamScript m_HomeTeam;
-    private TeamScript m_AwayTeam;
+    private string m_HomeTeam;
+    private string m_AwayTeam;
     private int m_HomeTeamGoals;
     private int m_AwayTeamGoals;
     private int m_CrowdAtMatch;
 
-    public MatchInfo(TeamScript i_HomeTeam, TeamScript i_AwayTeam, int i_HomeTeamGoals, int i_AwayTeamGoals, int i_CrowdAtMatch)
+    public MatchInfo(string i_HomeTeam, string i_AwayTeam, int i_HomeTeamGoals, int i_AwayTeamGoals, int i_CrowdAtMatch)
     {
         m_HomeTeam = i_HomeTeam;
         m_AwayTeam = i_AwayTeam;
@@ -104,11 +107,11 @@ public class MatchInfo
 
     public string GetHomeTeamString()
     {
-        return m_HomeTeam.GetName();
+        return m_HomeTeam;
     }
 
     public string GetAwayTeamString()
     {
-        return m_AwayTeam.GetName();
+        return m_AwayTeam;
     }
 }

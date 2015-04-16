@@ -1,6 +1,8 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 
 public class GameManager : MonoBehaviour {
@@ -20,7 +22,7 @@ public class GameManager : MonoBehaviour {
 		if (s_GameManger == null)
         {
 			s_GameManger = this;
-            m_myTeam = new TeamScript();
+            loadData();
 			DontDestroyOnLoad (gameObject);
 
 		}
@@ -33,8 +35,11 @@ public class GameManager : MonoBehaviour {
 
     void Start()
     {
-        initTeams(20);
-        FixturesManager.s_FixturesManager.GenerateFixtures(m_AllTeams);
+        if (FixturesManager.s_FixturesManager.m_CurrentFixture == 0)
+        {
+            FixturesManager.s_FixturesManager.GenerateFixtures(m_AllTeams);
+        }
+        
     }
 
     void Update()
@@ -48,6 +53,74 @@ public class GameManager : MonoBehaviour {
 			updateTableLeague();
 		}
 
+    }
+
+    private void loadData()
+    {
+        Debug.Log("LOADING DATA");
+        BinaryFormatter binaryFormatter = new BinaryFormatter();
+        if (File.Exists(Application.persistentDataPath + "/team.dat"))
+        {
+            FileStream file = File.OpenRead(Application.persistentDataPath + "/team.dat");
+            m_myTeam = (TeamScript)binaryFormatter.Deserialize(file);
+            Debug.Log("Last game home goals=" + m_myTeam.GetLastMatchInfo().GetHomeGoals());
+            file.Close();
+            Debug.Log("Loaded My Team");
+        }
+        else
+        {
+            m_myTeam = new TeamScript();
+            Debug.Log("Created new instance of my team!");
+        }
+
+        if (File.Exists(Application.persistentDataPath + "/allteams.dat"))
+        {
+            FileStream file = File.OpenRead(Application.persistentDataPath + "/allteams.dat");
+            m_AllTeams = (TeamScript[])binaryFormatter.Deserialize(file);
+            file.Close();
+            Debug.Log("Loaded All Teams");
+        }
+        else
+        {
+            initTeams(20);
+        }
+
+        if (File.Exists(Application.persistentDataPath + "/gamedata.dat"))
+        {
+            FileStream file = File.OpenRead(Application.persistentDataPath + "/gamedata.dat");
+            GameData gameData = (GameData)binaryFormatter.Deserialize(file);
+            m_Cash = gameData.m_Cash;
+            file.Close();
+            Debug.Log("Loaded Game Data");
+        }
+    }
+
+    private void saveData()
+    {
+        Debug.Log("SAVING FILES");
+        BinaryFormatter binaryFormatter = new BinaryFormatter();
+
+        FileStream file = File.Create(Application.persistentDataPath + "/team.dat");
+        binaryFormatter.Serialize(file, m_myTeam);
+        file.Close();
+
+        file = File.Create(Application.persistentDataPath + "/allteams.dat");
+        binaryFormatter.Serialize(file, m_AllTeams);
+        file.Close();
+
+        file = File.Create(Application.persistentDataPath + "/gamedata.dat");
+        GameData gameData = new GameData();
+        gameData.m_Cash = m_Cash;
+        binaryFormatter.Serialize(file, gameData);
+        file.Close();
+    }
+
+    void OnDisable()
+    {
+        if (s_GameManger == this)
+        {
+            saveData();
+        }
     }
 
     public void AddCash(int i_Value)
@@ -157,4 +230,10 @@ public class GameManager : MonoBehaviour {
 		return Array.Find(m_AllTeams,team=> team.GetName() == i_teamName);
 
 	}
+}
+
+[Serializable]
+class GameData
+{
+    public int m_Cash;
 }
