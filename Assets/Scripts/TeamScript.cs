@@ -187,7 +187,13 @@ public class TeamScript {
 	public int GetFanBase()
 	{
 		//Temp solution
-		return (int)m_fansLevel * 10 + m_AdditionalFans;
+        int fanBase =(int) m_fansLevel * 10 + m_AdditionalFans;
+	    if (fanBase < 0)
+	    {
+	        fanBase = 0;
+	    }
+
+	    return fanBase;
 	}
 
     public string GetName()
