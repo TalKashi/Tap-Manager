@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
-public enum ePosition {GK,CB,LB,RB,DM,CM,LW,RW,CF};
+using UnityEngine.UI;
+
+public enum ePosition {GK,D,MF,S};
 public class PlayerScript : MonoBehaviour {
 
 	private ePosition m_position;
-	private string m_name;
+	private string m_firstName;
+	private string m_lastName;
 	private int m_salary;
 	private bool m_isInjured;
 	private int m_age;
@@ -16,6 +19,9 @@ public class PlayerScript : MonoBehaviour {
 	private int m_boost = 0;
 	private bool m_isPlaying;
 	private int m_gamePower = 100;
+	private int m_yearOfJoiningTheClub;
+	public Sprite m_playerSprite;
+
 
 	public void SetPriceToBoostPlayer(int i_priceToBoost)
 	{
@@ -33,9 +39,13 @@ public class PlayerScript : MonoBehaviour {
 		m_level = i_level;
 	}
 
-	public void SetName(string i_name)
+	public void SetFirstName(string i_name)
 	{
-		m_name = i_name;
+		m_firstName = i_name;
+	}
+	public void SetLastName(string i_name)
+	{
+		m_lastName = i_name;
 	}
 
 	public void SetIsPlaying(bool i_isPlaying)
@@ -53,6 +63,11 @@ public class PlayerScript : MonoBehaviour {
 		return m_age;
 	}
 
+	public string getPlayerPosition ()
+	{
+		return m_position.ToString();
+	}
+
 	public bool isInjered()
 	{
 		return m_isInjured;
@@ -68,14 +83,29 @@ public class PlayerScript : MonoBehaviour {
 		return m_gamePlayed;
 	}
 
-	public string getPlayerName ()
+	public string getPlayerFirstName ()
 	{
-		return m_name;
+		return m_firstName;
+	}
+
+	public string getPlayerLastName ()
+	{
+		return m_lastName;
+	}
+
+	public string getPlayerShortName()
+	{
+		return m_firstName.Substring(0,1) + "." + m_lastName;
 	}
 
 	public int GetPlayerPrice()
 	{
 		return m_price;
+	}
+
+	public Sprite getPlayerSprite ()
+	{
+		return m_playerSprite;
 	}
 
 	public void UpdateGamePlayed()
