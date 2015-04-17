@@ -9,7 +9,7 @@ public class Tap : MonoBehaviour {
 
     void Update()
     {
-        m_CashText.text = GameManager.s_GameManger.GetCash().ToString() + "$";
+        m_CashText.text = "$" + GameManager.s_GameManger.GetCash();
     }
 
     public void OnTap()
