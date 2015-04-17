@@ -11,9 +11,9 @@ public class ShopScript : MonoBehaviour {
 
 	void Update()
 	{
-		m_fansLevel.text = "Fans Level: " + (GameManager.s_GameManger.m_myTeam.GetFansLevel() + 1);
-		m_facilitiesLevel.text = "Facilities Level: " + (GameManager.s_GameManger.m_myTeam.GetFacilitiesLevel() + 1);
-		m_stadiumLevel.text = "Stadium Level: "+(GameManager.s_GameManger.m_myTeam.GetStadiumLevel() + 1);
+		m_fansLevel.text = "FANS LEVEL: " + (GameManager.s_GameManger.m_myTeam.GetFansLevel() + 1);
+        m_facilitiesLevel.text = "FACILITIES LEVEL: " + (GameManager.s_GameManger.m_myTeam.GetFacilitiesLevel() + 1);
+        m_stadiumLevel.text = "STADIUM LEVEL: " + (GameManager.s_GameManger.m_myTeam.GetStadiumLevel() + 1);
 	}
 
 	public void OnFansClick()
