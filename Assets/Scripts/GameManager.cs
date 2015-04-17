@@ -192,6 +192,19 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    public int GetTeamPosition(TeamScript i_Team)
+    {
+        for (int i = 0; i < m_TeamsForTable.Length; i++)
+        {
+            if (i_Team == m_TeamsForTable[i])
+            {
+                return m_TeamsForTable.Length - i;
+            }
+        }
+
+        return 0;
+    }
+
 	//Team in the first place is the team in the last place in the array.
 	public void updateTableLeague()
     {
