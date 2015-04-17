@@ -8,20 +8,14 @@ public class MainGUI : MonoBehaviour
 
     public Text m_LeagueText;
     public Text m_DetailsText;
-
-    private bool m_IsInit = false;
+    public string m_NextScene = "MatchResultScene";
 
     void Start()
     {
-        //if (!m_IsInit)
-        //{
-            m_LeagueText.text = "LEAGUE\n" + getTeamPosition(GameManager.s_GameManger.m_myTeam);
-            TeamScript opponent = FixturesManager.s_FixturesManager.GetOpponentByTeam(GameManager.s_GameManger.m_myTeam);
-            m_DetailsText.text = "Total Fans: " + GameManager.s_GameManger.m_myTeam.GetFanBase() + "\n" +
+        m_LeagueText.text = "LEAGUE\n" + getTeamPosition(GameManager.s_GameManger.m_myTeam);
+        TeamScript opponent = FixturesManager.s_FixturesManager.GetOpponentByTeam(GameManager.s_GameManger.m_myTeam);
+        m_DetailsText.text = "Total Fans: " + GameManager.s_GameManger.m_myTeam.GetFanBase() + "\n" +
                                  "Next Match: " + opponent.GetName() + " - " + getTeamPosition(opponent);
-           // m_IsInit = true;
-       // }
-        
     }
 
     private string getTeamPosition(TeamScript i_Team)
@@ -60,4 +54,9 @@ public class MainGUI : MonoBehaviour
         return string.Format("{0}{1}", pos, suffix);
     }
 
+    public void OnNextMatchClick()
+    {
+        FixturesManager.s_FixturesManager.ExecuteNextFixture();
+        Application.LoadLevel(m_NextScene);
+    }
 }
