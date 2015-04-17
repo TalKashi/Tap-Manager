@@ -11,7 +11,8 @@ public class GameManager : MonoBehaviour {
 
     public TeamScript m_myTeam;
     public int m_Cash = 1000;
-    private TeamScript[] m_AllTeams;
+    private TeamScript[] m_AllTeams; // !! Do not change positions for m_AllTeams
+    private TeamScript[] m_TeamsForTable;
 	private TableScript m_table;
 	public int[] m_fansLevelPrice = {0,1000,2000,3000,4000,5000};
 	public int[] m_facilitiesLevelPrice = {0,1000,2000,3000,4000,5000};
@@ -35,11 +36,7 @@ public class GameManager : MonoBehaviour {
 
     void Start()
     {
-        if (FixturesManager.s_FixturesManager.m_CurrentFixture == 0)
-        {
-            FixturesManager.s_FixturesManager.GenerateFixtures(m_AllTeams);
-        }
-        
+        FixturesManager.s_FixturesManager.GenerateFixtures(m_AllTeams);
     }
 
     private void loadData()
@@ -90,6 +87,11 @@ public class GameManager : MonoBehaviour {
                 Debug.Log("FOUND MATCH, index=" + i);
             }
         }
+    }
+
+    public void UpdateWeeklyFinance()
+    {
+        AddCash(FinanceManager.s_FinanceManager.CalculateIncome(m_myTeam) - FinanceManager.s_FinanceManager.CalculateOutcome(m_myTeam));
     }
 
     private void saveData()
@@ -192,7 +194,13 @@ public class GameManager : MonoBehaviour {
 	//Team in the first place is the team in the last place in the array.
 	public void updateTableLeague()
     {
-		Array.Sort(m_AllTeams, delegate(TeamScript team1, TeamScript team2) 
+	    if (m_TeamsForTable == null)
+	    {
+	        m_TeamsForTable = new TeamScript[m_AllTeams.Length];
+            Array.Copy(m_AllTeams, m_TeamsForTable, m_AllTeams.Length);
+	    }
+
+        Array.Sort(m_TeamsForTable, delegate(TeamScript team1, TeamScript team2) 
         {
             if (team1.GetPoints() < team2.GetPoints()) 
             {
@@ -215,11 +223,12 @@ public class GameManager : MonoBehaviour {
 		});
 		
 		m_table = GameObject.FindGameObjectWithTag("Table").GetComponent<TableScript>();
-		for(int i = 0; i< m_AllTeams.Length; i++){
-			m_table.UpdateLine((m_AllTeams.Length - i - 1),(m_AllTeams.Length - i),
-			                   m_AllTeams[i].GetName(),m_AllTeams[i].GetMatchPlayed(),m_AllTeams[i].GetMatchWon(),
-			                   m_AllTeams[i].GetMatchLost(),m_AllTeams[i].GetMatchDrawn(),m_AllTeams[i].GetGoalsFor(),
-			                   m_AllTeams[i].GetGoalsAgainst(),m_AllTeams[i].GetPoints());
+        for (int i = 0; i < m_TeamsForTable.Length; i++)
+        {
+            m_table.UpdateLine((m_TeamsForTable.Length - i - 1), (m_TeamsForTable.Length - i),
+                               m_TeamsForTable[i].GetName(), m_TeamsForTable[i].GetMatchPlayed(), m_TeamsForTable[i].GetMatchWon(),
+                               m_TeamsForTable[i].GetMatchLost(), m_TeamsForTable[i].GetMatchDrawn(), m_TeamsForTable[i].GetGoalsFor(),
+                               m_TeamsForTable[i].GetGoalsAgainst(), m_TeamsForTable[i].GetPoints());
 
 		}
 		

@@ -37,7 +37,6 @@ public class FixturesManager : MonoBehaviour
         {
             FileStream file = File.OpenRead(Application.persistentDataPath + "/fixturesdata.dat");
             FixturesData fixturesData = (FixturesData)binaryFormatter.Deserialize(file);
-            m_FixturesList = fixturesData.m_FixturesList;
             m_CurrentFixture = fixturesData.m_currentFixture;
             file.Close();
             Debug.Log("Loaded Fixtures Data");
@@ -55,7 +54,6 @@ public class FixturesManager : MonoBehaviour
 
         FileStream file = File.Create(Application.persistentDataPath + "/fixturesdata.dat");
         FixturesData fixturesData = new FixturesData();
-        fixturesData.m_FixturesList = m_FixturesList;
         fixturesData.m_currentFixture = m_CurrentFixture;
         binaryFormatter.Serialize(file, fixturesData);
         file.Close();
@@ -69,9 +67,14 @@ public class FixturesManager : MonoBehaviour
         }
     }
 
-    public void GenerateFixtures(TeamScript[] i_AllTeams)
+    public void InitSeason(TeamScript[] i_AllTeams)
     {
         m_CurrentFixture = 0;
+        GenerateFixtures(i_AllTeams);
+    }
+
+    public void GenerateFixtures(TeamScript[] i_AllTeams)
+    {
         // Reference for this algorithm: http://bluebones.net/2005/05/generating-fixture-lists/
         int totalTeams = i_AllTeams.Length;
         int totalFixtures = totalTeams - 1;
@@ -234,5 +237,4 @@ public class FixturesManager : MonoBehaviour
 class FixturesData
 {
     public int m_currentFixture;
-    public TeamScript[, ,] m_FixturesList;
 }

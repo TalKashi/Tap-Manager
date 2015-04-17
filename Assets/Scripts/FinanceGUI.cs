@@ -33,4 +33,9 @@ public class FinanceGUI : MonoBehaviour {
         }
 
     }
+
+    public void UpdateTeamWeeklyFinance()
+    {
+        GameManager.s_GameManger.UpdateWeeklyFinance();
+    }
 }

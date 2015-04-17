@@ -37,7 +37,9 @@ public class FinanceManager : MonoBehaviour {
         return m_incomeFromTickets + m_incomeFromMerchandise;
     }
 
-    // Return as positive number!!
+    /*
+     * Return as positive number!!
+     */
     public int CalculateOutcome(TeamScript i_Team)
     {
         int facilitiesLevel = (int) i_Team.GetFacilitiesLevel();
