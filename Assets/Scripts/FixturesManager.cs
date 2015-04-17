@@ -231,6 +231,30 @@ public class FixturesManager : MonoBehaviour
         teamIndex = i_IsHomeTeam ? 0 : 1;
         return m_FixturesList[i_Fixture % fixturesPerRound, i_Match, teamIndex];
     }
+
+    // Returns the opponent of the given team in the current fixture
+    public TeamScript GetOpponentByTeam(TeamScript i_Team)
+    {
+        return GetOpponentByTeamAndFixture(i_Team, m_CurrentFixture);
+    }
+
+    private TeamScript GetOpponentByTeamAndFixture(TeamScript i_Team, int i_Fixture)
+    {
+        const bool v_IsHomeTeam = true;
+        for (int i = 0; i < getMatchesPerFixture(); i++)
+        {
+            if (getTeamByFixtureAndMatch(i_Fixture, i, v_IsHomeTeam) == i_Team)
+            {
+                return getTeamByFixtureAndMatch(i_Fixture, i, !v_IsHomeTeam);
+            }
+            if (getTeamByFixtureAndMatch(i_Fixture, i, !v_IsHomeTeam) == i_Team)
+            {
+                return getTeamByFixtureAndMatch(i_Fixture, i, v_IsHomeTeam);
+            }
+        }
+        Debug.LogError("Could not find team in fixture list!");
+        return null;
+    }
 }
 
 [Serializable]

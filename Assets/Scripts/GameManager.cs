@@ -194,6 +194,10 @@ public class GameManager : MonoBehaviour {
 
     public int GetTeamPosition(TeamScript i_Team)
     {
+        if (m_TeamsForTable == null)
+        {
+            updateTableLeague();
+        }
         for (int i = 0; i < m_TeamsForTable.Length; i++)
         {
             if (i_Team == m_TeamsForTable[i])
@@ -235,8 +239,14 @@ public class GameManager : MonoBehaviour {
             
 			return team1.GetName().CompareTo(team2.GetName());
 		});
-		
-		m_table = GameObject.FindGameObjectWithTag("Table").GetComponent<TableScript>();
+
+	    GameObject tableGameObject = GameObject.FindGameObjectWithTag("Table");
+        if (tableGameObject == null)
+        {
+            return;
+        }
+        m_table = tableGameObject.GetComponent<TableScript>();
+	    
         for (int i = 0; i < m_TeamsForTable.Length; i++)
         {
             m_table.UpdateLine((m_TeamsForTable.Length - i - 1), (m_TeamsForTable.Length - i),
