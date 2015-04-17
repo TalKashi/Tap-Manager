@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class TeamNamesScript : MonoBehaviour {
+public class TeamNamesScript {
 
 	private string[] m_names = {"Turf Toe","Gunslingers","HeAteMe","Soup-A-Stars","The Cereal Killers",
 		"The Big Dawgs","Convicted Llamas","Smartinis","Bucket of Truth","Monkeys with Crayons",

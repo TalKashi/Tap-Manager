@@ -179,6 +179,7 @@ public class GameManager : MonoBehaviour {
     private void initTeams(int i_NumOfTeams)
     {
         m_AllTeams = new TeamScript[i_NumOfTeams];
+		TeamNamesScript teamNamesScript = new TeamNamesScript ();
 
 		//Temp 
 		m_AllTeams [0] = m_myTeam;	
@@ -187,7 +188,7 @@ public class GameManager : MonoBehaviour {
         for (int i = 1; i < i_NumOfTeams; i++)
         {
             m_AllTeams[i] = new TeamScript();
-            m_AllTeams[i].SetName("Team " + (i + 1));
+			m_AllTeams[i].SetName(teamNamesScript.GetNameInIndex(i));
         }
     }
 
