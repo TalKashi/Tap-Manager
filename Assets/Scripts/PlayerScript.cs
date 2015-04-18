@@ -142,6 +142,11 @@ public class PlayerScript {
 		}
 	}
 
+    public int GetBoostLevel()
+    {
+        return m_boost;
+    }
+
 	public void AddPlayerGamePower(int i_gamePower)
 	{
 		m_gamePower += i_gamePower;
