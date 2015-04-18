@@ -20,7 +20,7 @@ public class TeamScript {
 	int m_TotalCrowd = 0;
 	int m_homeGames = 0;
     int m_AdditionalFans = 0;
-    string m_Name;
+    string m_TeamName;
     string m_StadiumName;
     [SerializeField]
     MatchInfo m_LastGameInfo;
@@ -229,12 +229,12 @@ public class TeamScript {
 
     public string GetName()
     {
-        return m_Name;
+        return m_TeamName;
     }
 
     public void SetName(string i_Name)
     {
-        m_Name = i_Name;
+        m_TeamName = i_Name;
     }
 
     public MatchInfo GetLastMatchInfo()

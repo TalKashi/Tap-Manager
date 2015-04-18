@@ -6,8 +6,8 @@ public class PlayerSceneScript : MonoBehaviour {
 
 	private PlayerScript m_playerScript;
 	public Text m_position;
-	public Text m_firstName;
-	public Text m_lastName;
+	public Text m_NameText;
+	//public Text m_lastName;
 	public Text m_salary;
 	private bool m_isInjured;
 	public Text m_age;
@@ -17,7 +17,7 @@ public class PlayerSceneScript : MonoBehaviour {
 	public Text m_price;
 	public Text m_priceToBoost;
 	public Text m_yearOfJoiningTheClub;
-	public SpriteRenderer m_PlayerImage;
+	public Image m_PlayerImage;
 
 	public GameObject m_releasePlayerMenu;
 
@@ -31,19 +31,19 @@ public class PlayerSceneScript : MonoBehaviour {
 			m_playerScript = GameManager.s_GameManger.m_MySquad.GetPlayerInIndex (0);
 		}
 
-		m_position.text ="Position"+ m_playerScript.getPlayerPosition();
-		m_firstName.text = ""+m_playerScript.getPlayerFirstName();
-		m_lastName.text = ""+m_playerScript.getPlayerLastName();
-		m_salary.text = ""+m_playerScript.GetSalary();
+		m_position.text = m_playerScript.getPlayerPosition().ToString();
+		m_NameText.text = m_playerScript.getPlayerFirstName() + " " + m_playerScript.getPlayerLastName();
+		//m_lastName.text = ""+m_playerScript.getPlayerLastName();
+		m_salary.text = "$" + m_playerScript.GetSalary() + " p/w";
 		m_isInjured = m_playerScript.isInjered();
-		m_age.text = ""+m_playerScript.GetAge();
-		m_gamePlayed.text = ""+m_playerScript.GetGamePlayed();
-		m_goalScored.text  = ""+m_playerScript.GetGoalScored();
-		m_level.text = ""+m_playerScript.GetLevel();
-		m_price.text = ""+m_playerScript.GetPlayerPrice();
+		m_age.text = m_playerScript.GetAge().ToString();
+		m_gamePlayed.text = m_playerScript.GetGamePlayed().ToString();
+		m_goalScored.text  = m_playerScript.GetGoalScored().ToString();
+		m_level.text = m_playerScript.GetLevel().ToString();
+		m_price.text = "$" + m_playerScript.GetPlayerPrice();
 		m_priceToBoost.text = ""+m_playerScript.GetPriceToBoostPlayer();
 		m_yearOfJoiningTheClub.text = ""+m_playerScript.GetYearJoinindtheClub();
-		//m_PlayerImage.sprite = m_playerScript.getPlayerImage().sprite;
+		m_PlayerImage.sprite = m_playerScript.getPlayerImage().sprite;
 
 	}
 	

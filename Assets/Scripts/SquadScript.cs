@@ -12,10 +12,11 @@ public class SquadScript {
 
     public void Init()
     {
+        NamesUtilsScript nameUtils = new NamesUtilsScript();
         m_players = new PlayerScript[k_NumOfPlayers];
         for (int i = 0; i < k_NumOfPlayers; i++)
         {
-			NamesUtilsScript nameUtils = new NamesUtilsScript();
+			
             m_players[i] = new PlayerScript();
 			m_players[i].SetFirstName(nameUtils.GetFirstName());
 			m_players[i].SetLastName(nameUtils.GetLastName());

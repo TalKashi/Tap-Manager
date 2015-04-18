@@ -5,7 +5,7 @@ using System.Collections;
 public class PlayerRowGUI : MonoBehaviour
 {
 
-    public Text m_Name;
+    public Text m_NameText;
     public Text m_Raiting;
     public Text m_Age;
     public Text m_Salary;
@@ -19,7 +19,7 @@ public class PlayerRowGUI : MonoBehaviour
     {
 		m_index = i_index;
 		m_Player = i_Player;
-        m_Name.text = i_Player.GetShortName();
+        m_NameText.text = i_Player.GetShortName();
         m_Raiting.text = i_Player.GetLevel().ToString();
         m_Age.text = i_Player.GetAge().ToString();
         m_Salary.text = i_Player.GetSalary().ToString();
@@ -43,8 +43,14 @@ public class PlayerRowGUI : MonoBehaviour
         if (i_Player.isInjered())
         {
             //TODO: Set injured image
+
+        }
+        else
+        {
+            m_IsInjured.enabled = false;
         }
         // TODO: check and set if player is suspended
+        m_IsSuspended.enabled = false;
     }
 
 	public void OnPlayerClick(){
