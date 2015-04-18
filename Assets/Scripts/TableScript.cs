@@ -1,16 +1,37 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class TableScript : MonoBehaviour {
 
-
-	public GameObject[] m_lines;
+	public RectTransform m_contentPanel;
+	public GameObject m_rowPrefab;
+	private GameObject[] m_lines;
 
 	void Start()
 	{
 		GameManager.s_GameManger.updateTableLeague ();
 	}
 
+	void Update()
+	{
+		if(Input.GetKeyDown(KeyCode.A)){
+			InitTable(30);
+
+		}
+	}
+
+	public void InitTable(int i_numOfTeams){
+		m_lines = new GameObject[i_numOfTeams];
+		m_lines[0] = Instantiate(m_rowPrefab);
+		m_lines[0].gameObject.transform.parent = m_contentPanel.transform;
+		for (int i = 1; i < m_lines.Length ; i++) {
+			m_lines[i] = Instantiate(m_rowPrefab);
+			m_lines[i].gameObject.transform.parent = m_contentPanel.transform;
+		}
+
+
+	}
 	public void UpdateLine(int i_lineNum,int i_place,string i_team,int
 	                             i_played,int i_won,int i_lost, int i_drawn,int i_for,int i_against,
 	                             int i_points){
