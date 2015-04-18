@@ -16,7 +16,7 @@ public class SquadGUI : MonoBehaviour
             // get row script
             PlayerRowGUI rowScript = playerRow.GetComponent<PlayerRowGUI>();
             // pass player[i] data to it 
-            rowScript.Init(allPlayers[i]);
+            rowScript.Init(allPlayers[i],i);
         }
         
 
