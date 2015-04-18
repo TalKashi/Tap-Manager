@@ -137,7 +137,7 @@ public class PlayerScript {
 		m_boost += i_boost;
 		if (m_boost >= 100) 
 		{
-			m_boost = 0;
+			m_boost = m_boost%100;
 			m_level++;
 		}
 	}
