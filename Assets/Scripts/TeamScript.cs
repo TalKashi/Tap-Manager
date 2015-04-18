@@ -7,6 +7,7 @@ public enum eResult {Won, Lost, Draw}
 [Serializable]
 public class TeamScript {
 
+	eResult m_lastResult;
 	float m_fansLevel = 0 ;
 	float m_facilitiesLevel = 0;
 	float m_stadiumLevel = 0;
@@ -129,6 +130,11 @@ public class TeamScript {
 	{
 		m_against += i_against;
 		
+	}
+	public eResult GetLastResult()
+	{
+		return m_lastResult;
+
 	}
 
     public float GetAverageCrowd()
@@ -318,5 +324,16 @@ public class TeamScript {
 			}
 		}
 		
+	}
+
+	private void updateLastResult()
+	{
+		if (m_currentResult > 0) {
+			m_lastResult = eResult.Won;
+		} else if (m_currentResult < 0) {
+			m_lastResult = eResult.Lost;
+		} else {
+			m_lastResult = eResult.Draw;
+		}
 	}
 }
