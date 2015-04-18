@@ -97,15 +97,13 @@ public class TeamScript {
             m_homeGames++;
             m_TotalCrowd += i_matchInfo.GetTotalCrowd();
 
-			m_currentResult = m_for - m_against;
-
         }
         else
-        {
-			m_currentResult = - m_for + m_against;
+		{
             m_against += i_matchInfo.GetHomeGoals();
             m_for += i_matchInfo.GetAwayGoals();
         }
+		m_currentResult = m_for - m_against;
         m_IsLastGameIsHomeGame = i_isHomeMatch;
         m_LastGameInfo = i_matchInfo;
 		checkRecords ();
@@ -295,6 +293,22 @@ public class TeamScript {
 
 		if (m_currentSequenceWin > m_longestWinRecord) {
 			m_longestWinRecord = m_currentSequenceWin;
+		}
+
+		m_currentResult = - m_for + m_against;
+
+		if (m_currentResult > 0)
+		{
+			if(m_currentResult > m_biggestGameWinRecord)
+			{
+				m_biggestGameWinRecord = m_currentResult;
+			}
+			
+		}else{
+			if(m_currentResult < m_biggestGameLoseRecord)
+			{
+				m_biggestGameLoseRecord = m_currentResult;
+			}
 		}
 		
 	}
