@@ -1,9 +1,12 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
 public enum ePosition {GK,D,MF,S};
-public class PlayerScript : MonoBehaviour {
+
+[System.Serializable]
+public class PlayerScript {
 
 	private ePosition m_position;
 	private string m_firstName;
@@ -20,7 +23,8 @@ public class PlayerScript : MonoBehaviour {
 	private bool m_isPlaying;
 	private int m_gamePower = 100;
 	private int m_yearOfJoiningTheClub;
-	public Sprite m_playerSprite;
+    [NonSerialized]
+	public Image m_PlayerImage;
 
 
 	public void SetPriceToBoostPlayer(int i_priceToBoost)
@@ -103,9 +107,9 @@ public class PlayerScript : MonoBehaviour {
 		return m_price;
 	}
 
-	public Sprite getPlayerSprite ()
+	public Image getPlayerImage ()
 	{
-		return m_playerSprite;
+		return m_PlayerImage;
 	}
 
 	public void UpdateGamePlayed()
@@ -127,5 +131,15 @@ public class PlayerScript : MonoBehaviour {
 	{
 		m_gamePower += i_gamePower;
 	}
+
+    public string GetShortName()
+    {
+        return m_firstName.Substring(0, 1) + " " + m_lastName;
+    }
+
+    public int GetSalary()
+    {
+        return m_salary;
+    }
 
 }

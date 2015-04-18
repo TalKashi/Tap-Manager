@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour {
 	public static GameManager s_GameManger;
 
     public TeamScript m_myTeam;
+    public SquadScript m_MySquad;
     public int m_Cash = 1000;
     private TeamScript[] m_AllTeams; // !! Do not change positions for m_AllTeams
     private TeamScript[] m_TeamsForTable;
@@ -80,14 +81,20 @@ public class GameManager : MonoBehaviour {
             Debug.Log("Loaded Game Data");
         }
 
-        // Test code
-        for (int i = 0; i < m_AllTeams.Length; i++)
+        if (File.Exists(Application.persistentDataPath + "/myplayers.dat"))
         {
-            if (m_myTeam == m_AllTeams[i])
-            {
-                Debug.Log("FOUND MATCH, index=" + i);
-            }
+            FileStream file = File.OpenRead(Application.persistentDataPath + "/myplayers.dat");
+            m_MySquad = (SquadScript)binaryFormatter.Deserialize(file);
+            file.Close();
+            Debug.Log("Loaded All Squad");
         }
+        else
+        {
+            m_MySquad = new SquadScript();
+            m_MySquad.Init();
+            Debug.Log("Created new instance of my squad!");
+        }
+
     }
 
     public void UpdateWeeklyFinance()
@@ -120,6 +127,10 @@ public class GameManager : MonoBehaviour {
         }
         gameData.m_Cash = m_Cash;
         binaryFormatter.Serialize(file, gameData);
+        file.Close();
+
+        file = File.Create(Application.persistentDataPath + "/myplayers.dat");
+        binaryFormatter.Serialize(file, m_MySquad);
         file.Close();
     }
 
