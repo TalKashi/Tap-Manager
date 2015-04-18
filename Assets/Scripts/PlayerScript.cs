@@ -142,4 +142,25 @@ public class PlayerScript {
         return m_salary;
     }
 
+	public void InitYoungPlayer()
+	{
+		NamesUtilsScript nameUtils = new NamesUtilsScript();
+		m_firstName = nameUtils.GetFirstName();
+		m_lastName = nameUtils.GetLastName();
+		m_isInjured = false;
+		m_age = UnityEngine.Random.Range(16,24);
+		m_gamePlayed = 0;
+		m_goalScored = 0;
+		m_level = UnityEngine.Random.Range(2,4);
+		m_price = m_price/2 ;
+		m_boost = 0;
+		m_gamePower = 100;
+		m_yearOfJoiningTheClub = System.DateTime.Today.Year;
+		m_priceToBoost = m_level * 100;
+		m_isPlaying = true;
+		m_salary = m_level * 50;
+
+
+	}
+
 }
