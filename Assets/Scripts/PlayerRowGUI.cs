@@ -48,7 +48,7 @@ public class PlayerRowGUI : MonoBehaviour
     }
 
 	public void OnPlayerClick(){
-		PlayerPrefs.SetInt ("Selected Player", m_index);
+		PlayerPrefs.SetInt ("SelectedPlayer", m_index);
 		Application.LoadLevel ("PlayerScene");
 
 	}

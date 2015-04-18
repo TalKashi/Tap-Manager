@@ -58,6 +58,7 @@ public class PlayerSceneScript : MonoBehaviour {
 	public void OnClickYesReleasePlayer(){
 		m_releasePlayerMenu.SetActive (false);
 		m_playerScript.InitYoungPlayer ();
+		Application.LoadLevel ("New_Squad");
 	}
 
 	public void onClickBoost(){
