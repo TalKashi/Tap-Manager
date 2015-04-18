@@ -3,10 +3,10 @@ using System.Collections;
 
 public class NamesUtilsScript {
 
-	private string[] m_teamNames = {"Turf Toe","Gunslingers","HeAteMe","Soup-A-Stars","The Cereal Killers",
-		"The Big Dawgs","Convicted Llamas","Smartinis","Bucket of Truth","Monkeys with Crayons",
-		"Here for Beer","Alco Holics","Beer","Penguins","Ninjas in Paris",
-		"Ebola Ballers","Kim Jong Worm","Kobe Wan Kenobi","D12","IDC FC"};
+	private string[] m_teamNames = {"AC Avocado","Carambola FC","HeAteMe","Soup-A-Stars","The Cereal Killers",
+		"Hapoel Coconut","Vanilla United","Smartinis","Beitar Kiwi ","Maccabi Lychee",
+		"HaKoah Mango","Alco Holics","Beer","Penguins","Ninjas in Paris",
+		"Inter Papaya","Kim Jong Worm","Kobe Wan Kenobi","InGame All Stars","IDC FC"};
 
 
 	private string[] m_firstNames = {"Hilton", 
@@ -22,7 +22,7 @@ public class NamesUtilsScript {
 		"Eran",  
 		"Darron",  
 		"Joan",  
-		"Len",  
+		"Moli",  
 		"Vincenzo",  
 		"Dudi",  
 		"Allan",  

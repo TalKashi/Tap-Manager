@@ -24,14 +24,14 @@ public class InputScreenScript : MonoBehaviour {
 		}
 
 		if (m_stadiumName.textComponent.text == null || m_stadiumName.textComponent.text.Length == 0) {
-			m_error.text = "Stadium name cant be String";
+			m_error.text = "Stadium name cant be empty String";
 			m_isValid = false;
 		}
 
 		if (m_isValid) {
 			GameManager.s_GameManger.m_myTeam.SetName(m_teamName.textComponent.text);
 			GameManager.s_GameManger.m_myTeam.SetStadiumName(m_stadiumName.textComponent.text);
-			Debug.Log("Stadium name is "+m_stadiumName.textComponent.text.Length);
+			Debug.Log("Stadium name is "+m_stadiumName.textComponent.text);
 			Debug.Log("Team name is "+m_teamName.textComponent.text);
 			Application.LoadLevel(m_nextScene);
 
