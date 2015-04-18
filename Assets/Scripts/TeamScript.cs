@@ -64,6 +64,7 @@ public class TeamScript {
 			m_won++;
             m_AdditionalFans += 25;
 
+            m_lastResult = eResult.Won;
 			m_currentSequenceWin++; 
 			m_currentSequenceLose = 0; 
 			m_currentSequenceNotLose++;
@@ -74,6 +75,7 @@ public class TeamScript {
 			m_lost++;
             m_AdditionalFans -= 10;
 
+            m_lastResult = eResult.Lost;
 			m_currentSequenceWin = 0; 
 			m_currentSequenceLose++; 
 			m_currentSequenceNotLose = 0;
@@ -84,6 +86,7 @@ public class TeamScript {
 			m_drawn++;
             m_AdditionalFans++;
 
+            m_lastResult= eResult.Draw;
 			m_currentSequenceWin = 0; 
 			m_currentSequenceLose = 0; 
 			m_currentSequenceNotLose++;

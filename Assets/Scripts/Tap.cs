@@ -15,6 +15,7 @@ public class Tap : MonoBehaviour {
     public void OnTap()
     {
         GameManager.s_GameManger.AddCash(m_Value);
+        SoundManager.s_SoundManager.playClickSound();
     }
 
 

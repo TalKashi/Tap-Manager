@@ -27,15 +27,15 @@ public class Scoarboard : MonoBehaviour
 		switch (lastMatch) {
 
 			case eResult.Draw:
-				GameObject.FindGameObjectWithTag("GameManager").GetComponent<SoundManager>().playDrawSound();
+				SoundManager.s_SoundManager.playDrawSound();
 			break;
 
 			case eResult.Won:
-				GameObject.FindGameObjectWithTag("GameManager").GetComponent<SoundManager>().playWinSound();
+                SoundManager.s_SoundManager.playWinSound();
 			break;
 
 			case eResult.Lost:
-				GameObject.FindGameObjectWithTag("GameManager").GetComponent<SoundManager>().playLoseSound();
+                SoundManager.s_SoundManager.playLoseSound();
 			break;
 
 		}
