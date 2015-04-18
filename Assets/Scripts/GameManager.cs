@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour {
 	public int[] m_fansLevelPrice = {0,1000,2000,3000,4000,5000};
 	public int[] m_facilitiesLevelPrice = {0,1000,2000,3000,4000,5000};
 	public int[] m_stadiumLevelPrice = {0,1000,2000,3000,4000,5000};
+	public float m_timeMoneyChangeAnimation;
 
 
 	void Awake () {
@@ -132,8 +133,26 @@ public class GameManager : MonoBehaviour {
 
     public void AddCash(int i_Value)
     {
-        m_Cash += i_Value;
+       	m_Cash += i_Value;
+		//StartCoroutine(addMoneyAnimation(i_Value));
     }
+
+	IEnumerator addMoneyAnimation(int i_amount)
+	{
+		int deltaCoin = 0;
+		if (i_amount < 0) {
+			deltaCoin = 1;
+		} else {
+			deltaCoin = -1;
+		}
+		
+		while (i_amount != 0) {
+			i_amount += deltaCoin;
+			m_Cash +=-deltaCoin;
+			yield return new WaitForSeconds (m_timeMoneyChangeAnimation);
+			
+		}
+	}
 
 	public void FansUpdate(float i_Value)
 	{
