@@ -17,6 +17,7 @@ public class InputScreenScript : MonoBehaviour {
 
 	public void OnContinueClick(){
 		m_isValid = true;
+        SoundManager.s_SoundManager.playClickSound();
 		if (m_teamName.textComponent.text == null || m_teamName.textComponent.text.Length == 0) {
 			m_error.text = "Team name cant be empty String";
 			m_isValid = false;

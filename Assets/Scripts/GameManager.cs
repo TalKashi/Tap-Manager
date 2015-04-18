@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour {
     private TeamScript[] m_TeamsForTable;
 	private TableScript m_table;
     private Bucket m_Bucket;
+    private bool k_ShouldGoToMainScene = false;
 	public int[] m_fansLevelPrice = {0,1000,2000,3000,4000,5000};
 	public int[] m_facilitiesLevelPrice = {0,1000,2000,3000,4000,5000};
 	public int[] m_stadiumLevelPrice = {0,1000,2000,3000,4000,5000};
@@ -28,6 +29,10 @@ public class GameManager : MonoBehaviour {
 			s_GameManger = this;
             loadData();
 			DontDestroyOnLoad (gameObject);
+            if (k_ShouldGoToMainScene)
+            {
+                Application.LoadLevel("MainScene");
+            }
 
 		}
         else
@@ -52,19 +57,6 @@ public class GameManager : MonoBehaviour {
         Debug.Log("LOADING DATA");
         DateTime disconnectionTime = DateTime.Now;
         BinaryFormatter binaryFormatter = new BinaryFormatter();
-        if (File.Exists(Application.persistentDataPath + "/team.dat"))
-        {
-            //FileStream file = File.OpenRead(Application.persistentDataPath + "/team.dat");
-            //m_myTeam = (TeamScript)binaryFormatter.Deserialize(file);
-            //Debug.Log("Last game home goals=" + m_myTeam.GetLastMatchInfo().GetHomeGoals());
-            //file.Close();
-            //Debug.Log("Loaded My Team");
-        }
-        else
-        {
-            m_myTeam = new TeamScript();
-            Debug.Log("Created new instance of my team!");
-        }
 
         if (File.Exists(Application.persistentDataPath + "/allteams.dat"))
         {
@@ -86,6 +78,7 @@ public class GameManager : MonoBehaviour {
             m_myTeam = m_AllTeams[gameData.m_MyTeamIndex];
             disconnectionTime = gameData.m_DisconnectionTime;
             file.Close();
+            k_ShouldGoToMainScene = true;
             Debug.Log("Loaded Game Data");
         }
 
@@ -123,10 +116,6 @@ public class GameManager : MonoBehaviour {
     {
         Debug.Log("SAVING FILES");
         BinaryFormatter binaryFormatter = new BinaryFormatter();
-
-        //FileStream file = File.Create(Application.persistentDataPath + "/team.dat");
-        //binaryFormatter.Serialize(file, m_myTeam);
-        //file.Close();
 
         FileStream file = File.Create(Application.persistentDataPath + "/allteams.dat");
         binaryFormatter.Serialize(file, m_AllTeams);
