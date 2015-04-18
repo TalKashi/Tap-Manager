@@ -25,6 +25,19 @@ public class TeamScript {
     [SerializeField]
     MatchInfo m_LastGameInfo;
     bool m_IsLastGameIsHomeGame;
+	//Stats
+	private int m_longestWinRecord = 0; 
+	private int m_longestLoseRecord = 0; 
+	private int m_longestNotLoseRecord = 0;
+	private int m_longestNotWinRecord = 0; 
+	private int m_biggestGameWinRecord = 0;
+	private int m_biggestGameLoseRecord = 0; 
+
+	private int m_currentSequenceWin = 0; 
+	private int m_currentSequenceLose = 0; 
+	private int m_currentSequenceNotLose = 0;
+	private int m_currentSequenceNotWin = 0; 
+	private int m_currentResult = 0;
 	
 
 	public void UpdateFansLevel(float i_fans)
@@ -49,16 +62,31 @@ public class TeamScript {
 		case eResult.Won:
 			m_won++;
             m_AdditionalFans += 10;
+
+			m_currentSequenceWin++; 
+			m_currentSequenceLose = 0; 
+			m_currentSequenceNotLose++;
+			m_currentSequenceNotWin = 0;  
 			break;
 
 		case eResult.Lost:
 			m_lost++;
             m_AdditionalFans -= 10;
+
+			m_currentSequenceWin = 0; 
+			m_currentSequenceLose++; 
+			m_currentSequenceNotLose = 0;
+			m_currentSequenceNotWin++;
 			break;
 
 		case eResult.Draw:
 			m_drawn++;
             m_AdditionalFans++;
+
+			m_currentSequenceWin = 0; 
+			m_currentSequenceLose = 0; 
+			m_currentSequenceNotLose++;
+			m_currentSequenceNotWin++;
 			break;
 		}
 
@@ -68,14 +96,19 @@ public class TeamScript {
             m_against += i_matchInfo.GetAwayGoals();
             m_homeGames++;
             m_TotalCrowd += i_matchInfo.GetTotalCrowd();
+
+			m_currentResult = m_for - m_against;
+
         }
         else
         {
+			m_currentResult = - m_for + m_against;
             m_against += i_matchInfo.GetHomeGoals();
             m_for += i_matchInfo.GetAwayGoals();
         }
         m_IsLastGameIsHomeGame = i_isHomeMatch;
         m_LastGameInfo = i_matchInfo;
+		checkRecords ();
 	}
 
 	public void UpdateMatchLost()
@@ -229,4 +262,40 @@ public class TeamScript {
         m_StadiumName = i_StadiumName;
     }
 
+	public int GetlongestLoseRecord()
+	{
+		return m_longestLoseRecord;
+	}
+	public int GetlongestWinRecord()
+	{
+		return m_longestWinRecord;
+	}
+	public int GetlongestNotLoseRecord()
+	{
+		return m_longestNotLoseRecord;
+	}
+	public int GetlongestNotWinRecord()
+	{
+		return m_longestNotWinRecord;
+	}
+
+	private void checkRecords ()
+	{
+		if (m_currentSequenceLose > m_longestLoseRecord) {
+			m_longestLoseRecord = m_currentSequenceLose;
+		}
+
+		if (m_currentSequenceNotLose > m_longestNotLoseRecord) {
+			m_longestNotLoseRecord = m_currentSequenceNotLose;
+		}
+
+		if (m_currentSequenceNotWin > m_longestNotWinRecord) {
+			m_longestNotWinRecord = m_currentSequenceNotWin;
+		}
+
+		if (m_currentSequenceWin > m_longestWinRecord) {
+			m_longestWinRecord = m_currentSequenceWin;
+		}
+		
+	}
 }
