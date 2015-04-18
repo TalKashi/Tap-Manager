@@ -19,7 +19,23 @@ public class PlayerRowGUI : MonoBehaviour
         m_Raiting.text = i_Player.GetLevel().ToString();
         m_Age.text = i_Player.GetAge().ToString();
         m_Salary.text = i_Player.GetSalary().ToString();
-        m_Position.text = i_Player.getPlayerPosition();
+        m_Position.text = i_Player.getPlayerPosition().ToString();
+        switch (i_Player.getPlayerPosition())
+        {
+            case ePosition.GK:
+                m_Position.color = Color.yellow;
+                break;
+                case ePosition.D:
+                m_Position.color = Color.blue;
+                break;
+                case ePosition.MF:
+                m_Position.color = Color.green;
+                break;
+                case ePosition.S:
+                m_Position.color = Color.red;
+                break;
+
+        }
         if (i_Player.isInjered())
         {
             //TODO: Set injured image
