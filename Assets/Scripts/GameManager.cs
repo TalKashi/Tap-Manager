@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour {
     private TeamScript[] m_AllTeams; // !! Do not change positions for m_AllTeams
     private TeamScript[] m_TeamsForTable;
 	private TableScript m_table;
+    private Bucket m_Bucket;
 	public int[] m_fansLevelPrice = {0,1000,2000,3000,4000,5000};
 	public int[] m_facilitiesLevelPrice = {0,1000,2000,3000,4000,5000};
 	public int[] m_stadiumLevelPrice = {0,1000,2000,3000,4000,5000};
@@ -41,9 +42,15 @@ public class GameManager : MonoBehaviour {
         FixturesManager.s_FixturesManager.GenerateFixtures(m_AllTeams);
     }
 
+    void Update()
+    {
+        m_Bucket.AddMoneyToBucket(Time.deltaTime);
+    }
+
     private void loadData()
     {
         Debug.Log("LOADING DATA");
+        DateTime disconnectionTime = DateTime.Now;
         BinaryFormatter binaryFormatter = new BinaryFormatter();
         if (File.Exists(Application.persistentDataPath + "/team.dat"))
         {
@@ -77,6 +84,7 @@ public class GameManager : MonoBehaviour {
             GameData gameData = (GameData)binaryFormatter.Deserialize(file);
             m_Cash = gameData.m_Cash;
             m_myTeam = m_AllTeams[gameData.m_MyTeamIndex];
+            disconnectionTime = gameData.m_DisconnectionTime;
             file.Close();
             Debug.Log("Loaded Game Data");
         }
@@ -95,11 +103,20 @@ public class GameManager : MonoBehaviour {
             Debug.Log("Created new instance of my squad!");
         }
 
-    }
+        if (File.Exists(Application.persistentDataPath + "/bucket.dat"))
+        {
+            FileStream file = File.OpenRead(Application.persistentDataPath + "/bucket.dat");
+            m_Bucket = (Bucket)binaryFormatter.Deserialize(file);
+            m_Bucket.AddMoneyToBucket((float)DateTime.Now.Subtract(disconnectionTime).TotalSeconds);
+            file.Close();
+            Debug.Log("Loaded Bucket");
+        }
+        else
+        {
+            m_Bucket = new Bucket(1000, 3600);
+            Debug.Log("Created new instance of bucket!");
+        }
 
-    public void UpdateWeeklyFinance()
-    {
-        AddCash(FinanceManager.s_FinanceManager.CalculateIncome(m_myTeam) - FinanceManager.s_FinanceManager.CalculateOutcome(m_myTeam));
     }
 
     private void saveData()
@@ -126,12 +143,22 @@ public class GameManager : MonoBehaviour {
             }
         }
         gameData.m_Cash = m_Cash;
+        gameData.m_DisconnectionTime = DateTime.Now;
         binaryFormatter.Serialize(file, gameData);
         file.Close();
 
         file = File.Create(Application.persistentDataPath + "/myplayers.dat");
         binaryFormatter.Serialize(file, m_MySquad);
         file.Close();
+
+        file = File.Create(Application.persistentDataPath + "/bucket.dat");
+        binaryFormatter.Serialize(file, m_Bucket);
+        file.Close();
+    }
+
+    public void UpdateWeeklyFinance()
+    {
+        AddCash(FinanceManager.s_FinanceManager.CalculateIncome(m_myTeam) - FinanceManager.s_FinanceManager.CalculateOutcome(m_myTeam));
     }
 
     void OnDisable()
@@ -146,6 +173,26 @@ public class GameManager : MonoBehaviour {
     {
        	m_Cash += i_Value;
 		//StartCoroutine(addMoneyAnimation(i_Value));
+    }
+
+    public void EmptyBucket()
+    {
+        AddCash(m_Bucket.EmptyBucket());
+    }
+
+    public bool IsBucketFull()
+    {
+        return m_Bucket.IsFull();
+    }
+
+    public TimeSpan GetNextEmptyTimeSpan()
+    {
+        return m_Bucket.GetTimeUntilBucketIsFull();
+    }
+
+    public int GetMoneyInBucket()
+    {
+        return m_Bucket.GetMoneyInBucket();
     }
 
 	IEnumerator addMoneyAnimation(int i_amount)
@@ -307,4 +354,5 @@ class GameData
 {
     public int m_Cash;
     public int m_MyTeamIndex;
+    public DateTime m_DisconnectionTime;
 }
