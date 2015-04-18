@@ -67,9 +67,9 @@ public class PlayerScript {
 		return m_age;
 	}
 
-	public string getPlayerPosition ()
+	public ePosition getPlayerPosition ()
 	{
-		return m_position.ToString();
+		return m_position;
 	}
 
 	public int GetGoalScored ()

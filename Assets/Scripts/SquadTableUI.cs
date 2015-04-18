@@ -27,7 +27,7 @@ public class SquadTableUI : MonoBehaviour {
 		//playerLineGUIScript.SetPicture (i_playerScript.getPlayerSprite());
 		playerLineGUIScript.m_level.text = ""+i_playerScript.GetLevel();
 		playerLineGUIScript.m_name.text = i_playerScript.getPlayerShortName();
-		playerLineGUIScript.m_position.text = i_playerScript.getPlayerPosition ();;
+		//playerLineGUIScript.m_position.text = i_playerScript.getPlayerPosition ();;
 		
 	}
 	

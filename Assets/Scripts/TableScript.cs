@@ -17,10 +17,10 @@ public class TableScript : MonoBehaviour {
 	public void InitTable(int i_numOfTeams){
 		m_lines = new GameObject[i_numOfTeams];
 		m_lines[0] = Instantiate(m_rowPrefab);
-		m_lines[0].gameObject.transform.parent = m_contentPanel.transform;
+	    m_lines[0].gameObject.transform.SetParent(m_contentPanel.transform);
 		for (int i = 1; i < m_lines.Length ; i++) {
 			m_lines[i] = Instantiate(m_rowPrefab);
-			m_lines[i].gameObject.transform.parent = m_contentPanel.transform;
+            m_lines[i].gameObject.transform.SetParent(m_contentPanel.transform);
 		}
 
 
