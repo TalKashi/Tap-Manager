@@ -15,9 +15,4 @@ public class OneLineUITableScript : MonoBehaviour {
 	public Text m_against;
 	public Text m_points;
 
-	void Start()
-	{
-		m_place.text =""+ place;
-
-	}
 }

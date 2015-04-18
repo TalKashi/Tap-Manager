@@ -209,6 +209,7 @@ public class GameManager : MonoBehaviour {
             m_AllTeams[i] = new TeamScript();
 			m_AllTeams[i].SetName(teamNamesScript.GetNameInIndex(i));
         }
+
     }
 
     public int GetTeamPosition(TeamScript i_Team)
@@ -265,6 +266,7 @@ public class GameManager : MonoBehaviour {
             return;
         }
         m_table = tableGameObject.GetComponent<TableScript>();
+		m_table.InitTable(m_TeamsForTable.Length);
 	    
         for (int i = 0; i < m_TeamsForTable.Length; i++)
         {

@@ -13,13 +13,6 @@ public class TableScript : MonoBehaviour {
 		GameManager.s_GameManger.updateTableLeague ();
 	}
 
-	void Update()
-	{
-		if(Input.GetKeyDown(KeyCode.A)){
-			InitTable(30);
-
-		}
-	}
 
 	public void InitTable(int i_numOfTeams){
 		m_lines = new GameObject[i_numOfTeams];
