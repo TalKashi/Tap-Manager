@@ -252,7 +252,14 @@ public class TeamScript {
         // 400 is avrage player salary
         // 15 is num of player
         // 600 is coach salary
-        return 400 * 15 + 600;
+        PlayerScript[] allPlayers = GameManager.s_GameManger.m_MySquad.GetAllSquad();
+        int total = 0;
+        for (int i = 0; i < allPlayers.Length; i++)
+        {
+            total += allPlayers[i].GetSalary();
+        }
+
+        return total;
     }
 
     public void SetStadiumName(string i_StadiumName)
