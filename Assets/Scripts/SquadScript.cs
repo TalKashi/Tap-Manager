@@ -1,5 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
+using Random = UnityEngine.Random;
 
 [System.Serializable]
 public class SquadScript {
@@ -49,7 +51,8 @@ public class SquadScript {
             m_players[i].SetPriceToBoostPlayer(m_players[i].GetLevel() * 100);
             m_players[i].SetIsPlaying(true);
             m_players[i].SetSalary(m_players[i].GetLevel() * 50);
-
+            m_players[i].SetAge(Random.Range(18, 36));
+            m_players[i].SetYearJoinedTheClub(DateTime.Now.Year);
         }
     }
 

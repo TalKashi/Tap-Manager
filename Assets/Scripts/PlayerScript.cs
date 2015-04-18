@@ -67,6 +67,11 @@ public class PlayerScript {
 		return m_age;
 	}
 
+    public void SetAge(int i_Age)
+    {
+        m_age = i_Age;
+    }
+
 	public ePosition getPlayerPosition ()
 	{
 		return m_position;
@@ -152,10 +157,15 @@ public class PlayerScript {
         return m_salary;
     }
 
-	public int GetYearJoinindtheClub ()
+	public int GetYearJoinedTheClub ()
 	{
 		return m_yearOfJoiningTheClub;
 	}
+
+    public void SetYearJoinedTheClub(int i_Year)
+    {
+        m_yearOfJoiningTheClub = i_Year;
+    }
 
 	public void InitYoungPlayer()
 	{
@@ -178,4 +188,9 @@ public class PlayerScript {
 
 	}
 
+
+    public string GetFullName()
+    {
+        return m_firstName + " " + m_lastName;
+    }
 }

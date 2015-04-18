@@ -23,16 +23,13 @@ public class PlayerSceneScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		int i = PlayerPrefs.GetInt ("SelectedPlayer");
-		if (i != null) {
-			m_playerScript = GameManager.s_GameManger.m_MySquad.GetPlayerInIndex (i);
-		} else 
-		{
-			m_playerScript = GameManager.s_GameManger.m_MySquad.GetPlayerInIndex (0);
-		}
+		int i = PlayerPrefs.GetInt ("SelectedPlayer", 0);
+		
+		m_playerScript = GameManager.s_GameManger.m_MySquad.GetPlayerInIndex (i);
 
-		m_position.text = m_playerScript.getPlayerPosition().ToString();
-		m_NameText.text = m_playerScript.getPlayerFirstName() + " " + m_playerScript.getPlayerLastName();
+
+        m_position.text = getPosByEnum(m_playerScript.getPlayerPosition());
+		m_NameText.text = m_playerScript.GetFullName();
 		//m_lastName.text = ""+m_playerScript.getPlayerLastName();
 		m_salary.text = "$" + m_playerScript.GetSalary() + " p/w";
 		m_isInjured = m_playerScript.isInjered();
@@ -42,8 +39,8 @@ public class PlayerSceneScript : MonoBehaviour {
 		m_level.text = m_playerScript.GetLevel().ToString();
 		m_price.text = "$" + m_playerScript.GetPlayerPrice();
 		m_priceToBoost.text = ""+m_playerScript.GetPriceToBoostPlayer();
-		m_yearOfJoiningTheClub.text = ""+m_playerScript.GetYearJoinindtheClub();
-		m_PlayerImage.sprite = m_playerScript.getPlayerImage().sprite;
+		m_yearOfJoiningTheClub.text = ""+m_playerScript.GetYearJoinedTheClub();
+		//m_PlayerImage.sprite = m_playerScript.getPlayerImage().sprite;
 
 	}
 	
@@ -77,5 +74,21 @@ public class PlayerSceneScript : MonoBehaviour {
 
 	}
 
-
+    private string getPosByEnum(ePosition i_Position)
+    {
+        switch (i_Position)
+        {
+            case ePosition.GK:
+                return "GoalKeeper";
+            case ePosition.D:
+                return "Defender";
+            case ePosition.MF:
+                return "Midfielder";
+            case ePosition.S:
+                return "Striker";
+            default:
+                Debug.LogError("GOT UNKNOWN POS");
+                return "UNKNOWN!";
+        }
+    }
 }
