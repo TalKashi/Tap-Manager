@@ -33,7 +33,8 @@ public class FinanceManager : MonoBehaviour {
 
         m_incomeFromTickets = crowdAtLastMatch * i_Team.GetTicketPrice();
         m_incomeFromMerchandise = (int) (fanBase * Random.Range(0f, 0.8f) * i_Team.GetMerchandisePrice());
-
+		Debug.Log ("fanBase = " + fanBase + "--" + "crowdAtLastMatch = " + crowdAtLastMatch + "m_incomeFromTickets= " +
+			m_incomeFromTickets + " ,m_incomeFromMerchandise = " + m_incomeFromMerchandise);
         return m_incomeFromTickets + m_incomeFromMerchandise;
     }
 
@@ -46,8 +47,8 @@ public class FinanceManager : MonoBehaviour {
         int stadiumLevel = (int)i_Team.GetStadiumLevel();
         m_salary = i_Team.GetSalary();
 
-        m_facilitiesCost = facilitiesLevel * m_FacilitiesMultiplier;
-        m_stadiumCost = stadiumLevel * m_StadiumMultiplier;
+        m_facilitiesCost = (facilitiesLevel+1) * m_FacilitiesMultiplier;
+        m_stadiumCost = (stadiumLevel+1) * m_StadiumMultiplier;
 
         return m_facilitiesCost + m_stadiumCost + m_salary;
     }

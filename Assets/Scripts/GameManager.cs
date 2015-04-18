@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour {
 
     public TeamScript m_myTeam;
     public SquadScript m_MySquad;
-    public int m_Cash = 1000;
+    public int m_Cash = 100000;
     private TeamScript[] m_AllTeams; // !! Do not change positions for m_AllTeams
     private TeamScript[] m_TeamsForTable;
 	private TableScript m_table;

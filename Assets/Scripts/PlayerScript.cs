@@ -72,9 +72,19 @@ public class PlayerScript {
 		return m_position.ToString();
 	}
 
+	public int GetGoalScored ()
+	{
+		return m_goalScored;
+	}
+
 	public bool isInjered()
 	{
 		return m_isInjured;
+	}
+
+	public int GetPriceToBoostPlayer ()
+	{
+		return m_priceToBoost;
 	}
 
 	public int GetLevel()
@@ -141,6 +151,11 @@ public class PlayerScript {
     {
         return m_salary;
     }
+
+	public int GetYearJoinindtheClub ()
+	{
+		return m_yearOfJoiningTheClub;
+	}
 
 	public void InitYoungPlayer()
 	{

@@ -61,7 +61,7 @@ public class TeamScript {
 		{
 		case eResult.Won:
 			m_won++;
-            m_AdditionalFans += 10;
+            m_AdditionalFans += 25;
 
 			m_currentSequenceWin++; 
 			m_currentSequenceLose = 0; 
@@ -218,7 +218,7 @@ public class TeamScript {
 	public int GetFanBase()
 	{
 		//Temp solution
-        int fanBase =(int) m_fansLevel * 10 + m_AdditionalFans;
+        int fanBase =(int) (m_fansLevel+1) * 1000 + m_AdditionalFans;
 	    if (fanBase < 0)
 	    {
 	        fanBase = 0;
