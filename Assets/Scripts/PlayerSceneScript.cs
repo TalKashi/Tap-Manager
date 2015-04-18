@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class PlayerSceneScript : MonoBehaviour {
 
-	public PlayerScript m_playerScript;
+	private PlayerScript m_playerScript;
 	public Text m_position;
 	public Text m_firstName;
 	public Text m_lastName;
@@ -23,6 +23,13 @@ public class PlayerSceneScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		int i = PlayerPrefs.GetInt ("SelectedPlayer");
+		if (i != null) {
+			m_playerScript = GameManager.s_GameManger.m_MySquad.GetPlayerInIndex (i);
+		} else 
+		{
+			m_playerScript = GameManager.s_GameManger.m_MySquad.GetPlayerInIndex (0);
+		}
 
 		m_position.text ="Position"+ m_playerScript.getPlayerPosition();
 		m_firstName.text = ""+m_playerScript.getPlayerFirstName();

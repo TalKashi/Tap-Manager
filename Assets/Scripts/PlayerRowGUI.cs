@@ -12,9 +12,13 @@ public class PlayerRowGUI : MonoBehaviour
     public Text m_Position;
     public Image m_IsInjured;
     public Image m_IsSuspended;
+	private PlayerScript m_Player;
+	private int m_index;
 
-    public void Init(PlayerScript i_Player)
+    public void Init(PlayerScript i_Player,int i_index)
     {
+		m_index = i_index;
+		m_Player = i_Player;
         m_Name.text = i_Player.GetShortName();
         m_Raiting.text = i_Player.GetLevel().ToString();
         m_Age.text = i_Player.GetAge().ToString();
@@ -42,4 +46,10 @@ public class PlayerRowGUI : MonoBehaviour
         }
         // TODO: check and set if player is suspended
     }
+
+	public void OnPlayerClick(){
+		PlayerPrefs.SetInt ("Selected Player", m_index);
+		Application.LoadLevel ("PlayerScene");
+
+	}
 }

@@ -80,4 +80,9 @@ public class SquadScript {
     {
         return m_players;
     }
+
+	public PlayerScript GetPlayerInIndex(int i)
+	{
+		return m_players[i];
+	}
 }
