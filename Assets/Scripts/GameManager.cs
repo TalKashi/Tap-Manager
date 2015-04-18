@@ -22,6 +22,9 @@ public class GameManager : MonoBehaviour {
 	public int[] m_stadiumLevelPrice = {0,1000,2000,3000,4000,5000};
 	public float m_timeMoneyChangeAnimation;
 
+    // TEMP FOR PRESENTATION
+    public Sprite[] m_PlayerImages;
+
 
 	void Awake () {
 		if (s_GameManger == null)

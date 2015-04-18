@@ -38,6 +38,10 @@ public class PlayerSceneScript : MonoBehaviour {
         m_salary.text = "$" + m_playerScript.GetSalary() + " p/w";
 	    m_DrugText.text = "Drugs ($" + m_playerScript.GetPriceToBoostPlayer()/2 + ")";
         m_BoostText.text = "Boost ($" + m_playerScript.GetPriceToBoostPlayer() + ")";
+	    if (m_playerScript.getPlayerImage() != null)
+	    {
+	        m_PlayerImage.sprite = m_playerScript.getPlayerImage();
+	    }
 	}
 
     void Update()
@@ -50,8 +54,6 @@ public class PlayerSceneScript : MonoBehaviour {
         m_isInjured = m_playerScript.isInjered();
         m_level.text = m_playerScript.GetLevel().ToString();
         m_price.text = "$" + m_playerScript.GetPlayerPrice();
-        
-        //m_PlayerImage.sprite = m_playerScript.getPlayerImage().sprite;
     }
 	
 	public void OnClickReleasePlayer(){

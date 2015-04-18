@@ -54,6 +54,14 @@ public class SquadScript {
             m_players[i].SetAge(Random.Range(18, 36));
             m_players[i].SetYearJoinedTheClub(DateTime.Now.Year);
         }
+        // Temp for presentation
+        m_players[0].SetFirstName("Dudi");
+        m_players[0].SetLastName("Peles");
+        m_players[0].SetPlayerImage(GameManager.s_GameManger.m_PlayerImages[0]);
+        m_players[1].SetFirstName("Doron");
+        m_players[1].SetLastName("Nir");
+        m_players[2].SetFirstName("Gilad");
+        m_players[2].SetLastName("Almog");
     }
 
 	public PlayerScript GetPlayerByFirstName(string i_name)

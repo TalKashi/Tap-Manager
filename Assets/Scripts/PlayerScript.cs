@@ -24,7 +24,7 @@ public class PlayerScript {
 	private int m_gamePower = 100;
 	private int m_yearOfJoiningTheClub;
     [NonSerialized]
-	public Image m_PlayerImage;
+	public Sprite m_PlayerImage;
 
 
 	public void SetPriceToBoostPlayer(int i_priceToBoost)
@@ -122,10 +122,15 @@ public class PlayerScript {
 		return m_price;
 	}
 
-	public Image getPlayerImage ()
+	public Sprite getPlayerImage ()
 	{
 		return m_PlayerImage;
 	}
+
+    public void SetPlayerImage(Sprite i_Sprite)
+    {
+        m_PlayerImage = i_Sprite;
+    }
 
 	public void UpdateGamePlayed()
 	{
