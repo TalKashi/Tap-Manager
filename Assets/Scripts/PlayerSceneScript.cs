@@ -43,7 +43,7 @@ public class PlayerSceneScript : MonoBehaviour {
 		m_price.text = ""+m_playerScript.GetPlayerPrice();
 		m_priceToBoost.text = ""+m_playerScript.GetPriceToBoostPlayer();
 		m_yearOfJoiningTheClub.text = ""+m_playerScript.GetYearJoinindtheClub();
-		m_PlayerImage.sprite = m_playerScript.getPlayerImage().sprite;
+		//m_PlayerImage.sprite = m_playerScript.getPlayerImage().sprite;
 
 	}
 	
