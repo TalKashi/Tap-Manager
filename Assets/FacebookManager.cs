@@ -7,6 +7,9 @@ using Facebook;
 
 public class FacebookManager : MonoBehaviour {
 
+    public GameObject m_LoginButton;
+    public GameObject m_LogoutButton;
+
     void Awake()
     {
         FB.Init(onFacebookInit, onHideUnity);
@@ -19,11 +22,14 @@ public class FacebookManager : MonoBehaviour {
         if (FB.IsLoggedIn)
         {
             Debug.Log("Already logged in");
+            m_LoginButton.SetActive(false);
+            m_LogoutButton.SetActive(true);
         }
         else
         {
             Debug.Log("Is NOT logged in");
-            facebookLogIn();
+            m_LoginButton.SetActive(true);
+            m_LogoutButton.SetActive(false);
         }
     }
 
@@ -32,9 +38,28 @@ public class FacebookManager : MonoBehaviour {
         // Dont care ATM
     }
 
-    private void facebookLogIn()
+    public void FacebookLogIn()
     {
         FB.Login("public_profile,email", authCallback);
+    }
+
+    public void FacebookLogOut()
+    {
+        FB.Logout();
+        if (FB.IsLoggedIn)
+        {
+            Debug.Log("facebooklogout didnt worked");
+            m_LoginButton.SetActive(false);
+            m_LogoutButton.SetActive(true);
+            
+
+        }
+        else
+        {
+            m_LoginButton.SetActive(true);
+            m_LogoutButton.SetActive(false);
+            Debug.Log("facebookLogout worked");
+        }
     }
 
     private void authCallback(FBResult i_FBResult)
@@ -42,10 +67,15 @@ public class FacebookManager : MonoBehaviour {
         if (FB.IsLoggedIn)
         {
             Debug.Log("facebookLogIn worked");
+            m_LoginButton.SetActive(false);
+            m_LogoutButton.SetActive(true);
             FB.API("me?fields=id,name,email", HttpMethod.GET, onGettingUserDataFromFB);
+
         }
         else
         {
+            m_LoginButton.SetActive(true);
+            m_LogoutButton.SetActive(false);
             Debug.Log("facebookLogIn failed");
         }
     }
@@ -150,7 +180,7 @@ public class FacebookManager : MonoBehaviour {
         Dictionary<string, string> headers = new Dictionary<string, string>();
         headers.Add("Content-Type", "text/json");
         headers.Add("Content-Length", i_NewUserJson.Length.ToString());
-        WWW www = new WWW("http://localhost:3000/facebookauth", encoding.GetBytes(i_NewUserJson), headers);
+        WWW www = new WWW("http://serge-pc:8080/newfbuser", encoding.GetBytes(i_NewUserJson), headers);
         
         Debug.Log("Sending user data");
         yield return www;
@@ -162,7 +192,9 @@ public class FacebookManager : MonoBehaviour {
         }
         else
         {
-            // Check something?
+            // Check ok response
+            // if new user go to new team screen
+            // else go to home page with team data
         }
         Debug.Log("End of addNewFBUser()");
     }
