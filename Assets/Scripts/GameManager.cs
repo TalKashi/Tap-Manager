@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
@@ -25,16 +26,20 @@ public class GameManager : MonoBehaviour {
     // TEMP FOR PRESENTATION
     public Sprite[] m_PlayerImages;
 
+    public const string URL = "http://localhost:";
+    public const string PORT = "3000/";
+
 
 	void Awake () {
 		if (s_GameManger == null)
         {
 			s_GameManger = this;
-            loadData();
+            //loadData();
+            StartCoroutine(loadDataFromServer());
 			DontDestroyOnLoad (gameObject);
             if (k_ShouldGoToMainScene)
             {
-                Application.LoadLevel("MainScene");
+                //Application.LoadLevel("MainScene");
             }
 
 		}
@@ -53,6 +58,41 @@ public class GameManager : MonoBehaviour {
     void Update()
     {
         m_Bucket.AddMoneyToBucket(Time.deltaTime);
+    }
+
+    private IEnumerator loadDataFromServer()
+    {
+        WWW www = new WWW(URL + PORT + "/mydata");
+        yield return www;
+
+        if (!string.IsNullOrEmpty(www.error))
+        {
+            Debug.LogError("ERROR: " + www.error);
+            // Notify player to try again or something
+        }
+        else
+        {
+            Dictionary<string, object> json = Facebook.MiniJSON.Json.Deserialize(www.text) as Dictionary<string, object>;
+            loadDataFromJson(json);
+        }
+    }
+
+    private void loadDataFromJson(Dictionary<string, object> i_Json)
+    {
+        object dict;
+
+        if (m_myTeam == null)
+        {
+            m_myTeam = new TeamScript();
+        }
+        if (i_Json.TryGetValue("team", out dict))
+        {
+            object id, fansLevel, facilitiesLevel, stadiumLevel;
+            if (((Dictionary<string, object>) dict).TryGetValue("id", out id))
+            {
+                m_myTeam.ID = id.ToString();
+            }
+        }
     }
 
     private void loadData()

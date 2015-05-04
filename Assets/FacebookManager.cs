@@ -10,9 +10,74 @@ public class FacebookManager : MonoBehaviour {
     public GameObject m_LoginButton;
     public GameObject m_LogoutButton;
 
+    public const string URL = "http://localhost:";
+    public const string PORT = "3000";
+
     void Awake()
     {
-        FB.Init(onFacebookInit, onHideUnity);
+        //FB.Init(onFacebookInit, onHideUnity);
+        StartCoroutine(loadDataFromServer());
+    }
+
+    private IEnumerator loadDataFromServer()
+    {
+        Debug.Log("Requesting data from server: " + URL + PORT);
+        WWW www = new WWW(URL + PORT);
+        yield return www;
+        Debug.Log("Got response");
+        if (!string.IsNullOrEmpty(www.error))
+        {
+            Debug.LogError("ERROR: " + www.error);
+            // Notify player to try again or something
+        }
+        else
+        {
+            Debug.Log("Parsing json data data\n" + www.text);
+            Dictionary<string, object> json = Facebook.MiniJSON.Json.Deserialize(www.text) as Dictionary<string, object>;
+            loadDataFromJson(json);
+            Debug.Log("Finished parsing json data data");
+        }
+    }
+
+    private void loadDataFromJson(Dictionary<string, object> i_Json)
+    {
+        object dict;
+        TeamScript m_myTeam = null;
+
+        if (m_myTeam == null)
+        {
+            m_myTeam = new TeamScript();
+        }
+        if (i_Json.TryGetValue("team", out dict))
+        {
+            object id, shopDict;
+            if (((Dictionary<string, object>)dict).TryGetValue("id", out id))
+            {
+                m_myTeam.ID = id.ToString();
+                Debug.Log("id=" + id);
+            }
+            if (((Dictionary<string, object>)dict).TryGetValue("shop", out shopDict))
+            {
+                object fansLevel, facilitiesLevel, stadiumLevel;
+                if (((Dictionary<string, object>)shopDict).TryGetValue("facilitiesLevel", out facilitiesLevel))
+                {
+                    m_myTeam.Facilities = float.Parse(facilitiesLevel.ToString());
+                    Debug.Log("facilitiesLevel=" + facilitiesLevel);
+                }
+
+                if (((Dictionary<string, object>)shopDict).TryGetValue("fansLevel", out fansLevel))
+                {
+                    m_myTeam.Fans = float.Parse(fansLevel.ToString());
+                    Debug.Log("fansLevel=" + fansLevel);
+                }
+
+                if (((Dictionary<string, object>)shopDict).TryGetValue("stadiumLevel", out stadiumLevel))
+                {
+                    m_myTeam.Stadium = float.Parse(stadiumLevel.ToString());
+                    Debug.Log("stadiumLevel=" + stadiumLevel);
+                }
+            }
+        }
     }
 
     private void onFacebookInit()
@@ -160,7 +225,7 @@ public class FacebookManager : MonoBehaviour {
         
         
         yield return www;
-        if (www.error != null)
+        if (!string.IsNullOrEmpty(www.error))
         {
             Debug.Log("ERROR: " + www.error);
         }
@@ -186,7 +251,7 @@ public class FacebookManager : MonoBehaviour {
         yield return www;
         Debug.Log("Finished sending user data");
 
-        if (www.error != null)
+        if (!string.IsNullOrEmpty(www.error))
         {
             Debug.Log("ERROR: " + www.error);
         }

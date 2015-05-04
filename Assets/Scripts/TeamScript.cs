@@ -5,7 +5,8 @@ using System.Collections;
 public enum eResult {Won, Lost, Draw}
 
 [Serializable]
-public class TeamScript {
+public class TeamScript
+{
 
 	eResult m_lastResult;
 	float m_fansLevel = 0 ;
@@ -39,9 +40,40 @@ public class TeamScript {
 	private int m_currentSequenceNotLose = 0;
 	private int m_currentSequenceNotWin = 0; 
 	private int m_currentResult = 0;
-	
 
-	public void UpdateFansLevel(float i_fans)
+    public string ID { get; set; }
+
+    public float Fans
+    {
+        get { return m_fansLevel; }
+        set { m_fansLevel = value; }
+    }
+
+    public float Facilities
+    {
+        get { return m_facilitiesLevel; }
+        set { m_facilitiesLevel = value; }
+    }
+
+    public float Stadium
+    {
+        get { return m_stadiumLevel; }
+        set { m_stadiumLevel = value; }
+    }
+
+    public eResult LastResult
+    {
+        get { return m_lastResult; }
+        set { m_lastResult = value; }
+    }
+
+    public bool IsLastGameIsHomeGame
+    {
+        get { return m_IsLastGameIsHomeGame; }
+        set { m_IsLastGameIsHomeGame = value; }
+    }
+
+    public void UpdateFansLevel(float i_fans)
 	{
 		m_fansLevel += i_fans;
 	}
