@@ -12,6 +12,13 @@ public class SquadScript {
 
     private const int k_NumOfPlayers = 11;
 
+    public PlayerScript[] Players
+    {
+        get { return m_players; }
+        set { m_players = value; }
+    }
+
+
     public void Init()
     {
         NamesUtilsScript nameUtils = new NamesUtilsScript();

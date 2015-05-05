@@ -40,7 +40,7 @@ public class PlayerRowGUI : MonoBehaviour
                 break;
 
         }
-        if (i_Player.isInjered())
+        if (i_Player.IsInjered())
         {
             //TODO: Set injured image
 

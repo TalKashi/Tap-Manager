@@ -51,7 +51,7 @@ public class PlayerSceneScript : MonoBehaviour {
         
         //m_lastName.text = ""+m_playerScript.getPlayerLastName();
         
-        m_isInjured = m_playerScript.isInjered();
+        m_isInjured = m_playerScript.IsInjered();
         m_level.text = m_playerScript.GetLevel().ToString();
         m_price.text = "$" + m_playerScript.GetPlayerPrice();
     }

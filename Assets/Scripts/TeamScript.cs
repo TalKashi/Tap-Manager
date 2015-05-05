@@ -2,25 +2,53 @@
 using UnityEngine;
 using System.Collections;
 
-public enum eResult {Won, Lost, Draw}
+public enum eResult {Won = 0, Lost, Draw}
+
+public struct GamesStatistics 
+{
+    public int wins;
+    public int losts;
+    public int draws;
+    public int goalsFor;
+    public int goalsAgainst;
+    public int homeGames;
+    public int crowd;
+}
+
+public struct RecordsStatistics
+{
+    public int longestWinStreak;
+    public int longestLoseStreak;
+    public int longestWinlessStreak;
+    public int longestUndefeatedStreak;
+    public int biggestWinRecord;
+    public int biggestLoseRecord;
+
+    public int currentWinStreak;
+    public int currentLoseStreak;
+    public int currentWinlessStreak;
+    public int currentUndefeatedStreak; 
+}
 
 [Serializable]
 public class TeamScript
 {
-
+    GamesStatistics m_ThisSeasonStats;
+    GamesStatistics m_AllTimeStats;
+    RecordsStatistics m_RecordsStats;
 	eResult m_lastResult;
 	float m_fansLevel = 0 ;
 	float m_facilitiesLevel = 0;
 	float m_stadiumLevel = 0;
-	int m_played = 0;
-	int m_won = 0;
-	int m_lost = 0;
-	int m_drawn = 0;
-	int m_for = 0;
-	int m_against = 0;
-	int m_points = 0;
-	int m_TotalCrowd = 0;
-	int m_homeGames = 0;
+	//int m_played = 0;
+	//int m_won = 0;
+	//int m_lost = 0;
+	//int m_drawn = 0;
+	//int m_for = 0;
+	//int m_against = 0;
+	//int m_points = 0;
+	//int m_TotalCrowd = 0;
+	//int m_homeGames = 0;
     int m_AdditionalFans = 0;
     string m_TeamName;
     string m_StadiumName;
@@ -42,6 +70,12 @@ public class TeamScript
 	private int m_currentResult = 0;
 
     public string ID { get; set; }
+
+    public string Name 
+    {
+        get { return m_TeamName; } 
+        set { m_TeamName = value; }
+    }
 
     public float Fans
     {
@@ -73,6 +107,28 @@ public class TeamScript
         set { m_IsLastGameIsHomeGame = value; }
     }
 
+    public void SetAdditionalFans(int i_AdditionalFans)
+    {
+        m_AdditionalFans = i_AdditionalFans;
+    }
+
+    public void SetGamesStatistics(GamesStatistics i_GamesStatistics, bool i_IsThisSeason)
+    {
+        if (i_IsThisSeason)
+        {
+            m_ThisSeasonStats = i_GamesStatistics;
+        }
+        else
+        {
+            m_AllTimeStats = i_GamesStatistics;
+        }
+    }
+
+    public void SetLastGameInfo(MatchInfo i_LatGameInfo)
+    {
+        m_LastGameInfo = i_LatGameInfo;
+    }
+
     public void UpdateFansLevel(float i_fans)
 	{
 		m_fansLevel += i_fans;
@@ -93,7 +149,7 @@ public class TeamScript
 		switch (i_result) 
 		{
 		case eResult.Won:
-			m_won++;
+			m_ThisSeasonStats.wins++;
             m_AdditionalFans += 25;
 
             m_lastResult = eResult.Won;
@@ -104,7 +160,7 @@ public class TeamScript
 			break;
 
 		case eResult.Lost:
-			m_lost++;
+			m_ThisSeasonStats.losts++;
             m_AdditionalFans -= 10;
 
             m_lastResult = eResult.Lost;
@@ -115,7 +171,7 @@ public class TeamScript
 			break;
 
 		case eResult.Draw:
-			m_drawn++;
+			m_ThisSeasonStats.draws++;
             m_AdditionalFans++;
 
             m_lastResult= eResult.Draw;
@@ -128,44 +184,45 @@ public class TeamScript
 
         if (i_isHomeMatch)
         {
-            m_for += i_matchInfo.GetHomeGoals();
-            m_against += i_matchInfo.GetAwayGoals();
-            m_homeGames++;
-            m_TotalCrowd += i_matchInfo.GetTotalCrowd();
+            m_ThisSeasonStats.goalsFor += i_matchInfo.GetHomeGoals();
+            m_ThisSeasonStats.goalsAgainst += i_matchInfo.GetAwayGoals();
+            m_ThisSeasonStats.homeGames++;
+            m_ThisSeasonStats.crowd += i_matchInfo.GetTotalCrowd();
 
         }
         else
 		{
-            m_against += i_matchInfo.GetHomeGoals();
-            m_for += i_matchInfo.GetAwayGoals();
+            m_ThisSeasonStats.goalsAgainst += i_matchInfo.GetHomeGoals();
+            m_ThisSeasonStats.goalsFor += i_matchInfo.GetAwayGoals();
         }
-		m_currentResult = m_for - m_against;
+		//m_currentResult = m_for - m_against;
         m_IsLastGameIsHomeGame = i_isHomeMatch;
         m_LastGameInfo = i_matchInfo;
 		checkRecords ();
 	}
 
-	public void UpdateMatchLost()
-	{
-		m_lost++;
-	}
+    //public void UpdateMatchLost()
+    //{
+    //    m_lost++;
+    //}
 
-	public void UpdateMatchDrawn()
-	{
-		m_drawn++;
-	}
+    //public void UpdateMatchDrawn()
+    //{
+    //    m_drawn++;
+    //}
 
-	public void UpdateForGoals(int i_for)
-	{
-		m_for += i_for;
+    //public void UpdateForGoals(int i_for)
+    //{
+    //    m_for += i_for;
 
-	}
+    //}
 
-	public void UpdateAgainstGoals(int i_against)
-	{
-		m_against += i_against;
+    //public void UpdateAgainstGoals(int i_against)
+    //{
+    //    m_against += i_against;
 		
-	}
+    //}
+
 	public eResult GetLastResult()
 	{
 		return m_lastResult;
@@ -174,7 +231,7 @@ public class TeamScript
 
     public float GetAverageCrowd()
     {
-        return (float) m_TotalCrowd/m_homeGames;
+        return (float) m_ThisSeasonStats.crowd/m_ThisSeasonStats.homeGames;
     }
 
 	public float GetFansLevel()
@@ -194,31 +251,31 @@ public class TeamScript
 
 	public int GetMatchPlayed()
 	{
-		return m_won + m_lost + m_drawn;
+		return m_ThisSeasonStats.wins + m_ThisSeasonStats.losts + m_ThisSeasonStats.draws;
 	}
 
 	public int GetMatchWon()
 	{
-		return m_won;
+		return m_ThisSeasonStats.wins;
 	}
 	public int GetMatchLost()
 	{
-		return m_lost;
+		return m_ThisSeasonStats.losts;
 	}
 
     public int GetMatchDrawn()
 	{
-		return m_drawn;
+		return m_ThisSeasonStats.draws;
 	}
 
 	public int GetGoalsFor()
 	{
-		return m_for;
+		return m_ThisSeasonStats.goalsFor;
 	}
 
 	public int GetGoalsAgainst()
 	{
-		return m_against;
+		return m_ThisSeasonStats.goalsAgainst;
 	}
 
     public int GetGoalDiff()
@@ -228,7 +285,7 @@ public class TeamScript
 
 	public int GetPoints()
 	{
-		return 3*m_won + m_drawn;
+		return 3*m_ThisSeasonStats.wins + m_ThisSeasonStats.draws;
 	}
 
     public int GetCrowdAtLastMatch()
@@ -343,7 +400,7 @@ public class TeamScript
 			m_longestWinRecord = m_currentSequenceWin;
 		}
 
-		m_currentResult = - m_for + m_against;
+		//m_currentResult = - m_for + m_against;
 
 		if (m_currentResult > 0)
 		{

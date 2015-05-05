@@ -4,19 +4,30 @@ using System.Collections;
 
 [Serializable]
 public class Bucket
-{
-   
+{   
     float m_valueForSecond;
     int m_maxAmount;
     float m_currentMoneyInBucket;
     private bool m_isFull;
     private int m_level;
 
+    public DateTime LastFlush { get; set; }
+
     public Bucket(int i_maxAmount, int i_totalTimeToCollectInSeconds)
     {
         m_valueForSecond = (float)i_maxAmount / i_totalTimeToCollectInSeconds;
         m_maxAmount = i_maxAmount;
         m_currentMoneyInBucket = 0;
+    }
+
+    public Bucket()
+    {
+        // Nothing to do
+    }
+
+    public void SetValuePerSecond(float i_Value)
+    {
+        m_valueForSecond = i_Value;
     }
 
     public int EmptyBucket()
@@ -91,6 +102,11 @@ public class Bucket
         return m_level;
     }
 
+    public void SetLevel(int i_Level)
+    {
+        m_level = i_Level;
+    }
+
     public float GetValuePerSecond()
     {
         return m_valueForSecond;
@@ -99,6 +115,11 @@ public class Bucket
     public int GetMaxAmount()
     {
         return m_maxAmount;
+    }
+
+    public void SetMaxAmount(int i_MaxAmount)
+    {
+        m_maxAmount = i_MaxAmount;
     }
 
     public bool IsFull()

@@ -14,8 +14,8 @@ public class PlayerScript {
 	private int m_salary;
 	private bool m_isInjured;
 	private int m_age;
-	private int m_gamePlayed = 0;
-	private int m_goalScored = 0;
+	private int m_gamesPlayed = 0;
+	private int m_goalsScored = 0;
 	private int m_level;
 	private int m_price;
 	private int m_priceToBoost;
@@ -24,8 +24,9 @@ public class PlayerScript {
 	private int m_gamePower = 100;
 	private int m_yearOfJoiningTheClub;
     [NonSerialized]
-	public Sprite m_PlayerImage;
+	public Sprite m_PlayerImage; // to remove?
 
+    public int PlayerSpriteIndex { get; set; }
 
 	public void SetPriceToBoostPlayer(int i_priceToBoost)
 	{
@@ -79,13 +80,23 @@ public class PlayerScript {
 
 	public int GetGoalScored ()
 	{
-		return m_goalScored;
+		return m_goalsScored;
 	}
 
-	public bool isInjered()
+	public bool IsInjered()
 	{
 		return m_isInjured;
 	}
+
+    public void SetIsInjured(bool i_IsInjured)
+    {
+        m_isInjured = i_IsInjured;
+    }
+
+    public void SetGamesPlayed(int i_GamesPlayed)
+    {
+        m_gamesPlayed = i_GamesPlayed;
+    }
 
 	public int GetPriceToBoostPlayer ()
 	{
@@ -99,7 +110,7 @@ public class PlayerScript {
 
 	public int GetGamePlayed()
 	{
-		return m_gamePlayed;
+		return m_gamesPlayed;
 	}
 
 	public string getPlayerFirstName ()
@@ -122,6 +133,11 @@ public class PlayerScript {
 		return m_price;
 	}
 
+    public void SetPlayerPrice(int i_Price)
+    {
+        m_price = i_Price;
+    }
+
 	public Sprite getPlayerImage ()
 	{
 		return m_PlayerImage;
@@ -134,7 +150,7 @@ public class PlayerScript {
 
 	public void UpdateGamePlayed()
 	{
-		m_gamePlayed++;
+		m_gamesPlayed++;
 	}
 
 	public void BoostPlayer(int i_boost)
@@ -150,6 +166,11 @@ public class PlayerScript {
     public int GetBoostLevel()
     {
         return m_boost;
+    }
+
+    public void SetBoostLevel(int i_Boost)
+    {
+        m_boost = i_Boost;
     }
 
 	public void AddPlayerGamePower(int i_gamePower)
@@ -184,8 +205,8 @@ public class PlayerScript {
 		m_lastName = nameUtils.GetLastName();
 		m_isInjured = false;
 		m_age = UnityEngine.Random.Range(16,24);
-		m_gamePlayed = 0;
-		m_goalScored = 0;
+		m_gamesPlayed = 0;
+		m_goalsScored = 0;
 		m_level = UnityEngine.Random.Range(2,4);
 		m_price = m_price/2 ;
 		m_boost = 0;
@@ -202,5 +223,10 @@ public class PlayerScript {
     public string GetFullName()
     {
         return m_firstName + " " + m_lastName;
+    }
+
+    public void SetGoalsScored(int i_GoalsScored)
+    {
+        m_goalsScored = i_GoalsScored;
     }
 }

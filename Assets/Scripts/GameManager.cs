@@ -13,10 +13,10 @@ public class GameManager : MonoBehaviour {
     public TeamScript m_myTeam;
     public SquadScript m_MySquad;
     public int m_Cash = 100000;
-    private TeamScript[] m_AllTeams; // !! Do not change positions for m_AllTeams
+    public TeamScript[] m_AllTeams; // !! Do not change positions for m_AllTeams
     private TeamScript[] m_TeamsForTable;
 	private TableScript m_table;
-    private Bucket m_Bucket;
+    public Bucket m_Bucket;
     private bool k_ShouldGoToMainScene = false;
 	public int[] m_fansLevelPrice = {0,1000,2000,3000,4000,5000};
 	public int[] m_facilitiesLevelPrice = {0,1000,2000,3000,4000,5000};
@@ -26,8 +26,8 @@ public class GameManager : MonoBehaviour {
     // TEMP FOR PRESENTATION
     public Sprite[] m_PlayerImages;
 
-    public const string URL = "http://localhost:";
-    public const string PORT = "3000/";
+    public const string URL = "http://serge-pc:";
+    public const string PORT = "3000";
 
 
 	void Awake () {
@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour {
         {
 			s_GameManger = this;
             //loadData();
-            StartCoroutine(loadDataFromServer());
+            //StartCoroutine(loadDataFromServer());
 			DontDestroyOnLoad (gameObject);
             if (k_ShouldGoToMainScene)
             {
@@ -52,47 +52,12 @@ public class GameManager : MonoBehaviour {
 
     void Start()
     {
-        FixturesManager.s_FixturesManager.GenerateFixtures(m_AllTeams);
+        //FixturesManager.s_FixturesManager.GenerateFixtures(m_AllTeams);
     }
 
     void Update()
     {
-        m_Bucket.AddMoneyToBucket(Time.deltaTime);
-    }
-
-    private IEnumerator loadDataFromServer()
-    {
-        WWW www = new WWW(URL + PORT + "/mydata");
-        yield return www;
-
-        if (!string.IsNullOrEmpty(www.error))
-        {
-            Debug.LogError("ERROR: " + www.error);
-            // Notify player to try again or something
-        }
-        else
-        {
-            Dictionary<string, object> json = Facebook.MiniJSON.Json.Deserialize(www.text) as Dictionary<string, object>;
-            loadDataFromJson(json);
-        }
-    }
-
-    private void loadDataFromJson(Dictionary<string, object> i_Json)
-    {
-        object dict;
-
-        if (m_myTeam == null)
-        {
-            m_myTeam = new TeamScript();
-        }
-        if (i_Json.TryGetValue("team", out dict))
-        {
-            object id, fansLevel, facilitiesLevel, stadiumLevel;
-            if (((Dictionary<string, object>) dict).TryGetValue("id", out id))
-            {
-                m_myTeam.ID = id.ToString();
-            }
-        }
+        //m_Bucket.AddMoneyToBucket(Time.deltaTime);
     }
 
     private void loadData()
@@ -291,8 +256,8 @@ public class GameManager : MonoBehaviour {
 		NamesUtilsScript teamNamesScript = new NamesUtilsScript ();
 
 		//Temp 
-		m_AllTeams [0] = m_myTeam;	
-		m_AllTeams[0].SetName("Your Team ");
+		//m_AllTeams [0] = m_myTeam;	
+		//m_AllTeams[0].SetName("Your Team ");
 
         for (int i = 1; i < i_NumOfTeams; i++)
         {
