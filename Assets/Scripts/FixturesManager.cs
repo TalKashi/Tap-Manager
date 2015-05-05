@@ -20,7 +20,7 @@ public class FixturesManager : MonoBehaviour
         if (s_FixturesManager == null)
         {
             s_FixturesManager = this;
-            loadData();
+            //loadData();
             DontDestroyOnLoad(gameObject);
         }
         else
