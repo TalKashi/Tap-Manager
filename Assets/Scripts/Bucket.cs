@@ -11,6 +11,8 @@ public class Bucket
     private bool m_isFull;
     private int m_level;
 
+    public string ID { get; set; }
+
     public DateTime LastFlush { get; set; }
 
     public Bucket(int i_maxAmount, int i_totalTimeToCollectInSeconds)
@@ -63,6 +65,12 @@ public class Bucket
 
 
         //Debug.Log("New value in bucket: " + m_currentMoneyInBucket);
+    }
+
+    public void SetMoneyInBucketAfterConnect(DateTime i_Now)
+    {
+        float deltaTime = i_Now.Subtract(LastFlush).Milliseconds;
+        AddMoneyToBucket(deltaTime);
     }
 
     public void UpgradeBucket(int i_newLevel, int i_maxAmount, int i_totalTimeToCollectInSeconds)

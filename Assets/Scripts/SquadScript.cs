@@ -18,6 +18,8 @@ public class SquadScript {
         set { m_players = value; }
     }
 
+    public string ID { get; set; }
+
 
     public void Init()
     {

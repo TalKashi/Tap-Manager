@@ -6,13 +6,24 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
 
+public class User
+{
+    public string Email { get; set; }
+    public string ID { get; set; }
+    public string Name { get; set; }
+    public string ManagerName { get; set; }
+    public int Money { get; set; }
+    public string Birthday { get; set; }
+    public int Age { get; set; }
+}
+
 public class GameManager : MonoBehaviour {
 
 	public static GameManager s_GameManger;
 
     public TeamScript m_myTeam;
     public SquadScript m_MySquad;
-    public int m_Cash = 100000;
+    //public int m_Cash = 100000;
     public TeamScript[] m_AllTeams; // !! Do not change positions for m_AllTeams
     private TeamScript[] m_TeamsForTable;
 	private TableScript m_table;
@@ -22,6 +33,8 @@ public class GameManager : MonoBehaviour {
 	public int[] m_facilitiesLevelPrice = {0,1000,2000,3000,4000,5000};
 	public int[] m_stadiumLevelPrice = {0,1000,2000,3000,4000,5000};
 	public float m_timeMoneyChangeAnimation;
+    public User m_User;
+
 
     // TEMP FOR PRESENTATION
     public Sprite[] m_PlayerImages;
@@ -57,7 +70,7 @@ public class GameManager : MonoBehaviour {
 
     void Update()
     {
-        //m_Bucket.AddMoneyToBucket(Time.deltaTime);
+        m_Bucket.AddMoneyToBucket(Time.deltaTime);
     }
 
     private void loadData()
@@ -82,7 +95,7 @@ public class GameManager : MonoBehaviour {
         {
             FileStream file = File.OpenRead(Application.persistentDataPath + "/gamedata.dat");
             GameData gameData = (GameData)binaryFormatter.Deserialize(file);
-            m_Cash = gameData.m_Cash;
+            //m_Cash = gameData.m_Cash;
             m_myTeam = m_AllTeams[gameData.m_MyTeamIndex];
             disconnectionTime = gameData.m_DisconnectionTime;
             file.Close();
@@ -139,7 +152,7 @@ public class GameManager : MonoBehaviour {
                 gameData.m_MyTeamIndex = i;
             }
         }
-        gameData.m_Cash = m_Cash;
+        //gameData.m_Cash = m_Cash;
         gameData.m_DisconnectionTime = DateTime.Now;
         binaryFormatter.Serialize(file, gameData);
         file.Close();
@@ -162,13 +175,13 @@ public class GameManager : MonoBehaviour {
     {
         if (s_GameManger == this)
         {
-            saveData();
+            //saveData();
         }
     }
 
     public void AddCash(int i_Value)
     {
-       	m_Cash += i_Value;
+       	m_User.Money += i_Value;
 		//StartCoroutine(addMoneyAnimation(i_Value));
     }
 
@@ -195,15 +208,12 @@ public class GameManager : MonoBehaviour {
 	IEnumerator addMoneyAnimation(int i_amount)
 	{
 		int deltaCoin = 0;
-		if (i_amount < 0) {
-			deltaCoin = 1;
-		} else {
-			deltaCoin = -1;
-		}
+		
+        deltaCoin = (i_amount < 0) ? 1 : -1;
 		
 		while (i_amount != 0) {
 			i_amount += deltaCoin;
-			m_Cash +=-deltaCoin;
+			m_User.Money +=-deltaCoin;
 			yield return new WaitForSeconds (m_timeMoneyChangeAnimation);
 			
 		}
@@ -216,7 +226,7 @@ public class GameManager : MonoBehaviour {
 			return;
 		}
 
-		if (m_Cash >= m_fansLevelPrice [(int)m_myTeam.GetFansLevel () + 1]) {
+		if (m_User.Money >= m_fansLevelPrice [(int)m_myTeam.GetFansLevel () + 1]) {
 			m_myTeam.UpdateFansLevel (i_Value);
 			AddCash(-m_fansLevelPrice [(int)(m_myTeam.GetFansLevel ())]);
 		}
@@ -228,7 +238,7 @@ public class GameManager : MonoBehaviour {
 		{
 			return;
 		}
-		if (m_Cash >= m_stadiumLevelPrice [(int)(m_myTeam.GetStadiumLevel () + 1)])
+		if (m_User.Money >= m_stadiumLevelPrice [(int)(m_myTeam.GetStadiumLevel () + 1)])
 		{
 			m_myTeam.UpdateStadiumLevel (i_Value);
 			AddCash (-m_stadiumLevelPrice [(int)(m_myTeam.GetStadiumLevel ())]);
@@ -243,7 +253,7 @@ public class GameManager : MonoBehaviour {
 		{
 			return;
 		}
-		if (m_Cash >= m_facilitiesLevelPrice [(int)(m_myTeam.GetFacilitiesLevel () + 1)])
+        if (m_User.Money >= m_facilitiesLevelPrice[(int)(m_myTeam.GetFacilitiesLevel() + 1)])
 		{
 			m_myTeam.UpdateFacilitiesLevel (i_Value);
 			AddCash (-m_facilitiesLevelPrice [(int)(m_myTeam.GetFacilitiesLevel () )]);
@@ -336,7 +346,7 @@ public class GameManager : MonoBehaviour {
 
     public int GetCash()
     {
-        return m_Cash;
+        return m_User.Money;
     }
 
 	public TeamScript GetTeamByName(string i_teamName)

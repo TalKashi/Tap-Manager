@@ -41,7 +41,7 @@ public class LoginSceneScript : MonoBehaviour {
 
     public void Login()
     {
-        FB.Login("public_profile,email", fbLoginCallback);
+        FB.Login("public_profile,email,user_birthday", fbLoginCallback);
     }
 
     void fbLoginCallback(FBResult i_FbResult)
@@ -50,7 +50,7 @@ public class LoginSceneScript : MonoBehaviour {
         {
             Debug.Log("facebookLogIn worked");
             m_Login.SetActive(false);
-            FB.API("me?fields=id,name,email", HttpMethod.GET, onGettingUserDataFromFB);
+            FB.API("me?fields=id,name,email,birthday", HttpMethod.GET, onGettingUserDataFromFB);
 
         }
         else
@@ -66,6 +66,11 @@ public class LoginSceneScript : MonoBehaviour {
         {
             Debug.LogError("ERROR: " + i_FBResult.Error);
             return;
+        }
+
+        if (GameManager.s_GameManger.m_User == null)
+        {
+            GameManager.s_GameManger.m_User = new User();
         }
 
         if (verifyAllDataPresent(i_FBResult.Text))
@@ -127,6 +132,7 @@ public class LoginSceneScript : MonoBehaviour {
             MyUtils.LoadTeamData(json, ref GameManager.s_GameManger.m_myTeam);
             MyUtils.LoadLeagueData(json, ref GameManager.s_GameManger.m_AllTeams);
             MyUtils.LoadBucketData(json, ref GameManager.s_GameManger.m_Bucket);
+            MyUtils.LoadSquadData(json, ref GameManager.s_GameManger.m_MySquad);
             k_IsDataLoaded = true;
         }
         Debug.Log("End of addNewFBUser()");
@@ -138,6 +144,7 @@ public class LoginSceneScript : MonoBehaviour {
         object id;
         object name;
         object email;
+        object birthday;
         bool isValid = true;
 
         if (string.IsNullOrEmpty(i_JsonStr))
@@ -147,6 +154,7 @@ public class LoginSceneScript : MonoBehaviour {
         }
         Debug.Log(i_JsonStr);
         Dictionary<string, object> json = Facebook.MiniJSON.Json.Deserialize(i_JsonStr) as Dictionary<string, object>;
+        
         if (!json.TryGetValue("id", out id))
         {
             Debug.Log("Didn't recieved <user ID> in json");
@@ -156,16 +164,21 @@ public class LoginSceneScript : MonoBehaviour {
         {
             print("id=" + id);
             PlayerPrefs.SetString("id", id.ToString());
+            GameManager.s_GameManger.m_User.ID = id.ToString();
         }
+
         if (!json.TryGetValue("name", out name))
         {
             Debug.Log("Didn't recieved <user Name> in json");
-            isValid = false;
+//            isValid = false;
         }
         else
         {
             print("name=" + name);
+            PlayerPrefs.SetString("name", name.ToString());
+            GameManager.s_GameManger.m_User.Name = name.ToString();
         }
+
         if (!json.TryGetValue("email", out email))
         {
             Debug.Log("Didn't recieved <user Email> in json");
@@ -175,6 +188,19 @@ public class LoginSceneScript : MonoBehaviour {
         {
             print("email=" + email);
             PlayerPrefs.SetString("email", email.ToString());
+            GameManager.s_GameManger.m_User.Email = email.ToString();
+        }
+
+        if (!json.TryGetValue("birthday", out birthday))
+        {
+            Debug.Log("Didn't recieved <user Birthday> in json");
+            //isValid = false;
+        }
+        else
+        {
+            print("birthday=" + birthday);
+            PlayerPrefs.SetString("birthday", birthday.ToString());
+            GameManager.s_GameManger.m_User.Email = email.ToString();
         }
 
         return isValid;
