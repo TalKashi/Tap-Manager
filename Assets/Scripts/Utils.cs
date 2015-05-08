@@ -5,6 +5,98 @@ using UnityEngine;
 public class MyUtils
 {
 
+    #region Game Settings Section
+
+    public static void LoadGameSettings(Dictionary<string, object> i_Json, ref GameSettings o_GameSettings)
+    {
+        object gameSettingsDict;
+
+        if (o_GameSettings == null)
+        {
+            o_GameSettings = new GameSettings();
+        }
+
+        if (i_Json.TryGetValue("pricesAndMultipliers", out gameSettingsDict))
+        {
+            extractGameSettings((Dictionary<string, object>)gameSettingsDict, ref o_GameSettings);
+        }
+        else
+        {
+            Debug.Log("WARN: Failed to get GameSettings from json");
+        }
+    }
+
+    private static void extractGameSettings(Dictionary<string, object> i_GameSettingsDict, ref GameSettings o_GameSettings)
+    {
+        object initPriceOfFans, initPriceOfFacilities, initPriceOfStadium, multiplierBoost;
+        object fansMultiplier, facilitiesMultiplier, stadiumMultiplier;
+
+        if (i_GameSettingsDict.TryGetValue("initPriceOfFans", out initPriceOfFans))
+        {
+            o_GameSettings.FansIntialCost = int.Parse(initPriceOfFans.ToString());
+        }
+        else
+        {
+            Debug.Log("WARN: Failed to get FansIntialCost from json");
+        }
+
+        if (i_GameSettingsDict.TryGetValue("initPriceOfFacilities", out initPriceOfFacilities))
+        {
+            o_GameSettings.FacilitiesIntitalCost = int.Parse(initPriceOfFacilities.ToString());
+        }
+        else
+        {
+            Debug.Log("WARN: Failed to get FacilitiesIntitalCost from json");
+        }
+
+        if (i_GameSettingsDict.TryGetValue("initPriceOfStadium", out initPriceOfStadium))
+        {
+            o_GameSettings.StadiumIntitalCost = int.Parse(initPriceOfStadium.ToString());
+        }
+        else
+        {
+            Debug.Log("WARN: Failed to get StadiumIntitalCost from json");
+        }
+
+        if (i_GameSettingsDict.TryGetValue("fansMultiplier", out fansMultiplier))
+        {
+            o_GameSettings.FansCostMultiplier = float.Parse(fansMultiplier.ToString());
+        }
+        else
+        {
+            Debug.Log("WARN: Failed to get FansCostMultiplier from json");
+        }
+
+        if (i_GameSettingsDict.TryGetValue("facilitiesMultiplier", out facilitiesMultiplier))
+        {
+            o_GameSettings.FacilitiesCostMultiplier = float.Parse(facilitiesMultiplier.ToString());
+        }
+        else
+        {
+            Debug.Log("WARN: Failed to get FacilitiesCostMultiplier from json");
+        }
+
+        if (i_GameSettingsDict.TryGetValue("stadiumMultiplier", out stadiumMultiplier))
+        {
+            o_GameSettings.StadiumCostMultiplier = float.Parse(stadiumMultiplier.ToString());
+        }
+        else
+        {
+            Debug.Log("WARN: Failed to get StadiumCostMultiplier from json");
+        }
+
+        if (i_GameSettingsDict.TryGetValue("multiplierBoost", out multiplierBoost))
+        {
+            o_GameSettings.PlayerBoostCostMultiplier = float.Parse(multiplierBoost.ToString());
+        }
+        else
+        {
+            Debug.Log("WARN: Failed to get PlayerBoostCostMultiplier from json");
+        }
+    }
+
+    #endregion Shop Info Section
+
     #region User Loading Section
 
     public static void LoadUserData(Dictionary<string, object> i_Json, ref User o_User)
@@ -28,7 +120,7 @@ public class MyUtils
 
     private static void extractUserData(Dictionary<string, object> i_UserDict, ref User o_User)
     {
-        object id, email, age, money, name, managerName, birthday;
+        object id, email, age, money, name, managerName, birthday, coinValue, fbId;
 
         if (i_UserDict.TryGetValue("_id", out id))
         {
@@ -37,6 +129,15 @@ public class MyUtils
         else
         {
             Debug.Log("WARN: Failed to get ID from json");
+        }
+
+        if (i_UserDict.TryGetValue("fbId", out fbId))
+        {
+            o_User.FBId = fbId.ToString();
+        }
+        else
+        {
+            Debug.Log("WARN: Failed to get FBId from json");
         }
 
         if (i_UserDict.TryGetValue("email", out email))
@@ -59,7 +160,7 @@ public class MyUtils
 
         if (i_UserDict.TryGetValue("money", out money))
         {
-            o_User.Money = int.Parse(money.ToString());
+            o_User.Money = (int)float.Parse(money.ToString());
         }
         else
         {
@@ -90,7 +191,16 @@ public class MyUtils
         }
         else
         {
-            Debug.Log("WARN: Failed to get ManagerName from json");
+            Debug.Log("WARN: Failed to get Birthday from json");
+        }
+
+        if (i_UserDict.TryGetValue("coinValue", out coinValue))
+        {
+            o_User.CoinValue = int.Parse(coinValue.ToString());
+        }
+        else
+        {
+            Debug.Log("WARN: Failed to get Birthday from json");
         }
     }
 
@@ -181,7 +291,8 @@ public class MyUtils
         {
             //o_Bucket.LastFlush = (DateTime)lastFlush;
             long lastFlushMs = long.Parse(lastFlush.ToString());
-            DateTime date = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddMilliseconds(lastFlushMs);
+            //DateTime date = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddMilliseconds(lastFlushMs);
+            DateTime date = new DateTime(lastFlushMs);
             o_Bucket.LastFlush = date;
         }
         else
@@ -201,7 +312,7 @@ public class MyUtils
         if (i_BucketDict.TryGetValue("dateNow", out dateNow))
         {
             //o_Bucket.LastFlush = (DateTime)lastFlush;
-            int dateNowMs = int.Parse(dateNow.ToString());
+            long dateNowMs = long.Parse(dateNow.ToString());
             DateTime date = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddMilliseconds(dateNowMs);
             o_Bucket.SetMoneyInBucketAfterConnect(date);
         }
@@ -212,6 +323,7 @@ public class MyUtils
     }
     #endregion Bucket Loading Section
 
+    #region Squad Loading Section
     public static void LoadSquadData(Dictionary<string, object> i_Json, ref SquadScript o_Squad)
     {
         object squadDict;
@@ -224,6 +336,10 @@ public class MyUtils
         if (i_Json.TryGetValue("squad", out squadDict))
         {
             extractSquadData((Dictionary<string, object>)squadDict, ref o_Squad);
+        }
+        else
+        {
+            Debug.Log("WARN: Failed to get Squad from json");
         }
     }
 
@@ -267,6 +383,8 @@ public class MyUtils
     {
         object pos, firstName, lastName, salary, isInjured, age, gamesPlayed, priceToBoost;
         object goalsScored, level, price, boost, isPlaying, yearJoinedTheClub, playerImage;
+        object id, nextBoost, currentBoost;
+
         PlayerScript player = new PlayerScript();
 
         if (i_PlayerDict.TryGetValue("position", out pos))
@@ -361,7 +479,7 @@ public class MyUtils
 
         if (i_PlayerDict.TryGetValue("priceToBoost", out priceToBoost))
         {
-            player.SetPriceToBoostPlayer(int.Parse(priceToBoost.ToString()));
+            player.SetPriceToBoostPlayer((int)float.Parse(priceToBoost.ToString()));
         }
         else
         {
@@ -404,8 +522,39 @@ public class MyUtils
             Debug.Log("WARN: Failed to get PlayerImage from json");
         }
 
+        if (i_PlayerDict.TryGetValue("id", out id))
+        {
+            player.ID = int.Parse(id.ToString());
+        }
+        else
+        {
+            Debug.Log("WARN: Failed to get ID from json");
+        }
+
+        if (i_PlayerDict.TryGetValue("nextBoost", out nextBoost))
+        {
+            player.NextBoostCap = int.Parse(nextBoost.ToString());
+        }
+        else
+        {
+            Debug.Log("WARN: Failed to get NextBoostCap from json");
+        }
+
+        if (i_PlayerDict.TryGetValue("currentBoost", out currentBoost))
+        {
+            player.CurrentBoost = int.Parse(currentBoost.ToString());
+        }
+        else
+        {
+            Debug.Log("WARN: Failed to get NextBoostCap from json");
+        }
+
         return player;
     }
+
+    #endregion Squad Loading Section
+
+    #region Team Loading Section
 
     public static void LoadTeamData(Dictionary<string, object> i_Json, ref TeamScript o_Team)
     {
@@ -469,7 +618,7 @@ public class MyUtils
         }
         else
         {
-            Debug.Log("WARN: Failed to get LastResult(Enum) from json");
+            Debug.Log("WARN: Failed to get IsLastGameIsHomeGame from json");
         }
 
         if (i_TeamJson.TryGetValue("additionalFans", out additionalFans))
@@ -628,7 +777,7 @@ public class MyUtils
 
         if (i_ShopDict.TryGetValue("fansLevel", out fansLevel))
         {
-            o_Team.Fans = float.Parse(fansLevel.ToString());
+            o_Team.Fans = int.Parse(fansLevel.ToString());
         }
         else
         {
@@ -637,7 +786,7 @@ public class MyUtils
 
         if (i_ShopDict.TryGetValue("facilitiesLevel", out facilitiesLevel))
         {
-            o_Team.Facilities = float.Parse(facilitiesLevel.ToString());
+            o_Team.Facilities = int.Parse(facilitiesLevel.ToString());
         }
         else
         {
@@ -646,7 +795,7 @@ public class MyUtils
 
         if (i_ShopDict.TryGetValue("stadiumLevel", out stadiumLevel))
         {
-            o_Team.Stadium = float.Parse(stadiumLevel.ToString());
+            o_Team.Stadium = int.Parse(stadiumLevel.ToString());
         }
         else
         {
@@ -657,11 +806,11 @@ public class MyUtils
     private static void extractGamesHistoryData(Dictionary<string, object> i_GamesHistoryDict, ref TeamScript o_Team)
     {
         object thisSeason, allTime;
-        bool k_IsThisSeasonStats = true;
+        const bool v_IsThisSeasonStats = true;
 
         if (i_GamesHistoryDict.TryGetValue("thisSeason", out thisSeason))
         {
-            extractGamesStats((Dictionary<string, object>)thisSeason, o_Team, k_IsThisSeasonStats);
+            extractGamesStats((Dictionary<string, object>)thisSeason, o_Team, v_IsThisSeasonStats);
         }
         else
         {
@@ -670,7 +819,7 @@ public class MyUtils
 
         if (i_GamesHistoryDict.TryGetValue("allTime", out allTime))
         {
-            extractGamesStats((Dictionary<string, object>)allTime, o_Team, !k_IsThisSeasonStats);
+            extractGamesStats((Dictionary<string, object>)allTime, o_Team, !v_IsThisSeasonStats);
         }
         else
         {
@@ -739,4 +888,5 @@ public class MyUtils
 
         o_Team.SetGamesStatistics(stats, i_IsThisSeasonStats);
     }
+    #endregion Team Loading Section
 }

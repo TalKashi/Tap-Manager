@@ -37,7 +37,7 @@ public class FacebookManager : MonoBehaviour {
     {
         FB.Init(i_Init);
     }
-
+    /*
     private IEnumerator loadDataFromServer()
     {
         Debug.Log("Requesting data from server: " + URL + PORT + "/getUser");
@@ -59,7 +59,7 @@ public class FacebookManager : MonoBehaviour {
             Debug.Log("Finished parsing json data data");
         }
     }
-
+    
     private void loadDataFromJson(Dictionary<string, object> i_Json)
     {
         object dict;
@@ -291,5 +291,5 @@ public class FacebookManager : MonoBehaviour {
             // else go to home page with team data
         }
         Debug.Log("End of addNewFBUser()");
-    }
+    }*/
 }

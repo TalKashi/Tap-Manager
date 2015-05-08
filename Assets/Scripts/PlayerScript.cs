@@ -19,7 +19,9 @@ public class PlayerScript {
 	private int m_level;
 	private int m_price;
 	private int m_priceToBoost;
+    private int m_NextBoostCap;
 	private int m_boost = 0;
+    private int m_CurrentBoost;
 	private bool m_isPlaying;
 	private int m_gamePower = 100;
 	private int m_yearOfJoiningTheClub;
@@ -27,6 +29,19 @@ public class PlayerScript {
 	public Sprite m_PlayerImage; // to remove?
 
     public int PlayerSpriteIndex { get; set; }
+    public int ID { get; set; }
+
+    public int NextBoostCap
+    {
+        get { return m_NextBoostCap; }
+        set { m_NextBoostCap = value; }
+    }
+
+    public int CurrentBoost
+    {
+        get { return m_CurrentBoost; }
+        set { m_CurrentBoost = value; }
+    }
 
 	public void SetPriceToBoostPlayer(int i_priceToBoost)
 	{
@@ -153,19 +168,27 @@ public class PlayerScript {
 		m_gamesPlayed++;
 	}
 
-	public void BoostPlayer(int i_boost)
+	private void boostPlayer(int i_boost)
 	{
-		m_boost += i_boost;
-		if (m_boost >= 100) 
+        Debug.Log("i_boost=" + i_boost + ";m_CurrentBoost=" + m_CurrentBoost + ";m_NextBoostCap=" + m_NextBoostCap + ";PlayerBoostCostMultiplier=" + GameManager.s_GameManger.m_GameSettings.PlayerBoostCostMultiplier);
+        m_CurrentBoost += i_boost;
+        if (m_CurrentBoost >= m_NextBoostCap) 
 		{
-			m_boost = m_boost%100;
+            m_CurrentBoost = m_CurrentBoost % m_NextBoostCap;
+		    m_NextBoostCap *= 2;
 			m_level++;
+            m_priceToBoost = (int)(m_priceToBoost*GameManager.s_GameManger.m_GameSettings.PlayerBoostCostMultiplier);
 		}
 	}
 
+    public void BoostPlayer()
+    {
+        boostPlayer(m_boost);
+    }
+
     public int GetBoostLevel()
     {
-        return m_boost;
+        return m_CurrentBoost;
     }
 
     public void SetBoostLevel(int i_Boost)

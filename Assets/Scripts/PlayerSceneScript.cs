@@ -23,6 +23,8 @@ public class PlayerSceneScript : MonoBehaviour {
 
 	public GameObject m_releasePlayerMenu;
 
+    private bool m_WaitingForServer = false;
+
 	// Use this for initialization
 	void Start () {
 		int i = PlayerPrefs.GetInt ("SelectedPlayer", 0);
@@ -37,7 +39,7 @@ public class PlayerSceneScript : MonoBehaviour {
         m_goalScored.text = m_playerScript.GetGoalScored().ToString();
         m_salary.text = "$" + m_playerScript.GetSalary() + " p/w";
 	    m_DrugText.text = "Drugs ($" + m_playerScript.GetPriceToBoostPlayer()/2 + ")";
-        m_BoostText.text = "Boost ($" + m_playerScript.GetPriceToBoostPlayer() + ")";
+        
 	    if (m_playerScript.getPlayerImage() != null)
 	    {
 	        m_PlayerImage.sprite = m_playerScript.getPlayerImage();
@@ -47,13 +49,19 @@ public class PlayerSceneScript : MonoBehaviour {
     void Update()
     {
         m_BoostSlider.value = m_playerScript.GetBoostLevel();
-        
+        m_BoostSlider.maxValue = m_playerScript.NextBoostCap;
+        m_BoostText.text = "Boost ($" + m_playerScript.GetPriceToBoostPlayer() + ")";
         
         //m_lastName.text = ""+m_playerScript.getPlayerLastName();
         
         m_isInjured = m_playerScript.IsInjered();
         m_level.text = m_playerScript.GetLevel().ToString();
         m_price.text = "$" + m_playerScript.GetPlayerPrice();
+
+        if (m_WaitingForServer)
+        {
+            // TODO: Enable syncing with server
+        }
     }
 	
 	public void OnClickReleasePlayer(){
@@ -70,17 +78,59 @@ public class PlayerSceneScript : MonoBehaviour {
 		Application.LoadLevel ("New_Squad");
 	}
 
-	public void onClickBoost(){
-		if (m_playerScript.GetPriceToBoostPlayer () <= GameManager.s_GameManger.GetCash ()) {
-			m_playerScript.BoostPlayer(34);
-			GameManager.s_GameManger.AddCash(-m_playerScript.GetPriceToBoostPlayer ());
+	public void onClickBoost()
+    {
+		if (m_playerScript.GetPriceToBoostPlayer () <= GameManager.s_GameManger.GetCash ()) 
+        {
+            StartCoroutine(sendBoostClickToServer());
 		}
 	}
+
+    IEnumerator sendBoostClickToServer()
+    {
+        m_WaitingForServer = true;
+        WWWForm form = new WWWForm();
+        form.AddField("email", GameManager.s_GameManger.m_User.Email);
+        form.AddField("id", m_playerScript.ID);
+        Debug.Log("player_ID=" + m_playerScript.ID);
+
+
+        Debug.Log("Sending boostClick to server");
+        WWW request = new WWW(GameManager.URL + "playerBoostClick", form);
+        yield return request;
+        Debug.Log("Recieved response");
+
+        if (!string.IsNullOrEmpty(request.error))
+        {
+            Debug.Log("ERROR: " + request.error);
+        }
+        else
+        {
+            // Check ok response
+            switch (request.text)
+            {
+                case "ok":
+                    GameManager.s_GameManger.AddCash(-m_playerScript.GetPriceToBoostPlayer());
+                    m_playerScript.BoostPlayer();
+                    break;
+                case "null":
+                    Debug.Log("WARN: DB out of sync!");
+                    // Sync DB
+                    break;
+
+                default:
+                    // Do nothing
+                    break;
+            }
+        }
+
+        m_WaitingForServer = false;
+    }
 
 	public void onClickDrugs(){
 		//temp sol
 		if (m_playerScript.GetPriceToBoostPlayer ()/2 <= GameManager.s_GameManger.GetCash ()) {
-			m_playerScript.BoostPlayer(Random.Range(0,105));
+			//m_playerScript.BoostPlayer(Random.Range(0,105));
 			GameManager.s_GameManger.AddCash((int)-m_playerScript.GetPriceToBoostPlayer ()/2);
 		}
 

@@ -10,11 +10,87 @@ public class User
 {
     public string Email { get; set; }
     public string ID { get; set; }
+    public string FBId { get; set; }
     public string Name { get; set; }
     public string ManagerName { get; set; }
     public int Money { get; set; }
     public string Birthday { get; set; }
     public int Age { get; set; }
+    public int CoinValue { get; set; }
+}
+
+public class GameSettings
+{
+    private int m_FansInitCost = 1000;
+    private float m_FansCostMulti = 1.8f;
+
+    private int m_FacilitiesInitCost = 4000;
+    private float m_FacilitiesCostMulti = 2.25f;
+
+    private int m_StadiumInitCost = 8000;
+    private float m_StadiumCostMulti = 4f;
+
+    private float m_PlayerBoostCostMultiplier = 1.5f;
+
+    public float PlayerBoostCostMultiplier
+    {
+        get { return m_PlayerBoostCostMultiplier; }
+        set { m_PlayerBoostCostMultiplier = value; }
+    }
+
+    public int FansIntialCost
+    {
+        get { return m_FansInitCost; }
+        set { m_FansInitCost = value; }
+    }
+
+    public float FansCostMultiplier
+    {
+        get { return m_FansCostMulti; }
+        set { m_FansCostMulti = value; }
+    }
+
+    // Returns the i_Level cost (if level=0 then returns m_FansInitCost,
+    // if level=1 then return m_FansInitCost*m_FansCostMulti)
+    public int GetFansCostForLevel(int i_Level)
+    {
+        return (int) (m_FansInitCost * Math.Pow(m_FansCostMulti, i_Level));
+    }
+
+    public int FacilitiesIntitalCost
+    {
+        get { return m_FacilitiesInitCost; }
+        set { m_FacilitiesInitCost = value; }
+    }
+
+    public float FacilitiesCostMultiplier
+    {
+        get { return m_FacilitiesCostMulti; }
+        set { m_FacilitiesCostMulti = value; }
+    }
+
+    public int GetFacilitiesCostForLevel(int i_Level)
+    {
+        return (int)(m_FacilitiesInitCost * Math.Pow(m_FacilitiesCostMulti, i_Level));
+    }
+
+    public int StadiumIntitalCost
+    {
+        get { return m_StadiumInitCost; }
+        set { m_StadiumInitCost = value; }
+    }
+
+    public float StadiumCostMultiplier
+    {
+        get{return m_StadiumCostMulti;}
+        set { m_StadiumCostMulti = value; }
+    }
+
+    public int GetStadiumCostForLevel(int i_Level)
+    {
+        return (int)(m_StadiumInitCost * Math.Pow(m_StadiumCostMulti, i_Level));
+    }
+
 }
 
 public class GameManager : MonoBehaviour {
@@ -29,21 +105,22 @@ public class GameManager : MonoBehaviour {
 	private TableScript m_table;
     public Bucket m_Bucket;
     private bool k_ShouldGoToMainScene = false;
+    private bool k_IsCoinClickCoroutineRunning = false;
 	public int[] m_fansLevelPrice = {0,1000,2000,3000,4000,5000};
 	public int[] m_facilitiesLevelPrice = {0,1000,2000,3000,4000,5000};
 	public int[] m_stadiumLevelPrice = {0,1000,2000,3000,4000,5000};
 	public float m_timeMoneyChangeAnimation;
     public User m_User;
-
+    public GameSettings m_GameSettings;
+    public int NumOfClicksOnCoin { get; set; }
 
     // TEMP FOR PRESENTATION
     public Sprite[] m_PlayerImages;
 
-    public const string URL = "http://serge-pc:";
-    public const string PORT = "3000";
+    public const string URL = "http://93.173.226.20:3000/";
 
-
-	void Awake () {
+	void Awake () 
+    {
 		if (s_GameManger == null)
         {
 			s_GameManger = this;
@@ -71,6 +148,64 @@ public class GameManager : MonoBehaviour {
     void Update()
     {
         m_Bucket.AddMoneyToBucket(Time.deltaTime);
+
+        if (!k_IsCoinClickCoroutineRunning && NumOfClicksOnCoin > 0)
+        {
+            StartCoroutine(checkNumOfClicksOnCoin());
+            k_IsCoinClickCoroutineRunning = true;
+        }
+    }
+
+    IEnumerator checkNumOfClicksOnCoin()
+    {
+        while (true)
+        {
+            if (NumOfClicksOnCoin > 0)
+            {
+                StartCoroutine(sendCoinClick());
+            }
+            yield return new WaitForSeconds(1f);
+        }
+
+        // Not suppose to reach this place
+        k_IsCoinClickCoroutineRunning = false;
+    }
+
+    IEnumerator sendCoinClick()
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("email", m_User.Email);
+        form.AddField("fbId", m_User.FBId);
+        form.AddField("clicks", NumOfClicksOnCoin);
+
+        Debug.Log("Sending sendCoinClick to server");
+        WWW request = new WWW(URL + "coinClick", form);
+        yield return request;
+        Debug.Log("Recieved response");
+
+        if (!string.IsNullOrEmpty(request.error))
+        {
+            Debug.Log("ERROR: " + request.error);
+        }
+        else
+        {
+            // Check ok response
+            switch (request.text)
+            {
+                case "ok":
+                    // All Good!
+                    break;
+                case "null":
+                    Debug.Log("WARN: DB out of sync!");
+                    // Sync DB
+                    break;
+
+                default:
+                    // Do nothing
+                    break;
+            }
+            NumOfClicksOnCoin = 0;
+        }
     }
 
     private void loadData()
@@ -219,21 +354,27 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
-	public void FansUpdate(float i_Value)
+    public void FansUpdate(int i_UpgradeCost)
 	{
+        /*
 		if ((m_myTeam.GetFansLevel () + 1) >= m_fansLevelPrice.Length)
 		{
 			return;
 		}
+        
 
 		if (m_User.Money >= m_fansLevelPrice [(int)m_myTeam.GetFansLevel () + 1]) {
 			m_myTeam.UpdateFansLevel (i_Value);
 			AddCash(-m_fansLevelPrice [(int)(m_myTeam.GetFansLevel ())]);
 		}
+         */
+        AddCash(-i_UpgradeCost);
+        m_myTeam.UpdateFansLevel(1);
 	}
 
-	public void StadiumUpdate(float i_Value)
+    public void StadiumUpdate(int i_UpgradeCost)
 	{
+        /*
 		if ((m_myTeam.GetStadiumLevel () + 1) >= m_stadiumLevelPrice.Length)
 		{
 			return;
@@ -243,12 +384,15 @@ public class GameManager : MonoBehaviour {
 			m_myTeam.UpdateStadiumLevel (i_Value);
 			AddCash (-m_stadiumLevelPrice [(int)(m_myTeam.GetStadiumLevel ())]);
 		}
-
+         */
+        AddCash(-i_UpgradeCost);
+        m_myTeam.UpdateStadiumLevel(1);
 	}
 
 
-	public void FacilitiesUpdate(float i_Value)
+	public void FacilitiesUpdate(int i_UpgradeCost)
 	{
+        /*
 		if ((m_myTeam.GetFacilitiesLevel () + 1) >= m_facilitiesLevelPrice.Length)
 		{
 			return;
@@ -258,6 +402,9 @@ public class GameManager : MonoBehaviour {
 			m_myTeam.UpdateFacilitiesLevel (i_Value);
 			AddCash (-m_facilitiesLevelPrice [(int)(m_myTeam.GetFacilitiesLevel () )]);
 		}
+         */
+        AddCash(-i_UpgradeCost);
+        m_myTeam.UpdateFacilitiesLevel(1);
 	}
 
     private void initTeams(int i_NumOfTeams)

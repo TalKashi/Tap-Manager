@@ -63,7 +63,7 @@ public class FixturesManager : MonoBehaviour
     {
         if (s_FixturesManager == this)
         {
-            saveData();
+            //saveData();
         }
     }
 

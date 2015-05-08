@@ -15,10 +15,10 @@ public class MainGUI : MonoBehaviour
     void Start()
     {
         m_LeagueText.text = "LEAGUE\n" + getTeamPosition(GameManager.s_GameManger.m_myTeam);
-        TeamScript opponent = FixturesManager.s_FixturesManager.GetOpponentByTeam(GameManager.s_GameManger.m_myTeam);
-        m_DetailsText.text = "Total Fans: " + GameManager.s_GameManger.m_myTeam.GetFanBase() + "\n" +
-                                 "Next Match: " + opponent.GetName() + " - " + getTeamPosition(opponent);
-        m_TeamNameText.text = GameManager.s_GameManger.m_myTeam.GetName();
+        //TeamScript opponent = FixturesManager.s_FixturesManager.GetOpponentByTeam(GameManager.s_GameManger.m_myTeam);
+        //m_DetailsText.text = "Total Fans: " + GameManager.s_GameManger.m_myTeam.GetFanBase() + "\n" +
+        //                         "Next Match: " + opponent.GetName() + " - " + getTeamPosition(opponent);
+        //m_TeamNameText.text = GameManager.s_GameManger.m_myTeam.GetName();
     }
 
     void Update()
@@ -84,6 +84,48 @@ public class MainGUI : MonoBehaviour
 
     public void OnCollectMoneyClick()
     {
-        GameManager.s_GameManger.EmptyBucket();
+        if (GameManager.s_GameManger.IsBucketFull())
+        {
+            StartCoroutine(sendEmptyBucketClick());
+        }
+        //GameManager.s_GameManger.EmptyBucket();
+    }
+
+    IEnumerator sendEmptyBucketClick()
+    {
+        //m_WaitingForServer = true;
+        WWWForm form = new WWWForm();
+        form.AddField("email", GameManager.s_GameManger.m_User.Email);
+        form.AddField("fbId", GameManager.s_GameManger.m_User.FBId);
+
+        Debug.Log("Sending sendEmptyBucketClick to server");
+        WWW request = new WWW(GameManager.URL + "emptyBucket", form);
+        yield return request;
+        Debug.Log("Recieved response");
+
+        if (!string.IsNullOrEmpty(request.error))
+        {
+            Debug.Log("ERROR: " + request.error);
+        }
+        else
+        {
+            // Check ok response
+            switch (request.text)
+            {
+                case "ok":
+                    GameManager.s_GameManger.EmptyBucket();
+                    break;
+                case "null":
+                    Debug.Log("WARN: DB out of sync!");
+                    // Sync DB
+                    break;
+
+                default:
+                    // Do nothing
+                    break;
+            }
+        }
+
+        //m_WaitingForServer = false;
     }
 }

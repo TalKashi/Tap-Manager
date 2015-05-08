@@ -10,7 +10,7 @@ public class LoginSceneScript : MonoBehaviour {
 
     bool k_IsDataLoaded = false;
 
-    const string SERVER = "http://serge-pc:3000/";
+    const string SERVER = GameManager.URL;
 
     void Awake()
     {
@@ -92,7 +92,7 @@ public class LoginSceneScript : MonoBehaviour {
         WWWForm wwwform = new WWWForm();
         wwwform.AddField("json", i_NewUserJson);
         //WWW www = new WWW("http://serge-pc:3000/newUser", encoding.GetBytes(i_NewUserJson), headers);
-        WWW www = new WWW("http://serge-pc:3000/newUser", wwwform);
+        WWW www = new WWW(SERVER + "loginUser", wwwform);
 
         Debug.Log("Sending user data");
         yield return www;
@@ -104,10 +104,19 @@ public class LoginSceneScript : MonoBehaviour {
         }
         else
         {
+            print(www.text);
+            if (www.text == "null")
+            {
+                // Go to new team scene
+                Application.LoadLevel("Input");
+            }
+            else
+            {
+                StartCoroutine(syncClientDB());
+            }
             // Check ok response
             // if new user go to new team screen
             // else go to home page with team data
-            StartCoroutine(syncClientDB());
         }
         Debug.Log("End of addNewFBUser()");
     }
@@ -120,7 +129,7 @@ public class LoginSceneScript : MonoBehaviour {
         WWW request = new WWW(SERVER + "getInfoByEmail", form);
 
         yield return request;
-
+        
         if (!string.IsNullOrEmpty(request.error))
         {
             Debug.Log("ERROR: " + request.error);
@@ -133,6 +142,8 @@ public class LoginSceneScript : MonoBehaviour {
             MyUtils.LoadLeagueData(json, ref GameManager.s_GameManger.m_AllTeams);
             MyUtils.LoadBucketData(json, ref GameManager.s_GameManger.m_Bucket);
             MyUtils.LoadSquadData(json, ref GameManager.s_GameManger.m_MySquad);
+            MyUtils.LoadGameSettings(json, ref GameManager.s_GameManger.m_GameSettings);
+            MyUtils.LoadUserData(json, ref GameManager.s_GameManger.m_User);
             k_IsDataLoaded = true;
         }
         Debug.Log("End of addNewFBUser()");
@@ -200,7 +211,7 @@ public class LoginSceneScript : MonoBehaviour {
         {
             print("birthday=" + birthday);
             PlayerPrefs.SetString("birthday", birthday.ToString());
-            GameManager.s_GameManger.m_User.Email = email.ToString();
+            GameManager.s_GameManger.m_User.Birthday = birthday.ToString();
         }
 
         return isValid;

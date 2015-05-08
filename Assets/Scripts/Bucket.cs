@@ -8,7 +8,6 @@ public class Bucket
     float m_valueForSecond;
     int m_maxAmount;
     float m_currentMoneyInBucket;
-    private bool m_isFull;
     private int m_level;
 
     public string ID { get; set; }
@@ -34,11 +33,11 @@ public class Bucket
 
     public int EmptyBucket()
     {
-        if (m_currentMoneyInBucket < 1)
+        if (m_currentMoneyInBucket < m_maxAmount)
         {
             return 0;
         }
-        int moneyToReturn = (int)m_currentMoneyInBucket;
+        int moneyToReturn = m_maxAmount;
         Debug.Log("moneyToReturn=" + moneyToReturn + ";m_currentMoneyInBucket=" + m_currentMoneyInBucket);
         m_currentMoneyInBucket = 0;
 
@@ -78,7 +77,6 @@ public class Bucket
         m_level = i_newLevel;
         m_valueForSecond = (float)i_maxAmount / i_totalTimeToCollectInSeconds;
         m_maxAmount = i_maxAmount;
-        m_isFull = false;
     }
 
     public int GetMoneyInBucket()

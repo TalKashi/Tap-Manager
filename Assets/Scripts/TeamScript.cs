@@ -2,7 +2,7 @@
 using UnityEngine;
 using System.Collections;
 
-public enum eResult {Won = 0, Lost, Draw}
+public enum eResult {Won = 0, Lost=1, Draw=2}
 
 public struct GamesStatistics 
 {
@@ -37,9 +37,9 @@ public class TeamScript
     GamesStatistics m_AllTimeStats;
     RecordsStatistics m_RecordsStats;
 	eResult m_lastResult;
-	float m_fansLevel = 0 ;
-	float m_facilitiesLevel = 0;
-	float m_stadiumLevel = 0;
+	int m_fansLevel = 0 ;
+	int m_facilitiesLevel = 0;
+	int m_stadiumLevel = 0;
 	//int m_played = 0;
 	//int m_won = 0;
 	//int m_lost = 0;
@@ -77,19 +77,19 @@ public class TeamScript
         set { m_TeamName = value; }
     }
 
-    public float Fans
+    public int Fans
     {
         get { return m_fansLevel; }
         set { m_fansLevel = value; }
     }
 
-    public float Facilities
+    public int Facilities
     {
         get { return m_facilitiesLevel; }
         set { m_facilitiesLevel = value; }
     }
 
-    public float Stadium
+    public int Stadium
     {
         get { return m_stadiumLevel; }
         set { m_stadiumLevel = value; }
@@ -129,17 +129,17 @@ public class TeamScript
         m_LastGameInfo = i_LatGameInfo;
     }
 
-    public void UpdateFansLevel(float i_fans)
+    public void UpdateFansLevel(int i_fans)
 	{
 		m_fansLevel += i_fans;
 	}
 
-	public void UpdateFacilitiesLevel(float i_facilitiesLevel)
+	public void UpdateFacilitiesLevel(int i_facilitiesLevel)
 	{
 		m_facilitiesLevel += i_facilitiesLevel;
 	}
 
-	public void UpdateStadiumLevel(float i_stadiumLevel)
+	public void UpdateStadiumLevel(int i_stadiumLevel)
 	{
 		m_stadiumLevel += i_stadiumLevel;
 	}
@@ -234,17 +234,17 @@ public class TeamScript
         return (float) m_ThisSeasonStats.crowd/m_ThisSeasonStats.homeGames;
     }
 
-	public float GetFansLevel()
+	public int GetFansLevel()
 	{
 		return m_fansLevel;
 	}
 
-	public float GetFacilitiesLevel()
+	public int GetFacilitiesLevel()
 	{
 		return m_facilitiesLevel;
 	}
 
-	public float GetStadiumLevel()
+	public int GetStadiumLevel()
 	{
 		return m_stadiumLevel;
 	}
