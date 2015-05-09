@@ -183,6 +183,11 @@ public class GameManager : MonoBehaviour {
             StartCoroutine(checkNumOfClicksOnCoin());
             k_IsCoinClickCoroutineRunning = true;
         }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
     }
 
     IEnumerator checkNumOfClicksOnCoin()

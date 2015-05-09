@@ -132,4 +132,9 @@ public class Bucket
     {
         return m_currentMoneyInBucket.Equals(m_maxAmount);
     }
+
+    public void SetMoneyToZero()
+    {
+        m_currentMoneyInBucket = 0;
+    }
 }

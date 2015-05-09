@@ -33,13 +33,15 @@ public class LoginSceneScript : MonoBehaviour {
 
     void onInit()
     {
-        k_LoadingData = false;
+        
         if (FB.IsLoggedIn)
         {
             m_Login.SetActive(false);
+            Login();
         }
         else
         {
+            k_LoadingData = false;
             m_Login.SetActive(true);
         }
     }

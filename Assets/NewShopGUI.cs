@@ -22,7 +22,7 @@ public class NewShopGUI : MonoBehaviour
 	    m_FacilitiesUpgradeText.text =
 	        string.Format(
                 "<size=18><b>Facilities Level: {0}</b></size>{1}<color=white>Improve your training facilities{1}{2:C0}</color>",
-	            GameManager.s_GameManger.m_myTeam.Facilities, System.Environment.NewLine,
+	            GameManager.s_GameManger.m_myTeam.Facilities + 1, System.Environment.NewLine,
 	            GameManager.s_GameManger.m_GameSettings.GetFacilitiesCostForLevel(
 	                GameManager.s_GameManger.m_myTeam.Facilities));
 
@@ -44,7 +44,7 @@ public class NewShopGUI : MonoBehaviour
         m_FacilitiesUpgradeText.text =
             string.Format(
                 "<size=18><b>Facilities Level: {0}</b></size>{1}<color=white>Improve your training facilities{1}{2:C0}</color>",
-                GameManager.s_GameManger.m_myTeam.Facilities, System.Environment.NewLine,
+                GameManager.s_GameManger.m_myTeam.Facilities + 1, System.Environment.NewLine,
                 GameManager.s_GameManger.m_GameSettings.GetFacilitiesCostForLevel(
                     GameManager.s_GameManger.m_myTeam.Facilities));
 

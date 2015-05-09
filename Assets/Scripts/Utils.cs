@@ -303,7 +303,7 @@ public class MyUtils
                 //o_Bucket.LastFlush = (DateTime)lastFlush;
                 long timeNowMs = long.Parse(timeNow.ToString());
                 long lastFlushMs = o_Bucket.LastFlush;
-
+                o_Bucket.SetMoneyToZero();
                 o_Bucket.AddMoneyToBucket((float)TimeSpan.FromMilliseconds(timeNowMs - lastFlushMs).TotalSeconds);
             }
             else
