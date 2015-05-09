@@ -1,31 +1,63 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
+using System.Collections;
 
+public class NewShopGUI : MonoBehaviour
+{
 
-public class ShopScript : MonoBehaviour {
-
-	public Text m_fansLevel;
-	public Text m_facilitiesLevel;
-	public Text m_stadiumLevel;
+    public Text m_FansUpgradeText;
+    public Text m_FacilitiesUpgradeText;
+    public Text m_StadiumUpgradeText;
 
     private bool m_WaitingForServer = false;
 
-	void Update()
+	// Use this for initialization
+	void Start ()
 	{
-		m_fansLevel.text = "FANS LEVEL: " + (GameManager.s_GameManger.m_myTeam.GetFansLevel() + 1);
-        m_facilitiesLevel.text = "FACILITIES LEVEL: " + (GameManager.s_GameManger.m_myTeam.GetFacilitiesLevel() + 1);
-        m_stadiumLevel.text = "STADIUM LEVEL: " + (GameManager.s_GameManger.m_myTeam.GetStadiumLevel() + 1);
+        m_FansUpgradeText.text =
+            string.Format("<size=18><b>Total Fans: {0}</b></size>{1}<color=white>Invest in your fans{1}{2:C0}</color>",
+	            GameManager.s_GameManger.m_myTeam.GetFanBase(), System.Environment.NewLine,
+	            GameManager.s_GameManger.m_GameSettings.GetFansCostForLevel(GameManager.s_GameManger.m_myTeam.Fans));
 
-	    if (m_WaitingForServer)
-	    {
-	        // TODO: Enable server send msg screen
-	    }
+	    m_FacilitiesUpgradeText.text =
+	        string.Format(
+                "<size=18><b>Facilities Level: {0}</b></size>{1}<color=white>Improve your training facilities{1}{2:C0}</color>",
+	            GameManager.s_GameManger.m_myTeam.Facilities, System.Environment.NewLine,
+	            GameManager.s_GameManger.m_GameSettings.GetFacilitiesCostForLevel(
+	                GameManager.s_GameManger.m_myTeam.Facilities));
+
+        m_StadiumUpgradeText.text = 
+            string.Format(
+            "<size=18><b>Stadium Capacity: {0}k</b></size>{1}<color=white>Increase your stadium capacity{1}{2:C0}</color>"
+            , GameManager.s_GameManger.m_myTeam.TotalSeats/1000, System.Environment.NewLine, GameManager.s_GameManger.m_GameSettings.GetStadiumCostForLevel(
+                    GameManager.s_GameManger.m_myTeam.Stadium));
+	}
+	
+	// Update is called once per frame
+	void Update () 
+    {
+        m_FansUpgradeText.text =
+            string.Format("<size=18><b>Total Fans: {0}</b></size>{1}<color=white>Invest in your fans{1}{2:C0}</color>",
+                GameManager.s_GameManger.m_myTeam.GetFanBase(), System.Environment.NewLine,
+                GameManager.s_GameManger.m_GameSettings.GetFansCostForLevel(GameManager.s_GameManger.m_myTeam.Fans));
+
+        m_FacilitiesUpgradeText.text =
+            string.Format(
+                "<size=18><b>Facilities Level: {0}</b></size>{1}<color=white>Improve your training facilities{1}{2:C0}</color>",
+                GameManager.s_GameManger.m_myTeam.Facilities, System.Environment.NewLine,
+                GameManager.s_GameManger.m_GameSettings.GetFacilitiesCostForLevel(
+                    GameManager.s_GameManger.m_myTeam.Facilities));
+
+        m_StadiumUpgradeText.text =
+            string.Format(
+            "<size=18><b>Stadium Capacity: {0}k</b></size>{1}<color=white>Increase your stadium capacity{1}{2:C0}</color>"
+            , GameManager.s_GameManger.m_myTeam.TotalSeats/1000, System.Environment.NewLine, GameManager.s_GameManger.m_GameSettings.GetStadiumCostForLevel(
+                    GameManager.s_GameManger.m_myTeam.Stadium));
 	}
 
-	public void OnFansClick()
-	{
-		//GameManager.s_GameManger.FansUpdate ();
+    public void OnFansClick()
+    {
+        //GameManager.s_GameManger.FansUpdate ();
         int upgradeCost = GameManager.s_GameManger.m_GameSettings.GetFansCostForLevel(GameManager.s_GameManger.m_myTeam.GetFansLevel());
         if (GameManager.s_GameManger.GetCash() >= upgradeCost)
         {
@@ -35,7 +67,7 @@ public class ShopScript : MonoBehaviour {
         {
             // TODO: Notify player that he doesn't have money
         }
-	}
+    }
 
     IEnumerator sendFansClickToServer(int i_UpgradeCost)
     {
@@ -78,9 +110,9 @@ public class ShopScript : MonoBehaviour {
         m_WaitingForServer = false;
     }
 
-	public void OnFacilitiesClick()
-	{
-		//GameManager.s_GameManger.FacilitiesUpdate ();
+    public void OnFacilitiesClick()
+    {
+        //GameManager.s_GameManger.FacilitiesUpdate ();
         int upgradeCost = GameManager.s_GameManger.m_GameSettings.GetFacilitiesCostForLevel(GameManager.s_GameManger.m_myTeam.GetFacilitiesLevel());
         if (GameManager.s_GameManger.GetCash() >= upgradeCost)
         {
@@ -90,7 +122,7 @@ public class ShopScript : MonoBehaviour {
         {
             // TODO: Notify player that he doesn't have money
         }
-	}
+    }
 
     IEnumerator sendFacilitiesClickToServer(int i_UpgradeCost)
     {
@@ -133,9 +165,9 @@ public class ShopScript : MonoBehaviour {
         m_WaitingForServer = false;
     }
 
-	public void OnStadiumClick()
-	{
-		//GameManager.s_GameManger.StadiumUpdate ();
+    public void OnStadiumClick()
+    {
+        //GameManager.s_GameManger.StadiumUpdate ();
 
         int upgradeCost = GameManager.s_GameManger.m_GameSettings.GetStadiumCostForLevel(GameManager.s_GameManger.m_myTeam.GetStadiumLevel());
         if (GameManager.s_GameManger.GetCash() >= upgradeCost)
@@ -146,7 +178,7 @@ public class ShopScript : MonoBehaviour {
         {
             // TODO: Notify player that he doesn't have money
         }
-	}
+    }
 
     IEnumerator sendStadiumClickToServer(int i_UpgradeCost)
     {
@@ -185,10 +217,5 @@ public class ShopScript : MonoBehaviour {
         }
 
         m_WaitingForServer = false;
-    }
-
-    public void OnNextMatchClick()
-    {
-        FixturesManager.s_FixturesManager.ExecuteNextFixture();
     }
 }

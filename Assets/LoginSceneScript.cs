@@ -2,20 +2,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using Facebook;
+using UnityEngine.UI;
 
 public class LoginSceneScript : MonoBehaviour {
 
     public GameObject m_Login;
-    public GameObject m_MainScene;
+    private Sprite m_ProfilePic;
+    public GameObject m_LoadingText;
 
     bool k_IsDataLoaded = false;
+    bool k_LoadingData = true;
 
     const string SERVER = GameManager.URL;
 
     void Awake()
     {
         m_Login.SetActive(false);
-        m_MainScene.SetActive(false);
+        m_LoadingText.SetActive(k_LoadingData);
         FB.Init(onInit);
     }
 
@@ -23,12 +26,14 @@ public class LoginSceneScript : MonoBehaviour {
     {
         if (k_IsDataLoaded)
         {
-            m_MainScene.SetActive(true);
+            Application.LoadLevel("NewMainScene");
         }
+        m_LoadingText.SetActive(k_LoadingData);
     }
 
     void onInit()
     {
+        k_LoadingData = false;
         if (FB.IsLoggedIn)
         {
             m_Login.SetActive(false);
@@ -41,6 +46,7 @@ public class LoginSceneScript : MonoBehaviour {
 
     public void Login()
     {
+        k_LoadingData = true;
         FB.Login("public_profile,email,user_birthday", fbLoginCallback);
     }
 
@@ -51,13 +57,25 @@ public class LoginSceneScript : MonoBehaviour {
             Debug.Log("facebookLogIn worked");
             m_Login.SetActive(false);
             FB.API("me?fields=id,name,email,birthday", HttpMethod.GET, onGettingUserDataFromFB);
-
+            FB.API("me/picture?width=128&height=128", HttpMethod.GET, onGettingUserPicture);
         }
         else
         {
+            k_LoadingData = false;
             m_Login.SetActive(true);
             Debug.Log("facebookLogIn failed");
         }
+    }
+
+    void onGettingUserPicture(FBResult i_Response)
+    {
+        if (!string.IsNullOrEmpty(i_Response.Error))
+        {
+            Debug.LogError("ERROR: " + i_Response.Error);
+            return;
+        }
+
+        m_ProfilePic = Sprite.Create(i_Response.Texture, new Rect(0, 0, 128, 128), new Vector2(0, 0));
     }
 
     void onGettingUserDataFromFB(FBResult i_FBResult)
@@ -144,6 +162,10 @@ public class LoginSceneScript : MonoBehaviour {
             MyUtils.LoadSquadData(json, ref GameManager.s_GameManger.m_MySquad);
             MyUtils.LoadGameSettings(json, ref GameManager.s_GameManger.m_GameSettings);
             MyUtils.LoadUserData(json, ref GameManager.s_GameManger.m_User);
+            if (m_ProfilePic != null)
+            {
+                GameManager.s_GameManger.m_User.ProfilePic = m_ProfilePic;
+            }
             k_IsDataLoaded = true;
         }
         Debug.Log("End of addNewFBUser()");

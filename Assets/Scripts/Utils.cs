@@ -9,20 +9,64 @@ public class MyUtils
 
     public static void LoadGameSettings(Dictionary<string, object> i_Json, ref GameSettings o_GameSettings)
     {
-        object gameSettingsDict;
+        object gameSettingsDict, timeTillNextMatchMs, nextMatchDict;
 
         if (o_GameSettings == null)
         {
             o_GameSettings = new GameSettings();
         }
 
-        if (i_Json.TryGetValue("pricesAndMultipliers", out gameSettingsDict))
+        if (i_Json.TryGetValue("settings", out gameSettingsDict))
         {
             extractGameSettings((Dictionary<string, object>)gameSettingsDict, ref o_GameSettings);
         }
         else
         {
             Debug.Log("WARN: Failed to get GameSettings from json");
+        }
+
+        if (i_Json.TryGetValue("timeTillNextMatch", out timeTillNextMatchMs))
+        {
+            long timeLeftInMs = long.Parse(timeTillNextMatchMs.ToString());
+
+            o_GameSettings.TimeTillNextMatch = TimeSpan.FromMilliseconds(timeLeftInMs);
+            Debug.Log("!!!! " + o_GameSettings.TimeTillNextMatch);
+        }
+        else
+        {
+            Debug.Log("WARN: Failed to get TimeTillNextMatch from json");
+        }
+
+        if (i_Json.TryGetValue("nextMatch", out nextMatchDict))
+        {
+            extractNextMatchData((Dictionary<string, object>) nextMatchDict, ref o_GameSettings);
+        }
+        else
+        {
+            Debug.Log("WARN: Failed to get NextMatch from json");
+        }
+    }
+
+    private static void extractNextMatchData(Dictionary<string, object> i_NextMatchDict, ref GameSettings o_GameSettings)
+    {
+        object opponent, isHomeMatch;
+
+        if (i_NextMatchDict.TryGetValue("opponent", out opponent))
+        {
+            o_GameSettings.NextOpponent = opponent.ToString();
+        }
+        else
+        {
+            Debug.Log("WARN: Failed to get NextOpponent from json");
+        }
+
+        if (i_NextMatchDict.TryGetValue("isHomeMatch", out isHomeMatch))
+        {
+            o_GameSettings.IsHomeOrAway = bool.Parse(isHomeMatch.ToString());
+        }
+        else
+        {
+            Debug.Log("WARN: Failed to get IsHomeOrAway from json");
         }
     }
 
@@ -239,11 +283,33 @@ public class MyUtils
     #region Bucket Loading Section
     public static void LoadBucketData(Dictionary<string, object> i_Json, ref Bucket o_Bucket)
     {
-        object bucketDict;
+        object bucket, details, timeNow;
 
-        if (i_Json.TryGetValue("bucket", out bucketDict))
+        if (i_Json.TryGetValue("bucket", out bucket))
         {
-            extractBucketData((Dictionary<string, object>)bucketDict, ref o_Bucket);
+            Dictionary<string, object> bucketDict = (Dictionary<string, object>) bucket;
+
+            if (bucketDict.TryGetValue("details", out details))
+            {
+                extractBucketData((Dictionary<string, object>)details, ref o_Bucket);
+            }
+            else
+            {
+                Debug.Log("WARN: Failed to get BucketDetails from json");
+            }
+
+            if (bucketDict.TryGetValue("timeNow", out timeNow))
+            {
+                //o_Bucket.LastFlush = (DateTime)lastFlush;
+                long timeNowMs = long.Parse(timeNow.ToString());
+                long lastFlushMs = o_Bucket.LastFlush;
+
+                o_Bucket.AddMoneyToBucket((float)TimeSpan.FromMilliseconds(timeNowMs - lastFlushMs).TotalSeconds);
+            }
+            else
+            {
+                Debug.Log("WARN: Failed to get TimeNow(server) from json");
+            }
         }
         else
         {
@@ -290,10 +356,10 @@ public class MyUtils
         if (i_BucketDict.TryGetValue("lastFlush", out lastFlush))
         {
             //o_Bucket.LastFlush = (DateTime)lastFlush;
-            long lastFlushMs = long.Parse(lastFlush.ToString());
+            o_Bucket.LastFlush = long.Parse(lastFlush.ToString());
             //DateTime date = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddMilliseconds(lastFlushMs);
-            DateTime date = new DateTime(lastFlushMs);
-            o_Bucket.LastFlush = date;
+            //DateTime date = new DateTime(lastFlushMs);
+            //o_Bucket.LastFlush = date;
         }
         else
         {
@@ -309,17 +375,22 @@ public class MyUtils
             Debug.Log("WARN: Failed to get Level from json");
         }
 
-        if (i_BucketDict.TryGetValue("dateNow", out dateNow))
-        {
-            //o_Bucket.LastFlush = (DateTime)lastFlush;
-            long dateNowMs = long.Parse(dateNow.ToString());
-            DateTime date = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddMilliseconds(dateNowMs);
-            o_Bucket.SetMoneyInBucketAfterConnect(date);
-        }
-        else
-        {
-            Debug.Log("WARN: Failed to get LastFlush from json");
-        }
+        //if (i_BucketDict.TryGetValue("timeNow", out dateNow))
+        //{
+        //    //o_Bucket.LastFlush = (DateTime)lastFlush;
+        //    long dateNowMs = long.Parse(dateNow.ToString());
+        //    DateTime date = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddMilliseconds(dateNowMs);
+
+        //    long timeNowMs = long.Parse(dateNow.ToString());
+        //    long lastFlushMs = long.Parse(lastFlush.ToString());
+
+
+        //    o_Bucket.AddMoneyToBucket(TimeSpan.FromMilliseconds(timeNowMs - lastFlushMs).Seconds);
+        //}
+        //else
+        //{
+        //    Debug.Log("WARN: Failed to get TimeNow(server) from json");
+        //}
     }
     #endregion Bucket Loading Section
 
@@ -746,7 +817,7 @@ public class MyUtils
         {
             return;
         }
-
+        Debug.Log(homeTeam );
         if (!i_LastGameInfoDict.TryGetValue("awayTeam", out awayTeam))
         {
             return;
@@ -768,7 +839,7 @@ public class MyUtils
         }
 
         o_Team.SetLastGameInfo(new MatchInfo((string)homeTeam, (string)awayTeam,int.Parse( homeTeamGoals.ToString()),int.Parse( awayTeamGoals.ToString())
-                            ,int.Parse( crowdAtMatch.ToString())));
+                            ,(int)float.Parse( crowdAtMatch.ToString())));
     }
 
     private static void extractShopData(Dictionary<string, object> i_ShopDict, ref TeamScript o_Team)

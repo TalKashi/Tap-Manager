@@ -31,11 +31,43 @@ public class FinanceGUI : MonoBehaviour {
         {
             m_Total.color = Color.green;
         }
-
+        StartCoroutine(sendFinanceToServer(income - outcome));
     }
 
     public void UpdateTeamWeeklyFinance()
     {
         GameManager.s_GameManger.UpdateWeeklyFinance();
+    }
+
+    IEnumerator sendFinanceToServer(int i_Revenue)
+    {
+        Debug.Log("Sending this week revenue of: " + i_Revenue);
+        WWWForm form = new WWWForm();
+        form.AddField("email", GameManager.s_GameManger.m_User.Email);
+        form.AddField("fbid", GameManager.s_GameManger.m_User.FBId);
+        form.AddField("money", i_Revenue);
+
+        WWW request = new WWW(GameManager.URL + "addMoney", form);
+        Debug.Log("Sending finance report");
+        yield return request;
+        Debug.Log("Recieved finance report response");
+
+        if (!string.IsNullOrEmpty(request.error))
+        {
+            Debug.Log("ERROR: " + request.error);
+        }
+        else
+        {
+            switch (request.text)
+            {
+                case "ok":
+                    Debug.Log("Server updated team finance");
+                    // TODO: enable next screen button
+                    break;
+                case "null":
+                    Debug.Log("Sever had problem?");
+                    break;
+            }
+        }
     }
 }

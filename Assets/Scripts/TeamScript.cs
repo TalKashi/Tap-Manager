@@ -71,6 +71,11 @@ public class TeamScript
 
     public string ID { get; set; }
 
+    public int TotalSeats
+    {
+        get { return Stadium * 1500 + 1000; }
+    }
+
     public string Name 
     {
         get { return m_TeamName; } 

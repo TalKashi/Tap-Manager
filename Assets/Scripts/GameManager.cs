@@ -17,6 +17,7 @@ public class User
     public string Birthday { get; set; }
     public int Age { get; set; }
     public int CoinValue { get; set; }
+    public Sprite ProfilePic { get; set; }
 }
 
 public class GameSettings
@@ -31,6 +32,23 @@ public class GameSettings
     private float m_StadiumCostMulti = 4f;
 
     private float m_PlayerBoostCostMultiplier = 1.5f;
+
+    private TimeSpan m_TimeTillNextMatch = TimeSpan.MaxValue;
+
+    private string m_NextOpponent;
+    private bool m_IsNextMatchAtHome;
+
+    public string NextOpponent
+    { 
+        get { return m_NextOpponent; }
+        set { m_NextOpponent = value; } 
+    }
+
+    public bool IsHomeOrAway
+    {
+        get { return m_IsNextMatchAtHome; }
+        set { m_IsNextMatchAtHome = value; }
+    }
 
     public float PlayerBoostCostMultiplier
     {
@@ -91,6 +109,11 @@ public class GameSettings
         return (int)(m_StadiumInitCost * Math.Pow(m_StadiumCostMulti, i_Level));
     }
 
+    public TimeSpan TimeTillNextMatch
+    {
+        get { return m_TimeTillNextMatch; }
+        set { m_TimeTillNextMatch = value; }
+    }
 }
 
 public class GameManager : MonoBehaviour {
@@ -101,7 +124,7 @@ public class GameManager : MonoBehaviour {
     public SquadScript m_MySquad;
     //public int m_Cash = 100000;
     public TeamScript[] m_AllTeams; // !! Do not change positions for m_AllTeams
-    private TeamScript[] m_TeamsForTable;
+    //private TeamScript[] m_TeamsForTable;
 	private TableScript m_table;
     public Bucket m_Bucket;
     private bool k_ShouldGoToMainScene = false;
@@ -113,11 +136,13 @@ public class GameManager : MonoBehaviour {
     public User m_User;
     public GameSettings m_GameSettings;
     public int NumOfClicksOnCoin { get; set; }
+    
 
     // TEMP FOR PRESENTATION
     public Sprite[] m_PlayerImages;
 
-    public const string URL = "http://93.173.226.20:3000/";
+    public const string URL = "http://54.76.56.233:3000/";
+    //public const string URL = "http://93.173.151.22:3000/";
 
 	void Awake () 
     {
@@ -148,6 +173,10 @@ public class GameManager : MonoBehaviour {
     void Update()
     {
         m_Bucket.AddMoneyToBucket(Time.deltaTime);
+        if (m_GameSettings != null && m_GameSettings.TimeTillNextMatch != TimeSpan.MaxValue)
+        {
+            m_GameSettings.TimeTillNextMatch = TimeSpan.FromSeconds(m_GameSettings.TimeTillNextMatch.TotalSeconds - Time.deltaTime);
+        }
 
         if (!k_IsCoinClickCoroutineRunning && NumOfClicksOnCoin > 0)
         {
@@ -174,11 +203,14 @@ public class GameManager : MonoBehaviour {
     IEnumerator sendCoinClick()
     {
         WWWForm form = new WWWForm();
+        int clicks = NumOfClicksOnCoin;
+        NumOfClicksOnCoin = 0;
         form.AddField("email", m_User.Email);
         form.AddField("fbId", m_User.FBId);
-        form.AddField("clicks", NumOfClicksOnCoin);
+        form.AddField("clicks", clicks);
+        
 
-        Debug.Log("Sending sendCoinClick to server");
+        Debug.Log("Sending sendCoinClick to server (" + clicks + ")");
         WWW request = new WWW(URL + "coinClick", form);
         yield return request;
         Debug.Log("Recieved response");
@@ -190,6 +222,7 @@ public class GameManager : MonoBehaviour {
         else
         {
             // Check ok response
+            Debug.Log(request.text);
             switch (request.text)
             {
                 case "ok":
@@ -204,7 +237,6 @@ public class GameManager : MonoBehaviour {
                     // Do nothing
                     break;
             }
-            NumOfClicksOnCoin = 0;
         }
     }
 
@@ -426,15 +458,15 @@ public class GameManager : MonoBehaviour {
 
     public int GetTeamPosition(TeamScript i_Team)
     {
-        if (m_TeamsForTable == null)
+        //if (m_AllTeams == null)
+        //{
+        //    updateTableLeague();
+        //}
+        for (int i = 0; i < m_AllTeams.Length; i++)
         {
-            updateTableLeague();
-        }
-        for (int i = 0; i < m_TeamsForTable.Length; i++)
-        {
-            if (i_Team == m_TeamsForTable[i])
+            if (i_Team == m_AllTeams[i])
             {
-                return m_TeamsForTable.Length - i;
+                return m_AllTeams.Length - i;
             }
         }
 
@@ -444,13 +476,13 @@ public class GameManager : MonoBehaviour {
 	//Team in the first place is the team in the last place in the array.
 	public void updateTableLeague()
     {
-	    if (m_TeamsForTable == null)
-	    {
-	        m_TeamsForTable = new TeamScript[m_AllTeams.Length];
-            Array.Copy(m_AllTeams, m_TeamsForTable, m_AllTeams.Length);
-	    }
+	    //if (m_TeamsForTable == null)
+	   // {
+	    //    m_TeamsForTable = new TeamScript[m_AllTeams.Length];
+        //    Array.Copy(m_AllTeams, m_TeamsForTable, m_AllTeams.Length);
+	   // }
 
-        Array.Sort(m_TeamsForTable, delegate(TeamScript team1, TeamScript team2) 
+        Array.Sort(m_AllTeams, delegate(TeamScript team1, TeamScript team2) 
         {
             if (team1.GetPoints() < team2.GetPoints()) 
             {
@@ -478,14 +510,14 @@ public class GameManager : MonoBehaviour {
             return;
         }
         m_table = tableGameObject.GetComponent<TableScript>();
-		m_table.InitTable(m_TeamsForTable.Length);
-	    
-        for (int i = 0; i < m_TeamsForTable.Length; i++)
+        m_table.InitTable(m_AllTeams.Length);
+
+        for (int i = 0; i < m_AllTeams.Length; i++)
         {
-            m_table.UpdateLine((m_TeamsForTable.Length - i - 1), (m_TeamsForTable.Length - i),
-                               m_TeamsForTable[i].GetName(), m_TeamsForTable[i].GetMatchPlayed(), m_TeamsForTable[i].GetMatchWon(),
-                               m_TeamsForTable[i].GetMatchLost(), m_TeamsForTable[i].GetMatchDrawn(), m_TeamsForTable[i].GetGoalsFor(),
-                               m_TeamsForTable[i].GetGoalsAgainst(), m_TeamsForTable[i].GetPoints());
+            m_table.UpdateLine((m_AllTeams.Length - i - 1), (m_AllTeams.Length - i),
+                               m_AllTeams[i].GetName(), m_AllTeams[i].GetMatchPlayed(), m_AllTeams[i].GetMatchWon(),
+                               m_AllTeams[i].GetMatchLost(), m_AllTeams[i].GetMatchDrawn(), m_AllTeams[i].GetGoalsFor(),
+                               m_AllTeams[i].GetGoalsAgainst(), m_AllTeams[i].GetPoints());
 
 		}
 		
@@ -501,6 +533,17 @@ public class GameManager : MonoBehaviour {
 		return Array.Find(m_AllTeams,team=> team.GetName() == i_teamName);
 
 	}
+
+    public TimeSpan GetNextMatchTimeSpan()
+    {
+        return m_GameSettings.TimeTillNextMatch;
+    }
+
+    public string GetNextOpponent()
+    {
+        string homeOrAway = m_GameSettings.IsHomeOrAway ? " (Home)" : " (Away)";
+        return m_GameSettings.NextOpponent + homeOrAway;
+    }
 }
 
 [Serializable]

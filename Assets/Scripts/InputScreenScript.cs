@@ -105,7 +105,7 @@ public class InputScreenScript : MonoBehaviour {
             MyUtils.LoadGameSettings(json, ref GameManager.s_GameManger.m_GameSettings);
             MyUtils.LoadUserData(json, ref GameManager.s_GameManger.m_User);
             //k_IsDataLoaded = true;
-            Application.LoadLevel("MainScene");
+            Application.LoadLevel("NewMainScene");
         }
         Debug.Log("End of addNewFBUser()");
 
