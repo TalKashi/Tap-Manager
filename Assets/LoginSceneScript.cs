@@ -49,7 +49,7 @@ public class LoginSceneScript : MonoBehaviour {
     public void Login()
     {
         k_LoadingData = true;
-        FB.Login("public_profile,email,user_birthday", fbLoginCallback);
+        FB.Login("public_profile,email", fbLoginCallback);
     }
 
     void fbLoginCallback(FBResult i_FbResult)
@@ -58,7 +58,7 @@ public class LoginSceneScript : MonoBehaviour {
         {
             Debug.Log("facebookLogIn worked");
             m_Login.SetActive(false);
-            FB.API("me?fields=id,name,email,birthday", HttpMethod.GET, onGettingUserDataFromFB);
+            FB.API("me?fields=id,name,email", HttpMethod.GET, onGettingUserDataFromFB);
             FB.API("me/picture?width=128&height=128", HttpMethod.GET, onGettingUserPicture);
         }
         else
@@ -146,7 +146,8 @@ public class LoginSceneScript : MonoBehaviour {
         WWWForm form = new WWWForm();
         Debug.Log("sending sync request for user: " + PlayerPrefs.GetString("email"));
         form.AddField("email", PlayerPrefs.GetString("email"));
-        WWW request = new WWW(SERVER + "getInfoByEmail", form);
+        form.AddField("id", PlayerPrefs.GetString("id"));
+        WWW request = new WWW(SERVER + "getInfoById", form);
 
         yield return request;
         
@@ -217,7 +218,7 @@ public class LoginSceneScript : MonoBehaviour {
         if (!json.TryGetValue("email", out email))
         {
             Debug.Log("Didn't recieved <user Email> in json");
-            isValid = false;
+            //isValid = false;
         }
         else
         {

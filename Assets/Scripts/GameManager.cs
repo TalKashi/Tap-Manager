@@ -141,7 +141,7 @@ public class GameManager : MonoBehaviour {
     // TEMP FOR PRESENTATION
     public Sprite[] m_PlayerImages;
 
-    public const string URL = "http://54.76.56.233:3000/";
+    public const string URL = "http://tapmanger.herokuapp.com/";
     //public const string URL = "http://93.173.151.22:3000/";
 
 	void Awake () 
@@ -211,7 +211,7 @@ public class GameManager : MonoBehaviour {
         int clicks = NumOfClicksOnCoin;
         NumOfClicksOnCoin = 0;
         form.AddField("email", m_User.Email);
-        form.AddField("fbId", m_User.FBId);
+        form.AddField("id", m_User.FBId);
         form.AddField("clicks", clicks);
         
 
