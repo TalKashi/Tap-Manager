@@ -181,7 +181,7 @@ public class FacebookManager : MonoBehaviour {
 
         if (verifyAllDataPresent(i_FBResult.Text))
         {
-            StartCoroutine(addNewFBUser(i_FBResult.Text));
+            StartCoroutine(AddNewFBUser(i_FBResult.Text));
         }
         else
         {
@@ -265,7 +265,7 @@ public class FacebookManager : MonoBehaviour {
         Debug.Log("End of connectToServer()");
     }
 
-    private IEnumerator addNewFBUser(string i_NewUserJson)
+    private IEnumerator AddNewFBUser(string i_NewUserJson)
     {
         UTF8Encoding encoding = new UTF8Encoding();
         Dictionary<string, string> headers = new Dictionary<string, string>();
@@ -290,6 +290,6 @@ public class FacebookManager : MonoBehaviour {
             // if new user go to new team screen
             // else go to home page with team data
         }
-        Debug.Log("End of addNewFBUser()");
+        Debug.Log("End of AddNewFBUser()");
     }*/
 }

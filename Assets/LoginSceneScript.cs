@@ -95,7 +95,7 @@ public class LoginSceneScript : MonoBehaviour {
 
         if (verifyAllDataPresent(i_FBResult.Text))
         {
-            StartCoroutine(addNewFBUser(i_FBResult.Text));
+            StartCoroutine(AddNewFBUser(i_FBResult.Text));
         }
         else
         {
@@ -103,15 +103,16 @@ public class LoginSceneScript : MonoBehaviour {
         }
     }
 
-    private IEnumerator addNewFBUser(string i_NewUserJson)
+    public IEnumerator AddNewFBUser(string i_NewUserJson)
     {
         //UTF8Encoding encoding = new UTF8Encoding();
         //Dictionary<string, string> headers = new Dictionary<string, string>();
         //headers.Add("Content-Type", "text/json");
         //headers.Add("Content-Length", i_NewUserJson.Length.ToString());
+
         WWWForm wwwform = new WWWForm();
         wwwform.AddField("json", i_NewUserJson);
-        //WWW www = new WWW("http://serge-pc:3000/newUser", encoding.GetBytes(i_NewUserJson), headers);
+
         WWW www = new WWW(SERVER + "loginUser", wwwform);
 
         Debug.Log("Sending user data");
@@ -138,7 +139,7 @@ public class LoginSceneScript : MonoBehaviour {
             // if new user go to new team screen
             // else go to home page with team data
         }
-        Debug.Log("End of addNewFBUser()");
+        Debug.Log("End of AddNewFBUser()");
     }
 
     IEnumerator syncClientDB()
@@ -171,7 +172,7 @@ public class LoginSceneScript : MonoBehaviour {
             }
             k_IsDataLoaded = true;
         }
-        Debug.Log("End of addNewFBUser()");
+        Debug.Log("End of AddNewFBUser()");
 
     }
 

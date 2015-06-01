@@ -108,7 +108,7 @@ public class InputScreenScript : MonoBehaviour {
             //k_IsDataLoaded = true;
             Application.LoadLevel("NewMainScene");
         }
-        Debug.Log("End of addNewFBUser()");
+        Debug.Log("End of AddNewFBUser()");
 
     }
 }
