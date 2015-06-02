@@ -40,15 +40,6 @@ public class TeamScript
 	int m_fansLevel = 0 ;
 	int m_facilitiesLevel = 0;
 	int m_stadiumLevel = 0;
-	//int m_played = 0;
-	//int m_won = 0;
-	//int m_lost = 0;
-	//int m_drawn = 0;
-	//int m_for = 0;
-	//int m_against = 0;
-	//int m_points = 0;
-	//int m_TotalCrowd = 0;
-	//int m_homeGames = 0;
     int m_AdditionalFans = 0;
     string m_TeamName;
     string m_StadiumName;
@@ -69,7 +60,43 @@ public class TeamScript
 	private int m_currentSequenceNotWin = 0; 
 	private int m_currentResult = 0;
 
+    private int m_incomeFromTickets;
+    private int m_incomeFromMerchandise;
+    private int m_facilitiesCost;
+    private int m_stadiumCost;
+    private int m_salary;
+
     public string ID { get; set; }
+
+    public float Salary
+    {
+        get { return m_salary; }
+        set { m_salary = (int) value; }
+    }
+
+    public float StadiumCost
+    {
+        get { return m_stadiumCost; }
+        set { m_stadiumCost = (int) value; }
+    }
+
+    public float FacilitiesCost
+    {
+        get { return m_facilitiesCost; }
+        set { m_facilitiesCost = (int) value; }
+    }
+
+    public float IncomeFromMerchandise
+    {
+        get { return m_incomeFromMerchandise; }
+        set { m_incomeFromMerchandise = (int) value; }
+    }
+
+    public float IncomeFromTickets
+    {
+        get { return m_incomeFromTickets; }
+        set { m_incomeFromTickets = (int)value; }
+    }
 
     public int TotalSeats
     {
@@ -350,7 +377,7 @@ public class TeamScript
         return 5;
     }
 
-    public int GetSalary()
+    public int CalculateSalary()
     {
         // 400 is avrage player salary
         // 15 is num of player

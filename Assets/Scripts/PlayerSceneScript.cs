@@ -90,8 +90,8 @@ public class PlayerSceneScript : MonoBehaviour {
     {
         m_WaitingForServer = true;
         WWWForm form = new WWWForm();
-        form.AddField("email", GameManager.s_GameManger.m_User.Email);
-        form.AddField("id", m_playerScript.ID);
+        form.AddField("id", GameManager.s_GameManger.m_User.ID);
+        form.AddField("playerId", m_playerScript.ID);
         Debug.Log("player_ID=" + m_playerScript.ID);
 
 

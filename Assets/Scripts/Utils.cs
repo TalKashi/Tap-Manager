@@ -648,7 +648,7 @@ public class MyUtils
 
     private static void extractTeamData(Dictionary<string, object> i_TeamJson, ref TeamScript o_Team)
     {
-        object id, shopDict, gamesHistoryDict, additionalFans, lastGameInfoDict;
+        object id, shopDict, gamesHistoryDict, additionalFans, lastGameInfoDict, financeDict;
         object lastResultEnum, isLastGameIsHomeGameBool, statisticsDict, teamName;
 
         if (o_Team == null)
@@ -735,6 +735,71 @@ public class MyUtils
         else
         {
             Debug.Log("WARN: Failed to get Statistics data from json");
+        }
+
+        if (i_TeamJson.TryGetValue("finance", out financeDict))
+        {
+            extractFinanceReport((Dictionary<string, object>) financeDict, ref o_Team);
+        }
+        else
+        {
+            Debug.Log("WARN: Failed to get finance data from json");
+        }
+    }
+
+    private static void extractFinanceReport(Dictionary<string, object> i_FinanceDict, ref TeamScript o_Team)
+    {
+        object incomeFromTicketsObj, incomeFromMerchandiseObj, facilitiesCostObj, stadiumCostObj, salaryObj;
+        float incomeFromTickests, incomeFromMerchandise, facilitiesCost, stadiumCost, salary;
+
+        if (i_FinanceDict.TryGetValue("incomeFromTickets", out incomeFromTicketsObj) &&
+            float.TryParse(incomeFromTicketsObj.ToString(), out incomeFromTickests))
+        {
+            o_Team.IncomeFromTickets = incomeFromTickests;
+        }
+        else
+        {
+            Debug.Log("WARN: Failed to get IncomeFromTickets data from json");
+        }
+
+        if (i_FinanceDict.TryGetValue("incomeFromMerchandise", out incomeFromMerchandiseObj) &&
+            float.TryParse(incomeFromMerchandiseObj.ToString(), out incomeFromMerchandise))
+        {
+            o_Team.IncomeFromMerchandise = incomeFromMerchandise;
+        }
+        else
+        {
+            Debug.Log("WARN: Failed to get IncomeFromMerchandise data from json");
+        }
+
+        if (i_FinanceDict.TryGetValue("facilitiesCost", out facilitiesCostObj) &&
+            float.TryParse(facilitiesCostObj.ToString(), out facilitiesCost))
+        {
+            o_Team.FacilitiesCost = facilitiesCost;
+        }
+        else
+        {
+            Debug.Log("WARN: Failed to get FacilitiesCost data from json");
+        }
+
+        if (i_FinanceDict.TryGetValue("stadiumCost", out stadiumCostObj) &&
+            float.TryParse(stadiumCostObj.ToString(), out stadiumCost))
+        {
+            o_Team.StadiumCost = stadiumCost;
+        }
+        else
+        {
+            Debug.Log("WARN: Failed to get StadiumCost data from json");
+        }
+
+        if (i_FinanceDict.TryGetValue("salary", out salaryObj) &&
+            float.TryParse(salaryObj.ToString(), out salary))
+        {
+            o_Team.Salary = salary;
+        }
+        else
+        {
+            Debug.Log("WARN: Failed to get Salary data from json");
         }
     }
 

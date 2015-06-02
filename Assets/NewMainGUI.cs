@@ -59,11 +59,11 @@ public class NewMainGUI : MonoBehaviour
 
     public void OnNextMatchClick()
     {
-        if (GameManager.s_GameManger.GetNextMatchTimeSpan() > TimeSpan.Zero)
-        {
-            // TODO: Tell user to wait until the time of the match
-            return;
-        }
+        //if (GameManager.s_GameManger.GetNextMatchTimeSpan() > TimeSpan.Zero)
+        //{
+        //    // TODO: Tell user to wait until the time of the match
+        //    return;
+        //}
 
         StartCoroutine(GameManager.s_GameManger.SyncClientDB("MatchResultScene"));
     }
