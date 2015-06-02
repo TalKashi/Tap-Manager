@@ -166,7 +166,7 @@ public class MyUtils
     {
         object id, email, age, money, name, managerName, birthday, coinValue, fbId;
 
-        if (i_UserDict.TryGetValue("_id", out id))
+        if (i_UserDict.TryGetValue("id", out id))
         {
             o_User.ID = id.ToString();
         }

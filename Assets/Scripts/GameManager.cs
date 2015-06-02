@@ -141,8 +141,8 @@ public class GameManager : MonoBehaviour {
     // TEMP FOR PRESENTATION
     public Sprite[] m_PlayerImages;
 
-    public const string URL = "http://tapmanger.herokuapp.com/";
-    //public const string URL = "http://93.173.151.22:3000/";
+    //public const string URL = "http://tapmanger.herokuapp.com/";
+    public const string URL = "http://10.10.9.132:3000/";
 
 	void Awake () 
     {
@@ -210,9 +210,10 @@ public class GameManager : MonoBehaviour {
         WWWForm form = new WWWForm();
         int clicks = NumOfClicksOnCoin;
         NumOfClicksOnCoin = 0;
-        form.AddField("email", m_User.Email);
-        form.AddField("id", m_User.FBId);
+        //form.AddField("email", m_User.Email);
+        form.AddField("id", m_User.ID);
         form.AddField("clicks", clicks);
+        Debug.Log("m_User.ID=" + m_User.ID);
         
 
         Debug.Log("Sending sendCoinClick to server (" + clicks + ")");
@@ -548,6 +549,44 @@ public class GameManager : MonoBehaviour {
     {
         string homeOrAway = m_GameSettings.IsHomeOrAway ? " (Home)" : " (Away)";
         return m_GameSettings.NextOpponent + homeOrAway;
+    }
+
+    public IEnumerator SyncClientDB(string i_NextScene)
+    {
+        WWWForm form = new WWWForm();
+        Debug.Log("sending sync request for user: " + PlayerPrefs.GetString("id"));
+        form.AddField("email", PlayerPrefs.GetString("email"));
+        form.AddField("id", PlayerPrefs.GetString("id"));
+        WWW request = new WWW(URL + "getInfoById", form);
+
+        yield return request;
+
+        if (!string.IsNullOrEmpty(request.error))
+        {
+            Debug.Log("ERROR: " + request.error);
+        }
+        else
+        {
+            print(request.text);
+            Dictionary<string, object> json = Facebook.MiniJSON.Json.Deserialize(request.text) as Dictionary<string, object>;
+            MyUtils.LoadTeamData(json, ref m_myTeam);
+            MyUtils.LoadLeagueData(json, ref m_AllTeams);
+            MyUtils.LoadBucketData(json, ref m_Bucket);
+            MyUtils.LoadSquadData(json, ref m_MySquad);
+            MyUtils.LoadGameSettings(json, ref m_GameSettings);
+            MyUtils.LoadUserData(json, ref m_User);
+            if (i_NextScene != null)
+            {
+                Application.LoadLevel(i_NextScene);
+            }
+            //if (m_ProfilePic != null)
+            //{
+            //    GameManager.s_GameManger.m_User.ProfilePic = m_ProfilePic;
+            //}
+            //k_IsDataLoaded = true;
+        }
+        Debug.Log("End of SyncClientDB()");
+
     }
 }
 

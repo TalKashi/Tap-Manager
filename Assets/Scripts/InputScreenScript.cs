@@ -21,12 +21,12 @@ public class InputScreenScript : MonoBehaviour {
     {
 		m_isValid = true;
         SoundManager.s_SoundManager.playClickSound();
-		if (m_teamName.textComponent.text == null || m_teamName.textComponent.text.Length == 0) {
+		if (string.IsNullOrEmpty(m_teamName.textComponent.text)) {
 			m_error.text = "Team name cant be empty String";
 			m_isValid = false;
 		}
 
-		if (m_stadiumName.textComponent.text == null || m_stadiumName.textComponent.text.Length == 0) {
+		if (string.IsNullOrEmpty(m_stadiumName.textComponent.text)) {
 			m_error.text = "Stadium name cant be empty String";
 			m_isValid = false;
 		}
@@ -54,13 +54,15 @@ public class InputScreenScript : MonoBehaviour {
     {
         WWWForm form = new WWWForm();
         
-        form.AddField("id", GameManager.s_GameManger.m_User.ID);
-        form.AddField("email", GameManager.s_GameManger.m_User.Email);
+        form.AddField("id", PlayerPrefs.GetString("id"));
+        //form.AddField("email", GameManager.s_GameManger.m_User.Email);
         form.AddField("teamName", m_teamName.text);
         form.AddField("stadiumName", m_stadiumName.text);
-        form.AddField("coachName", m_ManagerName.text);
+        form.AddField("name", m_ManagerName.text);
 
-        WWW request = new WWW(GameManager.URL + "newTeamUser", form);
+        Debug.Log(PlayerPrefs.GetString("id"));
+        
+        WWW request = new WWW(GameManager.URL + "newUser", form);
 
         Debug.Log("Sending team data");
         yield return request;
@@ -75,7 +77,7 @@ public class InputScreenScript : MonoBehaviour {
             print(request.text);
             if (request.text == "ok")
             {
-                StartCoroutine(syncClientDB());
+                StartCoroutine(GameManager.s_GameManger.SyncClientDB("NewMainScene"));
             }
         }
         Debug.Log("End of addNewTeamUser()");
@@ -84,8 +86,8 @@ public class InputScreenScript : MonoBehaviour {
     IEnumerator syncClientDB()
     {
         WWWForm form = new WWWForm();
-        Debug.Log("sending sync request for user: " + PlayerPrefs.GetString("email"));
-        form.AddField("email", PlayerPrefs.GetString("email"));
+        Debug.Log("sending sync request for user: " + PlayerPrefs.GetString("id"));
+        //form.AddField("email", PlayerPrefs.GetString("email"));
         form.AddField("id", PlayerPrefs.GetString("id"));
         WWW request = new WWW(GameManager.URL + "getInfoById", form);
 

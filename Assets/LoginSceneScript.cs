@@ -142,10 +142,10 @@ public class LoginSceneScript : MonoBehaviour {
         Debug.Log("End of AddNewFBUser()");
     }
 
-    IEnumerator syncClientDB()
+    public IEnumerator syncClientDB()
     {
         WWWForm form = new WWWForm();
-        Debug.Log("sending sync request for user: " + PlayerPrefs.GetString("email"));
+        Debug.Log("sending sync request for user: " + PlayerPrefs.GetString("id"));
         form.AddField("email", PlayerPrefs.GetString("email"));
         form.AddField("id", PlayerPrefs.GetString("id"));
         WWW request = new WWW(SERVER + "getInfoById", form);

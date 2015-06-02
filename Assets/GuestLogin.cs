@@ -3,13 +3,14 @@
 public class GuestLogin : MonoBehaviour
 {
 
-    private const string k_GuestLoginKey = "guestID";
+    private const string k_GuestLoginKey = "id";
 
     private LoginSceneScript m_LoginSceneScript;
 
 	void Start ()
 	{
 	    m_LoginSceneScript = GetComponentInParent<LoginSceneScript>();
+        //PlayerPrefs.DeleteAll();
         login();
 	}
 
@@ -36,7 +37,7 @@ public class GuestLogin : MonoBehaviour
         // {'id':'10153270532886624','name':'Tal Kashi','email":'shakikashi\u0040gmail.com'}
         //string jsonString = string.Format("{{\"id\":\"{0}\", }}", i_ID);
         PlayerPrefs.SetString(k_GuestLoginKey, i_ID);
-        string jsonString = string.Format("{{'id':'{0}'}}", i_ID);
+        string jsonString = string.Format("{{\"id\":\"{0}\"}}", i_ID);
         Debug.Log(jsonString);
 
         StartCoroutine(m_LoginSceneScript.AddNewFBUser(jsonString));

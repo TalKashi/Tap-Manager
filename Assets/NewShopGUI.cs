@@ -61,7 +61,8 @@ public class NewShopGUI : MonoBehaviour
         int upgradeCost = GameManager.s_GameManger.m_GameSettings.GetFansCostForLevel(GameManager.s_GameManger.m_myTeam.GetFansLevel());
         if (GameManager.s_GameManger.GetCash() >= upgradeCost)
         {
-            StartCoroutine(sendFansClickToServer(upgradeCost));
+            GameManager.s_GameManger.FansUpdate(upgradeCost);
+            StartCoroutine(sendFansClickToServer());
         }
         else
         {
@@ -69,12 +70,13 @@ public class NewShopGUI : MonoBehaviour
         }
     }
 
-    IEnumerator sendFansClickToServer(int i_UpgradeCost)
+    IEnumerator sendFansClickToServer()
     {
         // TODO: Add 'loading' popup
         m_WaitingForServer = true;
         WWWForm form = new WWWForm();
-        form.AddField("email", GameManager.s_GameManger.m_User.Email);
+        //form.AddField("email", GameManager.s_GameManger.m_User.Email);
+        form.AddField("id", GameManager.s_GameManger.m_User.ID);
 
         Debug.Log("Sending fansClick request");
         WWW request = new WWW(GameManager.URL + "upgradeFans", form);
@@ -94,7 +96,7 @@ public class NewShopGUI : MonoBehaviour
             switch (request.text)
             {
                 case "ok":
-                    GameManager.s_GameManger.FansUpdate(i_UpgradeCost);
+                    Debug.Log("Fans upgraded OK!");
                     break;
                 case "null":
                     Debug.Log("WARN: DB out of sync!");
@@ -116,7 +118,9 @@ public class NewShopGUI : MonoBehaviour
         int upgradeCost = GameManager.s_GameManger.m_GameSettings.GetFacilitiesCostForLevel(GameManager.s_GameManger.m_myTeam.GetFacilitiesLevel());
         if (GameManager.s_GameManger.GetCash() >= upgradeCost)
         {
-            StartCoroutine(sendFacilitiesClickToServer(upgradeCost));
+            print("Price=" + upgradeCost);
+            GameManager.s_GameManger.FacilitiesUpdate(upgradeCost);
+            StartCoroutine(sendFacilitiesClickToServer());
         }
         else
         {
@@ -124,12 +128,12 @@ public class NewShopGUI : MonoBehaviour
         }
     }
 
-    IEnumerator sendFacilitiesClickToServer(int i_UpgradeCost)
+    IEnumerator sendFacilitiesClickToServer()
     {
         // TODO: Add 'loading' popup
         m_WaitingForServer = true;
         WWWForm form = new WWWForm();
-        form.AddField("email", GameManager.s_GameManger.m_User.Email);
+        form.AddField("id", GameManager.s_GameManger.m_User.ID);
 
         Debug.Log("Sending facilitiesClick request");
         WWW request = new WWW(GameManager.URL + "upgradeFacilities", form);
@@ -143,13 +147,11 @@ public class NewShopGUI : MonoBehaviour
         else
         {
             Debug.Log(request.text);
-            // Check ok response
-            // if new user go to new team screen
-            // else go to home page with team data
+            
             switch (request.text)
             {
                 case "ok":
-                    GameManager.s_GameManger.FacilitiesUpdate(i_UpgradeCost);
+                    Debug.Log("Facilities upgraded OK!");
                     break;
                 case "null":
                     Debug.Log("WARN: DB out of sync!");
@@ -172,7 +174,8 @@ public class NewShopGUI : MonoBehaviour
         int upgradeCost = GameManager.s_GameManger.m_GameSettings.GetStadiumCostForLevel(GameManager.s_GameManger.m_myTeam.GetStadiumLevel());
         if (GameManager.s_GameManger.GetCash() >= upgradeCost)
         {
-            StartCoroutine(sendStadiumClickToServer(upgradeCost));
+            GameManager.s_GameManger.StadiumUpdate(upgradeCost);
+            StartCoroutine(sendStadiumClickToServer());
         }
         else
         {
@@ -180,12 +183,12 @@ public class NewShopGUI : MonoBehaviour
         }
     }
 
-    IEnumerator sendStadiumClickToServer(int i_UpgradeCost)
+    IEnumerator sendStadiumClickToServer()
     {
         // TODO: Add 'loading' popup
         m_WaitingForServer = true;
         WWWForm form = new WWWForm();
-        form.AddField("email", GameManager.s_GameManger.m_User.Email);
+        form.AddField("id", GameManager.s_GameManger.m_User.ID);
 
         Debug.Log("Sending stadiumClick request");
         WWW request = new WWW(GameManager.URL + "upgradeStadium", form);
@@ -203,7 +206,7 @@ public class NewShopGUI : MonoBehaviour
             switch (request.text)
             {
                 case "ok":
-                    GameManager.s_GameManger.StadiumUpdate(i_UpgradeCost);
+                    Debug.Log("Stadium upgraded OK!");
                     break;
                 case "null":
                     Debug.Log("WARN: DB out of sync!");
