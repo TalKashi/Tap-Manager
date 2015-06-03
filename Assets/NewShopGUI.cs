@@ -6,52 +6,55 @@ public class NewShopGUI : MonoBehaviour
 {
 
     public Text m_FansUpgradeText;
+    public Text m_FansUpgradeTitleText;
     public Text m_FacilitiesUpgradeText;
+    public Text m_FacilitiesUpgradeTitleText;
     public Text m_StadiumUpgradeText;
+    public Text m_StadiumUpgradeTitleText;
 
     private bool m_WaitingForServer = false;
 
 	// Use this for initialization
 	void Start ()
 	{
-        m_FansUpgradeText.text =
-            string.Format("<size=18><b>Total Fans: {0}</b></size>{1}<color=white>Invest in your fans{1}{2:C0}</color>",
-	            GameManager.s_GameManger.m_myTeam.GetFanBase(), System.Environment.NewLine,
+	    m_FansUpgradeTitleText.text = string.Format("Total Fans: {0}", GameManager.s_GameManger.m_myTeam.GetFanBase());
+        m_FansUpgradeText.text = string.Format("Invest in your fans{0}{1:C0}",
+	            System.Environment.NewLine,
 	            GameManager.s_GameManger.m_GameSettings.GetFansCostForLevel(GameManager.s_GameManger.m_myTeam.Fans));
 
-	    m_FacilitiesUpgradeText.text =
-	        string.Format(
-                "<size=18><b>Facilities Level: {0}</b></size>{1}<color=white>Improve your training facilities{1}{2:C0}</color>",
-	            GameManager.s_GameManger.m_myTeam.Facilities + 1, System.Environment.NewLine,
+	    m_FacilitiesUpgradeTitleText.text = string.Format("Facilities Level: {0}",
+	        GameManager.s_GameManger.m_myTeam.Facilities + 1);
+	    m_FacilitiesUpgradeText.text = string.Format("Improve your training facilities{0}{1:C0}",
+	            System.Environment.NewLine,
 	            GameManager.s_GameManger.m_GameSettings.GetFacilitiesCostForLevel(
 	                GameManager.s_GameManger.m_myTeam.Facilities));
 
-        m_StadiumUpgradeText.text = 
-            string.Format(
-            "<size=18><b>Stadium Capacity: {0}k</b></size>{1}<color=white>Increase your stadium capacity{1}{2:C0}</color>"
-            , GameManager.s_GameManger.m_myTeam.TotalSeats/1000, System.Environment.NewLine, GameManager.s_GameManger.m_GameSettings.GetStadiumCostForLevel(
+	    m_StadiumUpgradeTitleText.text = string.Format("Stadium Capacity: {0}k",
+	        GameManager.s_GameManger.m_myTeam.TotalSeats/1000);
+        m_StadiumUpgradeText.text = string.Format("Increase your stadium capacity{0}{1:C0}",
+            System.Environment.NewLine, GameManager.s_GameManger.m_GameSettings.GetStadiumCostForLevel(
                     GameManager.s_GameManger.m_myTeam.Stadium));
 	}
 	
 	// Update is called once per frame
 	void Update () 
     {
-        m_FansUpgradeText.text =
-            string.Format("<size=18><b>Total Fans: {0}</b></size>{1}<color=white>Invest in your fans{1}{2:C0}</color>",
-                GameManager.s_GameManger.m_myTeam.GetFanBase(), System.Environment.NewLine,
+        m_FansUpgradeTitleText.text = string.Format("Total Fans: {0}", GameManager.s_GameManger.m_myTeam.GetFanBase());
+        m_FansUpgradeText.text = string.Format("Invest in your fans{0}{1:C0}",
+                System.Environment.NewLine,
                 GameManager.s_GameManger.m_GameSettings.GetFansCostForLevel(GameManager.s_GameManger.m_myTeam.Fans));
 
-        m_FacilitiesUpgradeText.text =
-            string.Format(
-                "<size=18><b>Facilities Level: {0}</b></size>{1}<color=white>Improve your training facilities{1}{2:C0}</color>",
-                GameManager.s_GameManger.m_myTeam.Facilities + 1, System.Environment.NewLine,
+        m_FacilitiesUpgradeTitleText.text = string.Format("Facilities Level: {0}",
+            GameManager.s_GameManger.m_myTeam.Facilities + 1);
+        m_FacilitiesUpgradeText.text = string.Format("Improve your training facilities{0}{1:C0}",
+                System.Environment.NewLine,
                 GameManager.s_GameManger.m_GameSettings.GetFacilitiesCostForLevel(
                     GameManager.s_GameManger.m_myTeam.Facilities));
 
-        m_StadiumUpgradeText.text =
-            string.Format(
-            "<size=18><b>Stadium Capacity: {0}k</b></size>{1}<color=white>Increase your stadium capacity{1}{2:C0}</color>"
-            , GameManager.s_GameManger.m_myTeam.TotalSeats/1000, System.Environment.NewLine, GameManager.s_GameManger.m_GameSettings.GetStadiumCostForLevel(
+        m_StadiumUpgradeTitleText.text = string.Format("Stadium Capacity: {0}k",
+            GameManager.s_GameManger.m_myTeam.TotalSeats / 1000);
+        m_StadiumUpgradeText.text = string.Format("Increase your stadium capacity{0}{1:C0}",
+            System.Environment.NewLine, GameManager.s_GameManger.m_GameSettings.GetStadiumCostForLevel(
                     GameManager.s_GameManger.m_myTeam.Stadium));
 	}
 

@@ -9,14 +9,15 @@ public class NewMainGUI : MonoBehaviour
     public Text m_ShopText;
     public Text m_BucketText;
     public Text m_StartMatchText;
+    public Text m_StartMatchTextTitle;
     public Text m_SquadText;
 
 	// Use this for initialization
 	void Start ()
 	{
 	    updateStartMatchGUI();
-	    m_ShopText.text = string.Format("<size=20><b>Upgrade Club</b></size>{0}<color=white>Total Fans: {1}{0}Facilities Level: {2}{0}Stadium: {3}k seats</color>",
-	        System.Environment.NewLine, GameManager.s_GameManger.m_myTeam.GetFanBase(),
+	    m_ShopText.text = string.Format("Total Fans: {1}{0}Facilities Level: {2}{0}Stadium: {3}k seats",
+	        Environment.NewLine, GameManager.s_GameManger.m_myTeam.GetFanBase(),
 	        GameManager.s_GameManger.m_myTeam.Facilities + 1, GameManager.s_GameManger.m_myTeam.TotalSeats / 1000);
 	    updateBucketGUI();
 	}
@@ -32,12 +33,13 @@ public class NewMainGUI : MonoBehaviour
     {
         if (GameManager.s_GameManger.GetNextMatchTimeSpan() <= TimeSpan.Zero)
         {
-            m_StartMatchText.text = string.Format("<size=20><b>Go To Match!</b></size>{0}<color=white>vs. {1}</color>",
-                System.Environment.NewLine, GameManager.s_GameManger.GetNextOpponent());
+            m_StartMatchTextTitle.text = "Go To Match!";
+            m_StartMatchText.text = string.Format("vs. {0}", GameManager.s_GameManger.GetNextOpponent());
         }
         else
         {
-            m_StartMatchText.text = string.Format("<size=20><b>Next Match</b></size>{0}<color=white>{1} Until Kickoff{0}vs. {2}</color>", System.Environment.NewLine,
+            m_StartMatchTextTitle.text = "Next Match";
+            m_StartMatchText.text = string.Format("{1} Until Kickoff{0}vs. {2}", Environment.NewLine,
             GameManager.s_GameManger.GetNextMatchTimeSpan().ToString().Split('.')[0]
             , GameManager.s_GameManger.GetNextOpponent());
         }
@@ -47,13 +49,11 @@ public class NewMainGUI : MonoBehaviour
     {
         if (GameManager.s_GameManger.IsBucketFull())
         {
-            m_BucketText.text = string.Format("{0:C0}{1}{2}", GameManager.s_GameManger.GetMoneyInBucket(),
-                System.Environment.NewLine, "Collect Money!");
+            m_BucketText.text = string.Format("{1} {0:C0}", GameManager.s_GameManger.GetMoneyInBucket(), "Collect Money!");
         }
         else
         {
-            m_BucketText.text = string.Format("{0:C0}{1}{2}", GameManager.s_GameManger.GetMoneyInBucket(), System.Environment.NewLine,
-                GameManager.s_GameManger.GetNextEmptyTimeSpan().ToString().Split('.')[0]);
+            m_BucketText.text = string.Format("{0}", GameManager.s_GameManger.GetNextEmptyTimeSpan().ToString().Split('.')[0]);
         }
     }
 
@@ -147,9 +147,9 @@ public class NewMainGUI : MonoBehaviour
     {
         //m_WaitingForServer = true;
         WWWForm form = new WWWForm();
-        Debug.Log("EMAIL=" + GameManager.s_GameManger.m_User.Email);
-        form.AddField("email", GameManager.s_GameManger.m_User.Email);
-        form.AddField("fbId", GameManager.s_GameManger.m_User.FBId);
+        Debug.Log("id=" + GameManager.s_GameManger.m_User.ID);
+        
+        form.AddField("id", GameManager.s_GameManger.m_User.ID);
 
         Debug.Log("Sending sendEmptyBucketClick to server");
         WWW request = new WWW(GameManager.URL + "collectBucket", form);

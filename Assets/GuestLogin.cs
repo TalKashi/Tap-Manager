@@ -27,7 +27,7 @@ public class GuestLogin : MonoBehaviour
 
     public void OnLoginButtonClicked()
     {
-        Debug.Log("Bottun Clicked!");
+        Debug.Log("Button Clicked!");
       
         login(System.Guid.NewGuid().ToString());
     }
