@@ -1,24 +1,25 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
 
 public class Scoarboard : MonoBehaviour
 {
 
     public Text m_HomeTeamName;
-    public Text m_HomeTeamGoals;
+    public Image m_HomeTeamLogo;
     public Text m_AwayTeamName;
-    public Text m_AwayTeamGoals;
+    public Image m_AwayTeamLogo;
     public Text m_CrowdAttendence;
+    public Text m_FinalScore;
+    public Text m_CurrentMinute;
 
     void Start()
     {
         MatchInfo lastMatch = GameManager.s_GameManger.m_myTeam.GetLastMatchInfo();
         m_HomeTeamName.text = lastMatch.GetHomeTeamString();
         m_AwayTeamName.text = lastMatch.GetAwayTeamString();
-        m_HomeTeamGoals.text = lastMatch.GetHomeGoals().ToString();
-        m_AwayTeamGoals.text = lastMatch.GetAwayGoals().ToString();
-        m_CrowdAttendence.text = lastMatch.GetTotalCrowd().ToString();
+        m_FinalScore.text = string.Format("{0} - {1}", lastMatch.GetHomeGoals(), lastMatch.GetAwayGoals());
+        m_CurrentMinute.text = "90:00";
+        m_CrowdAttendence.text = string.Format("Crowd: {0}", lastMatch.GetTotalCrowd());
 		playSound ();
     }
 

@@ -94,7 +94,7 @@ public class InputScript : MonoBehaviour
             print(request.text);
             if (request.text == "ok")
             {
-                StartCoroutine(GameManager.s_GameManger.SyncClientDB("NewMainScene"));
+                StartCoroutine(GameManager.s_GameManger.SyncClientDB("NewDesignMainScene"));
             }
         }
         Debug.Log("End of addNewTeamUser()");

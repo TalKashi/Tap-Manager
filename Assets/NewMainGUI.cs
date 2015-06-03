@@ -65,7 +65,7 @@ public class NewMainGUI : MonoBehaviour
         //    return;
         //}
 
-        StartCoroutine(GameManager.s_GameManger.SyncClientDB("MatchResultScene"));
+        StartCoroutine(GameManager.s_GameManger.SyncClientDB("NewDesignMatchResult"));
     }
 
     IEnumerator sendNextMatchClick()
