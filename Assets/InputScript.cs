@@ -71,7 +71,7 @@ public class InputScript : MonoBehaviour
     {
         WWWForm form = new WWWForm();
 
-        form.AddField("id", PlayerPrefs.GetString("id", "69289a8d-ff32-4d75-ab5f-3e6014ea2c5c"));
+        form.AddField("id", PlayerPrefs.GetString("id"));
 
         form.AddField("teamName", PlayerPrefs.GetString("teamName"));
         form.AddField("stadiumName", PlayerPrefs.GetString("stadiumName"));

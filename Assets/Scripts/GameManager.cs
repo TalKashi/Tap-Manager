@@ -556,7 +556,7 @@ public class GameManager : MonoBehaviour {
         WWWForm form = new WWWForm();
         Debug.Log("sending sync request for user: " + PlayerPrefs.GetString("id"));
         form.AddField("email", PlayerPrefs.GetString("email"));
-        form.AddField("id", PlayerPrefs.GetString("id", "69289a8d-ff32-4d75-ab5f-3e6014ea2c5c"));
+        form.AddField("id", PlayerPrefs.GetString("id"));
         WWW request = new WWW(URL + "getInfoById", form);
 
         yield return request;
