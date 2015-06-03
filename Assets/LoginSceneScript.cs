@@ -129,11 +129,12 @@ public class LoginSceneScript : MonoBehaviour {
             if (www.text == "null")
             {
                 // Go to new team scene
-                Application.LoadLevel("Input");
+                PlayerPrefs.DeleteKey(InputScript.k_InputScene);
+                Application.LoadLevel("NewDesignInput");
             }
             else
             {
-                StartCoroutine(syncClientDB());
+                StartCoroutine(GameManager.s_GameManger.SyncClientDB("NewDesignMainScene"));
             }
             // Check ok response
             // if new user go to new team screen

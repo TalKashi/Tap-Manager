@@ -141,8 +141,8 @@ public class GameManager : MonoBehaviour {
     // TEMP FOR PRESENTATION
     public Sprite[] m_PlayerImages;
 
-    //public const string URL = "http://tapmanger.herokuapp.com/";
-    public const string URL = "http://10.10.9.132:3000/";
+    public const string URL = "http://tapmanger.herokuapp.com/";
+    //public const string URL = "http://10.10.9.132:3000/";
 
 	void Awake () 
     {
@@ -556,7 +556,7 @@ public class GameManager : MonoBehaviour {
         WWWForm form = new WWWForm();
         Debug.Log("sending sync request for user: " + PlayerPrefs.GetString("id"));
         form.AddField("email", PlayerPrefs.GetString("email"));
-        form.AddField("id", PlayerPrefs.GetString("id"));
+        form.AddField("id", PlayerPrefs.GetString("id", "69289a8d-ff32-4d75-ab5f-3e6014ea2c5c"));
         WWW request = new WWW(URL + "getInfoById", form);
 
         yield return request;
