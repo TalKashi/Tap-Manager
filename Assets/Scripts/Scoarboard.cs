@@ -11,6 +11,7 @@ public class Scoarboard : MonoBehaviour
     public Text m_CrowdAttendence;
     public Text m_FinalScore;
     public Text m_CurrentMinute;
+    public GameObject m_LosePopup;
 
     void Start()
     {
@@ -35,7 +36,13 @@ public class Scoarboard : MonoBehaviour
 		playSound ();
     }
 
-	private void playSound(){
+    public void OnSkipClick()
+    {
+        m_LosePopup.SetActive(true);
+    }
+
+	private void playSound()
+    {
 		eResult lastMatch = GameManager.s_GameManger.m_myTeam.GetLastResult();
 		switch (lastMatch) {
 
