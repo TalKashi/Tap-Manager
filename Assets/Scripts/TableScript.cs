@@ -34,7 +34,7 @@ public class TableScript : MonoBehaviour {
     {
 
 		OneLineUITableScript oneLineUITableScript = m_lines [i_lineNum].GetComponent<OneLineUITableScript> ();
-		oneLineUITableScript.m_place.text = string.Format("{0}", +i_place);
+		oneLineUITableScript.m_place.text = string.Format("{0}.", +i_place);
 		oneLineUITableScript.m_team.text = i_team;
 		oneLineUITableScript.m_played.text = i_played.ToString();
 		oneLineUITableScript.m_won.text = i_won.ToString();
