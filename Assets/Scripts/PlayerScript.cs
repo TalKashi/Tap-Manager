@@ -11,7 +11,7 @@ public class PlayerScript {
 	private ePosition m_position;
 	private string m_firstName;
 	private string m_lastName;
-	private int m_salary;
+	private float m_salary;
 	private bool m_isInjured;
 	private int m_age;
 	private int m_gamesPlayed = 0;
@@ -175,6 +175,7 @@ public class PlayerScript {
         if (m_CurrentBoost >= m_NextBoostCap) 
 		{
             m_CurrentBoost = m_CurrentBoost % m_NextBoostCap;
+		    m_salary *= 1.1f;
 		    m_NextBoostCap *= 2;
 			m_level++;
             m_priceToBoost = (int)(m_priceToBoost*GameManager.s_GameManger.m_GameSettings.PlayerBoostCostMultiplier);
@@ -208,7 +209,7 @@ public class PlayerScript {
 
     public int GetSalary()
     {
-        return m_salary;
+        return (int) m_salary;
     }
 
 	public int GetYearJoinedTheClub ()
