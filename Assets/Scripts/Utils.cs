@@ -875,7 +875,7 @@ public class MyUtils
 
     private static void extractLastGameInfoData(Dictionary<string, object> i_LastGameInfoDict, ref TeamScript o_Team)
     {
-        object homeTeam, awayTeam, homeTeamGoals, awayTeamGoals, crowdAtMatch;
+        object homeTeam, awayTeam, homeTeamGoals, awayTeamGoals, crowdAtMatch, playersScoreGoal;
 
 
         if (!i_LastGameInfoDict.TryGetValue("homeTeam", out homeTeam))
@@ -903,8 +903,13 @@ public class MyUtils
             return;
         }
 
+        if (!i_LastGameInfoDict.TryGetValue("playersScoreGoal", out playersScoreGoal))
+        {
+            return;
+        }
+
         o_Team.SetLastGameInfo(new MatchInfo((string)homeTeam, (string)awayTeam,int.Parse( homeTeamGoals.ToString()),int.Parse( awayTeamGoals.ToString())
-                            ,(int)float.Parse( crowdAtMatch.ToString())));
+                            , (int)float.Parse(crowdAtMatch.ToString()), playersScoreGoal.ToString()));
     }
 
     private static void extractShopData(Dictionary<string, object> i_ShopDict, ref TeamScript o_Team)

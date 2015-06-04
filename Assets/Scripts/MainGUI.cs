@@ -78,7 +78,7 @@ public class MainGUI : MonoBehaviour
 
     public void OnNextMatchClick()
     {
-        FixturesManager.s_FixturesManager.ExecuteNextFixture();
+        //FixturesManager.s_FixturesManager.ExecuteNextFixture();
         Application.LoadLevel(m_NextScene);
     }
 

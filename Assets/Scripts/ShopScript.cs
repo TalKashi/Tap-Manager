@@ -186,9 +186,4 @@ public class ShopScript : MonoBehaviour {
 
         m_WaitingForServer = false;
     }
-
-    public void OnNextMatchClick()
-    {
-        FixturesManager.s_FixturesManager.ExecuteNextFixture();
-    }
 }

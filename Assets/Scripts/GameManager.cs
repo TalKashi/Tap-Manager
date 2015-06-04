@@ -458,8 +458,8 @@ public class GameManager : MonoBehaviour
 
     public int GetTeamPosition(TeamScript i_Team)
     {
-        
-        updateTableLeague();
+
+        sortLeagueTable();
         
         for (int i = 0; i < m_AllTeams.Length; i++)
         {
@@ -472,22 +472,15 @@ public class GameManager : MonoBehaviour
         return 0;
     }
 
-	//Team in the first place is the team in the last place in the array.
-	public void updateTableLeague()
+    private void sortLeagueTable()
     {
-	    //if (m_TeamsForTable == null)
-	   // {
-	    //    m_TeamsForTable = new TeamScript[m_AllTeams.Length];
-        //    Array.Copy(m_AllTeams, m_TeamsForTable, m_AllTeams.Length);
-	   // }
-
-        Array.Sort(m_AllTeams, delegate(TeamScript team1, TeamScript team2) 
+        Array.Sort(m_AllTeams, delegate(TeamScript team1, TeamScript team2)
         {
-            if (team1.GetPoints() < team2.GetPoints()) 
+            if (team1.GetPoints() < team2.GetPoints())
             {
                 return -2;
             }
-            else if(team1.GetPoints() > team2.GetPoints())
+            else if (team1.GetPoints() > team2.GetPoints())
             {
                 return 2;
             }
@@ -499,9 +492,21 @@ public class GameManager : MonoBehaviour
             {
                 return 1;
             }
-            
-			return team1.GetName().CompareTo(team2.GetName());
-		});
+
+            return team1.GetName().CompareTo(team2.GetName());
+        });
+    }
+
+	//Team in the first place is the team in the last place in the array.
+	public void updateTableLeague()
+    {
+	    //if (m_TeamsForTable == null)
+	   // {
+	    //    m_TeamsForTable = new TeamScript[m_AllTeams.Length];
+        //    Array.Copy(m_AllTeams, m_TeamsForTable, m_AllTeams.Length);
+	   // }
+
+        sortLeagueTable();
 
 	    GameObject tableGameObject = GameObject.FindGameObjectWithTag("Table");
         if (tableGameObject == null)

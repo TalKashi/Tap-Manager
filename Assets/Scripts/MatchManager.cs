@@ -25,51 +25,51 @@ public class MatchManager : MonoBehaviour
         }
     }
 
-    public void CalcResult(TeamScript i_HomeTeam, TeamScript i_AwayTeam)
-    {
-        float randomCrowdMultiplier = Random.Range(m_MinCrowdMultiplier, m_MaxCrowdMultiplier);
-        //float homeTeamOdds = i_HomeTeam.GetWinOdds();
-        //float awayTeamOdds = i_AwayTeam.GetWinOdds();
-        int crowdAtMatch = (int) (i_HomeTeam.GetFanBase() * randomCrowdMultiplier); // / 100000 * randomFansMultiplier;
-        // crowdAtMatch should be bounded by stadium size
+    //public void CalcResult(TeamScript i_HomeTeam, TeamScript i_AwayTeam)
+    //{
+    //    float randomCrowdMultiplier = Random.Range(m_MinCrowdMultiplier, m_MaxCrowdMultiplier);
+    //    //float homeTeamOdds = i_HomeTeam.GetWinOdds();
+    //    //float awayTeamOdds = i_AwayTeam.GetWinOdds();
+    //    int crowdAtMatch = (int) (i_HomeTeam.GetFanBase() * randomCrowdMultiplier); // / 100000 * randomFansMultiplier;
+    //    // crowdAtMatch should be bounded by stadium size
 
-        float outcome = Random.Range(0f, 1f);
-        //Debug.Log("oucome=" + outcome);
+    //    float outcome = Random.Range(0f, 1f);
+    //    //Debug.Log("oucome=" + outcome);
 
 
-        int homeTeamGoals;
-        int awayTeamGoals;
-        eResult eHomeResult;
-        eResult eAwayResult;
-        if (outcome < 0.3)
-        {
-            // Home team win
-            homeTeamGoals = Random.Range(1, 5);
-            awayTeamGoals = Random.Range(0, homeTeamGoals);
-            eHomeResult = eResult.Won;
-            eAwayResult = eResult.Lost;
-        }
-        else if (outcome < 0.6)
-        {
-            // Tie
-            homeTeamGoals = Random.Range(1, 5);
-            awayTeamGoals = homeTeamGoals;
-            eHomeResult = eResult.Draw;
-            eAwayResult = eResult.Draw;
-        }
-        else
-        {
-            // Away team win
-            awayTeamGoals = Random.Range(1, 5);
-            homeTeamGoals = Random.Range(0, awayTeamGoals);
-            eHomeResult = eResult.Lost;
-            eAwayResult = eResult.Won;
-        }
-        bool v_isHomeTeam = true;
-        MatchInfo matchInfo = new MatchInfo(i_HomeTeam.GetName(), i_AwayTeam.GetName(), homeTeamGoals, awayTeamGoals, crowdAtMatch);
-        i_HomeTeam.UpdateMatchPlayed(eHomeResult, matchInfo, v_isHomeTeam);
-        i_AwayTeam.UpdateMatchPlayed(eAwayResult, matchInfo, !v_isHomeTeam);
-    }
+    //    int homeTeamGoals;
+    //    int awayTeamGoals;
+    //    eResult eHomeResult;
+    //    eResult eAwayResult;
+    //    if (outcome < 0.3)
+    //    {
+    //        // Home team win
+    //        homeTeamGoals = Random.Range(1, 5);
+    //        awayTeamGoals = Random.Range(0, homeTeamGoals);
+    //        eHomeResult = eResult.Won;
+    //        eAwayResult = eResult.Lost;
+    //    }
+    //    else if (outcome < 0.6)
+    //    {
+    //        // Tie
+    //        homeTeamGoals = Random.Range(1, 5);
+    //        awayTeamGoals = homeTeamGoals;
+    //        eHomeResult = eResult.Draw;
+    //        eAwayResult = eResult.Draw;
+    //    }
+    //    else
+    //    {
+    //        // Away team win
+    //        awayTeamGoals = Random.Range(1, 5);
+    //        homeTeamGoals = Random.Range(0, awayTeamGoals);
+    //        eHomeResult = eResult.Lost;
+    //        eAwayResult = eResult.Won;
+    //    }
+    //    bool v_isHomeTeam = true;
+    //    MatchInfo matchInfo = new MatchInfo(i_HomeTeam.GetName(), i_AwayTeam.GetName(), homeTeamGoals, awayTeamGoals, crowdAtMatch);
+    //    i_HomeTeam.UpdateMatchPlayed(eHomeResult, matchInfo, v_isHomeTeam);
+    //    i_AwayTeam.UpdateMatchPlayed(eAwayResult, matchInfo, !v_isHomeTeam);
+    //}
 }
 
 [Serializable]
@@ -80,14 +80,16 @@ public class MatchInfo
     private int m_HomeTeamGoals;
     private int m_AwayTeamGoals;
     private int m_CrowdAtMatch;
+    private string m_PlayerScoreGoal;
 
-    public MatchInfo(string i_HomeTeam, string i_AwayTeam, int i_HomeTeamGoals, int i_AwayTeamGoals, int i_CrowdAtMatch)
+    public MatchInfo(string i_HomeTeam, string i_AwayTeam, int i_HomeTeamGoals, int i_AwayTeamGoals, int i_CrowdAtMatch, string i_PlayerScoreGoal)
     {
         m_HomeTeam = i_HomeTeam;
         m_AwayTeam = i_AwayTeam;
         m_HomeTeamGoals = i_HomeTeamGoals;
         m_AwayTeamGoals = i_AwayTeamGoals;
         m_CrowdAtMatch = i_CrowdAtMatch;
+        m_PlayerScoreGoal = i_PlayerScoreGoal;
     }
 
     public int GetHomeGoals()

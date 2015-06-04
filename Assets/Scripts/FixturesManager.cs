@@ -140,22 +140,22 @@ public class FixturesManager : MonoBehaviour
         }
     }
 
-    public void ExecuteNextFixture()
-    {
-        const bool v_IsHomeTeam = true;
+    //public void ExecuteNextFixture()
+    //{
+    //    const bool v_IsHomeTeam = true;
 
-        // Validate not end of season
-        if (m_CurrentFixture == getTotalNumOfFixtures())
-        { 
-            return; 
-        }
-        for (int i = 0; i < getMatchesPerFixture(); i++)
-        {
-            MatchManager.s_MatchManager.CalcResult(getTeamByFixtureAndMatch(m_CurrentFixture, i, v_IsHomeTeam),
-                                                    getTeamByFixtureAndMatch(m_CurrentFixture, i, !v_IsHomeTeam));
-        }
-        m_CurrentFixture++;
-    }
+    //    // Validate not end of season
+    //    if (m_CurrentFixture == getTotalNumOfFixtures())
+    //    { 
+    //        return; 
+    //    }
+    //    for (int i = 0; i < getMatchesPerFixture(); i++)
+    //    {
+    //        MatchManager.s_MatchManager.CalcResult(getTeamByFixtureAndMatch(m_CurrentFixture, i, v_IsHomeTeam),
+    //                                                getTeamByFixtureAndMatch(m_CurrentFixture, i, !v_IsHomeTeam));
+    //    }
+    //    m_CurrentFixture++;
+    //}
 
     public string PrintFullFixtures()
     {
