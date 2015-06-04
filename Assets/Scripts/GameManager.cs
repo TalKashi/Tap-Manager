@@ -189,7 +189,7 @@ public class GameManager : MonoBehaviour
         }
 
         // Not suppose to reach this place
-        k_IsCoinClickCoroutineRunning = false;
+        //k_IsCoinClickCoroutineRunning = false;
     }
 
     IEnumerator sendCoinClick()
@@ -458,13 +458,12 @@ public class GameManager : MonoBehaviour
 
     public int GetTeamPosition(TeamScript i_Team)
     {
-        //if (m_AllTeams == null)
-        //{
-        //    updateTableLeague();
-        //}
+        
+        updateTableLeague();
+        
         for (int i = 0; i < m_AllTeams.Length; i++)
         {
-            if (i_Team == m_AllTeams[i])
+            if (i_Team.ID == m_AllTeams[i].ID)
             {
                 return m_AllTeams.Length - i;
             }

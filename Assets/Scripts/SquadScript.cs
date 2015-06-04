@@ -106,4 +106,15 @@ public class SquadScript {
 	{
 		return m_players[i];
 	}
+
+    public int GetLevel()
+    {
+        int level = 0;
+        foreach (PlayerScript player in m_players)
+        {
+            level += player.GetLevel();
+        }
+
+        return level / 10;
+    }
 }
