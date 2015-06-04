@@ -203,7 +203,7 @@ public class PlayerScript {
 
     public string GetShortName()
     {
-        return m_firstName.Substring(0, 1) + " " + m_lastName;
+        return string.Format("{0}. {1}", m_firstName.Substring(0, 1), m_lastName);
     }
 
     public int GetSalary()

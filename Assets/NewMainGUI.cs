@@ -38,7 +38,7 @@ public class NewMainGUI : MonoBehaviour
         }
         else
         {
-            m_StartMatchTextTitle.text = "Next Match";
+            m_StartMatchTextTitle.text = "Last Match";
             m_StartMatchText.text = string.Format("{1} Until Kickoff{0}vs. {2}", Environment.NewLine,
             GameManager.s_GameManger.GetNextMatchTimeSpan().ToString().Split('.')[0]
             , GameManager.s_GameManger.GetNextOpponent());

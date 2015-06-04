@@ -14,7 +14,8 @@ public class TableScript : MonoBehaviour {
 	}
 
 
-	public void InitTable(int i_numOfTeams){
+	public void InitTable(int i_numOfTeams)
+    {
 		m_lines = new GameObject[i_numOfTeams];
 		m_lines[0] = Instantiate(m_rowPrefab);
 	    m_lines[0].gameObject.transform.SetParent(m_contentPanel.transform);
@@ -27,8 +28,8 @@ public class TableScript : MonoBehaviour {
             m_lines[i].gameObject.transform.localScale = new Vector3(1, 1, 1);
 		}
 
+    }
 
-	}
 	public void UpdateLine(int i_lineNum, int i_place, string i_team, int i_played, int i_won, int i_lost, int i_drawn, int i_for, int i_against, int i_points)
     {
 

@@ -20,6 +20,18 @@ public class Scoarboard : MonoBehaviour
         m_FinalScore.text = string.Format("{0} - {1}", lastMatch.GetHomeGoals(), lastMatch.GetAwayGoals());
         m_CurrentMinute.text = "90:00";
         m_CrowdAttendence.text = string.Format("Crowd: {0}", lastMatch.GetTotalCrowd());
+
+        // Init logos
+        if (GameManager.s_GameManger.m_myTeam.Name == lastMatch.GetHomeTeamString())
+        {
+            m_AwayTeamLogo.sprite = GameManager.s_GameManger.GetRandomTeamLogo();
+        }
+        else
+        {
+            m_HomeTeamLogo.sprite = GameManager.s_GameManger.GetRandomTeamLogo();
+        }
+        
+
 		playSound ();
     }
 

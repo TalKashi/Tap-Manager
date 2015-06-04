@@ -116,7 +116,8 @@ public class GameSettings
     }
 }
 
-public class GameManager : MonoBehaviour {
+public class GameManager : MonoBehaviour 
+{
 
 	public static GameManager s_GameManger;
 
@@ -136,38 +137,24 @@ public class GameManager : MonoBehaviour {
     public User m_User;
     public GameSettings m_GameSettings;
     public int NumOfClicksOnCoin { get; set; }
-    
 
+    public Sprite[] m_TeamLogos;
     // TEMP FOR PRESENTATION
-    public Sprite[] m_PlayerImages;
+    //public Sprite[] m_PlayerImages;
 
     public const string URL = "http://tapmanger.herokuapp.com/";
     //public const string URL = "http://10.10.9.132:3000/";
 
 	void Awake () 
     {
-		if (s_GameManger == null)
-        {
-			s_GameManger = this;
-            //loadData();
-            //StartCoroutine(loadDataFromServer());
-			DontDestroyOnLoad (gameObject);
-            if (k_ShouldGoToMainScene)
-            {
-                //Application.LoadLevel("MainScene");
-            }
-
-		}
-        else
-        {
-			Destroy (gameObject);
-		}
+		SingletoneAwakeMethod();
 
 	}
 
     void Start()
     {
         //FixturesManager.s_FixturesManager.GenerateFixtures(m_AllTeams);
+        StartCoroutine(SyncClientDB());
     }
 
     void Update()
@@ -244,6 +231,13 @@ public class GameManager : MonoBehaviour {
                     break;
             }
         }
+    }
+
+    public Sprite GetRandomTeamLogo()
+    {
+        int randomNumber = m_TeamLogos.Length;
+        Debug.Log("randomNumber=" + randomNumber);
+        return m_TeamLogos[UnityEngine.Random.Range(0, randomNumber) % m_TeamLogos.Length];
     }
 
     private void loadData()
@@ -551,7 +545,7 @@ public class GameManager : MonoBehaviour {
         return m_GameSettings.NextOpponent + homeOrAway;
     }
 
-    public IEnumerator SyncClientDB(string i_NextScene)
+    public IEnumerator SyncClientDB(string i_NextScene = null)
     {
         WWWForm form = new WWWForm();
         Debug.Log("sending sync request for user: " + PlayerPrefs.GetString("id"));
@@ -588,6 +582,32 @@ public class GameManager : MonoBehaviour {
         Debug.Log("End of SyncClientDB()");
 
     }
+
+    public void SingletoneAwakeMethod()
+    {
+        if (s_GameManger == null)
+        {
+            s_GameManger = this;
+            m_TeamLogos = Resources.LoadAll<Sprite>("Match Sybmols");
+            //loadData();
+            //StartCoroutine(loadDataFromServer());
+            DontDestroyOnLoad(gameObject);
+            if (k_ShouldGoToMainScene)
+            {
+                //Application.LoadLevel("MainScene");
+            }
+
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+}
+
+public interface ISingletone
+{
+    void SingletoneAwakeMethod();
 }
 
 [Serializable]

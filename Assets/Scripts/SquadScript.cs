@@ -66,7 +66,7 @@ public class SquadScript {
         // Temp for presentation
         m_players[0].SetFirstName("Dudi");
         m_players[0].SetLastName("Peles");
-        m_players[0].SetPlayerImage(GameManager.s_GameManger.m_PlayerImages[0]);
+        //m_players[0].SetPlayerImage(GameManager.s_GameManger.m_PlayerImages[0]);
         m_players[1].SetFirstName("Doron");
         m_players[1].SetLastName("Nir");
         m_players[2].SetFirstName("Gilad");
