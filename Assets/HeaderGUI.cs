@@ -12,7 +12,7 @@ public class HeaderGUI : MonoBehaviour
 	// Use this for initialization
 	void Start () 
     {
-        m_CashText.text = string.Format("{0:C0}", GameManager.s_GameManger.GetCash());
+        m_CashText.text = string.Format("{0}", GameManager.s_GameManger.GetCash());
         m_TeamNameText.text = GameManager.s_GameManger.m_myTeam.Name;
         if (GameManager.s_GameManger.m_User.ProfilePic != null)
         {
@@ -23,6 +23,6 @@ public class HeaderGUI : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
     {
-        m_CashText.text = string.Format("{0:C0}", GameManager.s_GameManger.GetCash());
+        m_CashText.text = string.Format("{0}", GameManager.s_GameManger.GetCash());
 	}
 }

@@ -174,11 +174,13 @@ public class PlayerScript {
         m_CurrentBoost += i_boost;
         if (m_CurrentBoost >= m_NextBoostCap) 
 		{
+            Debug.Log("Old Salary=" + m_salary);
             m_CurrentBoost = m_CurrentBoost % m_NextBoostCap;
 		    m_salary *= 1.1f;
 		    m_NextBoostCap *= 2;
 			m_level++;
             m_priceToBoost = (int)(m_priceToBoost*GameManager.s_GameManger.m_GameSettings.PlayerBoostCostMultiplier);
+            Debug.Log("New Salary=" + m_salary);
 		}
 	}
 
