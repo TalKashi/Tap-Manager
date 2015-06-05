@@ -32,7 +32,15 @@ public class Scoarboard : MonoBehaviour
 
     public void OnSkipClick()
     {
-        m_LosePopup.SetActive(true);
+        switch (GameManager.s_GameManger.m_myTeam.LastResult)
+        {
+            case eResult.Lost:
+                m_LosePopup.SetActive(true);
+                break;
+                case eResult.Won:
+                break;
+        }
+        
     }
 
 	private void playSound()
