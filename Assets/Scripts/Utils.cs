@@ -487,7 +487,7 @@ public class MyUtils
 
         if (i_PlayerDict.TryGetValue("salary", out salary))
         {
-            player.SetSalary(int.Parse(salary.ToString()));
+            player.SetSalary(float.Parse(salary.ToString()));
         }
         else
         {

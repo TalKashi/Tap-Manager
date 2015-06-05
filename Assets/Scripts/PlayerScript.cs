@@ -49,10 +49,10 @@ public class PlayerScript {
 
 	}
 
-	public void SetSalary(int i_salary)
-	{
-		m_salary = i_salary;
-	}
+    public void SetSalary(float i_salary)
+    {
+        m_salary = i_salary;
+    }
 	
 	public void SetPlayerLevel(int i_level)
 	{
