@@ -84,6 +84,11 @@ public class MatchInfo
     private int m_HomeTeamLogoIdx;
     private int m_AwayTeamLogoIdx;
 
+    public string ScoredPlayers
+    {
+        get { return m_PlayerScoreGoal;}
+    }
+
     public int HomeTeamLogoIdx
     {
         get { return m_HomeTeamLogoIdx; }

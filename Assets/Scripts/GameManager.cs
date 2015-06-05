@@ -261,98 +261,98 @@ public class GameManager : MonoBehaviour
         return m_TeamLogosSmall[m_myTeam.LogoIdx];
     }
 
-    private void loadData()
-    {
-        Debug.Log("LOADING DATA");
-        DateTime disconnectionTime = DateTime.Now;
-        BinaryFormatter binaryFormatter = new BinaryFormatter();
+    //private void loadData()
+    //{
+    //    Debug.Log("LOADING DATA");
+    //    DateTime disconnectionTime = DateTime.Now;
+    //    BinaryFormatter binaryFormatter = new BinaryFormatter();
 
-        if (File.Exists(Application.persistentDataPath + "/allteams.dat"))
-        {
-            FileStream file = File.OpenRead(Application.persistentDataPath + "/allteams.dat");
-            m_AllTeams = (TeamScript[])binaryFormatter.Deserialize(file);
-            file.Close();
-            Debug.Log("Loaded All Teams");
-        }
-        else
-        {
-            initTeams(20);
-        }
+    //    if (File.Exists(Application.persistentDataPath + "/allteams.dat"))
+    //    {
+    //        FileStream file = File.OpenRead(Application.persistentDataPath + "/allteams.dat");
+    //        m_AllTeams = (TeamScript[])binaryFormatter.Deserialize(file);
+    //        file.Close();
+    //        Debug.Log("Loaded All Teams");
+    //    }
+    //    else
+    //    {
+    //        initTeams(20);
+    //    }
 
-        if (File.Exists(Application.persistentDataPath + "/gamedata.dat"))
-        {
-            FileStream file = File.OpenRead(Application.persistentDataPath + "/gamedata.dat");
-            GameData gameData = (GameData)binaryFormatter.Deserialize(file);
-            //m_Cash = gameData.m_Cash;
-            m_myTeam = m_AllTeams[gameData.m_MyTeamIndex];
-            disconnectionTime = gameData.m_DisconnectionTime;
-            file.Close();
-            k_ShouldGoToMainScene = true;
-            Debug.Log("Loaded Game Data");
-        }
+    //    if (File.Exists(Application.persistentDataPath + "/gamedata.dat"))
+    //    {
+    //        FileStream file = File.OpenRead(Application.persistentDataPath + "/gamedata.dat");
+    //        GameData gameData = (GameData)binaryFormatter.Deserialize(file);
+    //        //m_Cash = gameData.m_Cash;
+    //        m_myTeam = m_AllTeams[gameData.m_MyTeamIndex];
+    //        disconnectionTime = gameData.m_DisconnectionTime;
+    //        file.Close();
+    //        k_ShouldGoToMainScene = true;
+    //        Debug.Log("Loaded Game Data");
+    //    }
 
-        if (File.Exists(Application.persistentDataPath + "/myplayers.dat"))
-        {
-            FileStream file = File.OpenRead(Application.persistentDataPath + "/myplayers.dat");
-            m_MySquad = (SquadScript)binaryFormatter.Deserialize(file);
-            file.Close();
-            Debug.Log("Loaded All Squad");
-        }
-        else
-        {
-            m_MySquad = new SquadScript();
-            m_MySquad.Init();
-            Debug.Log("Created new instance of my squad!");
-        }
+    //    if (File.Exists(Application.persistentDataPath + "/myplayers.dat"))
+    //    {
+    //        FileStream file = File.OpenRead(Application.persistentDataPath + "/myplayers.dat");
+    //        m_MySquad = (SquadScript)binaryFormatter.Deserialize(file);
+    //        file.Close();
+    //        Debug.Log("Loaded All Squad");
+    //    }
+    //    else
+    //    {
+    //        m_MySquad = new SquadScript();
+    //        m_MySquad.Init();
+    //        Debug.Log("Created new instance of my squad!");
+    //    }
 
-        if (File.Exists(Application.persistentDataPath + "/bucket.dat"))
-        {
-            FileStream file = File.OpenRead(Application.persistentDataPath + "/bucket.dat");
-            m_Bucket = (Bucket)binaryFormatter.Deserialize(file);
-            m_Bucket.AddMoneyToBucket((float)DateTime.Now.Subtract(disconnectionTime).TotalSeconds);
-            file.Close();
-            Debug.Log("Loaded Bucket");
-        }
-        else
-        {
-            m_Bucket = new Bucket(1000, 3600);
-            Debug.Log("Created new instance of bucket!");
-        }
+    //    if (File.Exists(Application.persistentDataPath + "/bucket.dat"))
+    //    {
+    //        FileStream file = File.OpenRead(Application.persistentDataPath + "/bucket.dat");
+    //        m_Bucket = (Bucket)binaryFormatter.Deserialize(file);
+    //        m_Bucket.AddMoneyToBucket((float)DateTime.Now.Subtract(disconnectionTime).TotalSeconds);
+    //        file.Close();
+    //        Debug.Log("Loaded Bucket");
+    //    }
+    //    else
+    //    {
+    //        m_Bucket = new Bucket(1000, 3600);
+    //        Debug.Log("Created new instance of bucket!");
+    //    }
 
-    }
+    //}
 
-    private void saveData()
-    {
-        Debug.Log("SAVING FILES");
-        BinaryFormatter binaryFormatter = new BinaryFormatter();
+    //private void saveData()
+    //{
+    //    Debug.Log("SAVING FILES");
+    //    BinaryFormatter binaryFormatter = new BinaryFormatter();
 
-        FileStream file = File.Create(Application.persistentDataPath + "/allteams.dat");
-        binaryFormatter.Serialize(file, m_AllTeams);
-        file.Close();
+    //    FileStream file = File.Create(Application.persistentDataPath + "/allteams.dat");
+    //    binaryFormatter.Serialize(file, m_AllTeams);
+    //    file.Close();
 
-        file = File.Create(Application.persistentDataPath + "/gamedata.dat");
-        GameData gameData = new GameData();
-        for (int i = 0; i < m_AllTeams.Length; i++)
-        {
-            if (m_myTeam == m_AllTeams[i])
-            {
-                Debug.Log("Match on index=" + i);
-                gameData.m_MyTeamIndex = i;
-            }
-        }
-        //gameData.m_Cash = m_Cash;
-        gameData.m_DisconnectionTime = DateTime.Now;
-        binaryFormatter.Serialize(file, gameData);
-        file.Close();
+    //    file = File.Create(Application.persistentDataPath + "/gamedata.dat");
+    //    GameData gameData = new GameData();
+    //    for (int i = 0; i < m_AllTeams.Length; i++)
+    //    {
+    //        if (m_myTeam == m_AllTeams[i])
+    //        {
+    //            Debug.Log("Match on index=" + i);
+    //            gameData.m_MyTeamIndex = i;
+    //        }
+    //    }
+    //    //gameData.m_Cash = m_Cash;
+    //    gameData.m_DisconnectionTime = DateTime.Now;
+    //    binaryFormatter.Serialize(file, gameData);
+    //    file.Close();
 
-        file = File.Create(Application.persistentDataPath + "/myplayers.dat");
-        binaryFormatter.Serialize(file, m_MySquad);
-        file.Close();
+    //    file = File.Create(Application.persistentDataPath + "/myplayers.dat");
+    //    binaryFormatter.Serialize(file, m_MySquad);
+    //    file.Close();
 
-        file = File.Create(Application.persistentDataPath + "/bucket.dat");
-        binaryFormatter.Serialize(file, m_Bucket);
-        file.Close();
-    }
+    //    file = File.Create(Application.persistentDataPath + "/bucket.dat");
+    //    binaryFormatter.Serialize(file, m_Bucket);
+    //    file.Close();
+    //}
 
     public void UpdateWeeklyFinance()
     {
@@ -460,22 +460,22 @@ public class GameManager : MonoBehaviour
         m_myTeam.UpdateFacilitiesLevel(1);
 	}
 
-    private void initTeams(int i_NumOfTeams)
-    {
-        m_AllTeams = new TeamScript[i_NumOfTeams];
-		NamesUtilsScript teamNamesScript = new NamesUtilsScript ();
+    //private void initTeams(int i_NumOfTeams)
+    //{
+    //    m_AllTeams = new TeamScript[i_NumOfTeams];
+    //    NamesUtilsScript teamNamesScript = new NamesUtilsScript ();
 
-		//Temp 
-		//m_AllTeams [0] = m_myTeam;	
-		//m_AllTeams[0].SetName("Your Team ");
+    //    //Temp 
+    //    //m_AllTeams [0] = m_myTeam;	
+    //    //m_AllTeams[0].SetName("Your Team ");
 
-        for (int i = 1; i < i_NumOfTeams; i++)
-        {
-            m_AllTeams[i] = new TeamScript();
-			m_AllTeams[i].SetName(teamNamesScript.GetTeamNameInIndex(i));
-        }
+    //    for (int i = 1; i < i_NumOfTeams; i++)
+    //    {
+    //        m_AllTeams[i] = new TeamScript();
+    //        m_AllTeams[i].SetName(teamNamesScript.GetTeamNameInIndex(i));
+    //    }
 
-    }
+    //}
 
     public int GetTeamPosition(TeamScript i_Team)
     {

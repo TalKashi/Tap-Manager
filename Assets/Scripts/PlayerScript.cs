@@ -226,9 +226,9 @@ public class PlayerScript {
 
 	public void InitYoungPlayer()
 	{
-		NamesUtilsScript nameUtils = new NamesUtilsScript();
-		m_firstName = nameUtils.GetFirstName();
-		m_lastName = nameUtils.GetLastName();
+		
+        m_firstName = NamesUtilsScript.GetFirstName();
+        m_lastName = NamesUtilsScript.GetLastName();
 		m_isInjured = false;
 		m_age = UnityEngine.Random.Range(16,24);
 		m_gamesPlayed = 0;

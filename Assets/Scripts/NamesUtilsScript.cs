@@ -3,13 +3,13 @@ using System.Collections;
 
 public class NamesUtilsScript {
 
-	private string[] m_teamNames = {"AC Avocado","Carambola FC","HeAteMe","Soup-A-Stars","The Cereal Killers",
+	private static string[] m_teamNames = {"AC Avocado","Carambola FC","HeAteMe","Soup-A-Stars","The Cereal Killers",
 		"Hapoel Coconut","Vanilla United","Smartinis","Beitar Kiwi ","Maccabi Lychee",
 		"HaKoah Mango","Alco Holics","Beer","Penguins","Ninjas in Paris",
 		"Inter Papaya","Kim Jong Worm","Kobe Wan Kenobi","InGame All Stars","IDC FC"};
 
 
-	private string[] m_firstNames = {"Hilton", 
+	private static string[] m_firstNames = {"Hilton", 
 		"Stan",  
 		"Tal",  
 		"Elliot",  
@@ -40,7 +40,7 @@ public class NamesUtilsScript {
 		"Collin",  
 		"Gilad"};
 
-	private string[] m_lastNames = {"Mahmood",  
+	private static string[] m_lastNames = {"Mahmood",  
 		"Boehmer",  
 		"Sharlow",  
 		"Vallarta",  
@@ -73,19 +73,24 @@ public class NamesUtilsScript {
 		"Devine" }; 
 
 
-	public string GetFirstName()
+	public static string GetFirstName()
 	{
 		return m_firstNames [Random.Range (0, m_firstNames.Length)];
 
 	}
 
-	public string GetLastName()
+	public static string GetLastName()
 	{
 		return m_lastNames [Random.Range (0, m_lastNames.Length)];
 		
 	}
 
-	public string GetTeamNameInIndex(int i){
+    public static string GetRandomName()
+    {
+        return string.Format("{0} {1}", GetFirstName(), GetLastName());
+    }
+
+	public static string GetTeamNameInIndex(int i){
 		if (i >= m_teamNames.Length) {
 			return null;
 		}
