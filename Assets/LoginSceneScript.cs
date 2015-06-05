@@ -37,7 +37,7 @@ public class LoginSceneScript : MonoBehaviour {
         if (FB.IsLoggedIn)
         {
             m_Login.SetActive(false);
-            Login();
+            fbLoginCallback(null);
         }
         else
         {
