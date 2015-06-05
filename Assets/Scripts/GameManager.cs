@@ -139,6 +139,7 @@ public class GameManager : MonoBehaviour
     public int NumOfClicksOnCoin { get; set; }
 
     public Sprite[] m_TeamLogos;
+    public Sprite[] m_TeamLogosSmall;
     // TEMP FOR PRESENTATION
     //public Sprite[] m_PlayerImages;
 
@@ -238,6 +239,26 @@ public class GameManager : MonoBehaviour
         int randomNumber = m_TeamLogos.Length;
         Debug.Log("randomNumber=" + randomNumber);
         return m_TeamLogos[UnityEngine.Random.Range(0, randomNumber) % m_TeamLogos.Length];
+    }
+
+    public Sprite GetTeamLogoBig(int i_Idx)
+    {
+        return m_TeamLogos[i_Idx];
+    }
+
+    public Sprite GetMyTeamLogoBig()
+    {
+        return m_TeamLogos[m_myTeam.LogoIdx];
+    }
+
+    public Sprite GetTeamLogoSmall(int i_Idx)
+    {
+        return m_TeamLogosSmall[i_Idx];
+    }
+
+    public Sprite GetMyTeamLogoSmall()
+    {
+        return m_TeamLogosSmall[m_myTeam.LogoIdx];
     }
 
     private void loadData()
@@ -593,6 +614,7 @@ public class GameManager : MonoBehaviour
         {
             s_GameManger = this;
             m_TeamLogos = Resources.LoadAll<Sprite>("Match Sybmols");
+            m_TeamLogosSmall = Resources.LoadAll<Sprite>("Top Bar Symbols");
             //loadData();
             //StartCoroutine(loadDataFromServer());
             DontDestroyOnLoad(gameObject);

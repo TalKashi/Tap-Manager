@@ -649,7 +649,7 @@ public class MyUtils
     private static void extractTeamData(Dictionary<string, object> i_TeamJson, ref TeamScript o_Team)
     {
         object id, shopDict, gamesHistoryDict, additionalFans, lastGameInfoDict, financeDict;
-        object lastResultEnum, isLastGameIsHomeGameBool, statisticsDict, teamName;
+        object lastResultEnum, isLastGameIsHomeGameBool, statisticsDict, teamName, logo;
 
         if (o_Team == null)
         {
@@ -744,6 +744,16 @@ public class MyUtils
         else
         {
             Debug.Log("WARN: Failed to get finance data from json");
+        }
+
+        int logoIdx;
+        if (i_TeamJson.TryGetValue("logo", out logo) && int.TryParse(logo.ToString(), out logoIdx))
+        {
+            o_Team.LogoIdx = logoIdx;
+        }
+        else
+        {
+            Debug.Log("WARN: Failed to get LogoIdx data from json");
         }
     }
 
@@ -876,6 +886,7 @@ public class MyUtils
     private static void extractLastGameInfoData(Dictionary<string, object> i_LastGameInfoDict, ref TeamScript o_Team)
     {
         object homeTeam, awayTeam, homeTeamGoals, awayTeamGoals, crowdAtMatch, playersScoreGoal;
+        object homeTeamLogo, awayTeamLogo;
 
 
         if (!i_LastGameInfoDict.TryGetValue("homeTeam", out homeTeam))
@@ -908,8 +919,21 @@ public class MyUtils
             return;
         }
 
-        o_Team.SetLastGameInfo(new MatchInfo((string)homeTeam, (string)awayTeam,int.Parse( homeTeamGoals.ToString()),int.Parse( awayTeamGoals.ToString())
-                            , (int)float.Parse(crowdAtMatch.ToString()), playersScoreGoal.ToString()));
+        int homeTeamLogoInt;
+        if (!i_LastGameInfoDict.TryGetValue("homeTeamLogo", out homeTeamLogo)|| !int.TryParse(homeTeamLogo.ToString(), out homeTeamLogoInt))
+        {
+            return;
+        }
+
+        int awayTeamLogoInt;
+        if (!i_LastGameInfoDict.TryGetValue("awayTeamLogo", out awayTeamLogo) || !int.TryParse(awayTeamLogo.ToString(), out awayTeamLogoInt))
+        {
+            return;
+        }
+
+        o_Team.SetLastGameInfo(new MatchInfo((string) homeTeam, (string) awayTeam, int.Parse(homeTeamGoals.ToString()),
+            int.Parse(awayTeamGoals.ToString()), (int) float.Parse(crowdAtMatch.ToString()), playersScoreGoal.ToString(),
+            homeTeamLogoInt, awayTeamLogoInt));
     }
 
     private static void extractShopData(Dictionary<string, object> i_ShopDict, ref TeamScript o_Team)

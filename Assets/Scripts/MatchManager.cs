@@ -81,8 +81,20 @@ public class MatchInfo
     private int m_AwayTeamGoals;
     private int m_CrowdAtMatch;
     private string m_PlayerScoreGoal;
+    private int m_HomeTeamLogoIdx;
+    private int m_AwayTeamLogoIdx;
 
-    public MatchInfo(string i_HomeTeam, string i_AwayTeam, int i_HomeTeamGoals, int i_AwayTeamGoals, int i_CrowdAtMatch, string i_PlayerScoreGoal)
+    public int HomeTeamLogoIdx
+    {
+        get { return m_HomeTeamLogoIdx; }
+    }
+
+    public int AwayTeamLogoIdx
+    {
+        get { return m_AwayTeamLogoIdx; }
+    }
+
+    public MatchInfo(string i_HomeTeam, string i_AwayTeam, int i_HomeTeamGoals, int i_AwayTeamGoals, int i_CrowdAtMatch, string i_PlayerScoreGoal, int i_HomeTeamLogoIdx, int i_AwayTeamLogoIdx)
     {
         m_HomeTeam = i_HomeTeam;
         m_AwayTeam = i_AwayTeam;
@@ -90,6 +102,8 @@ public class MatchInfo
         m_AwayTeamGoals = i_AwayTeamGoals;
         m_CrowdAtMatch = i_CrowdAtMatch;
         m_PlayerScoreGoal = i_PlayerScoreGoal;
+        m_HomeTeamLogoIdx = i_HomeTeamLogoIdx;
+        m_AwayTeamLogoIdx = i_AwayTeamLogoIdx;
     }
 
     public int GetHomeGoals()

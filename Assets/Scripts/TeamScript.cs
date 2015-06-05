@@ -41,6 +41,7 @@ public class TeamScript
 	int m_facilitiesLevel = 0;
 	int m_stadiumLevel = 0;
     int m_AdditionalFans = 0;
+    private int m_LogoIdx;
     string m_TeamName;
     string m_StadiumName;
     [SerializeField]
@@ -67,6 +68,12 @@ public class TeamScript
     private int m_salary;
 
     public string ID { get; set; }
+
+    public int LogoIdx
+    {
+        get { return m_LogoIdx; }
+        set { m_LogoIdx = value; }
+    }
 
     public float Salary
     {

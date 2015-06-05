@@ -23,14 +23,8 @@ public class Scoarboard : MonoBehaviour
         m_CrowdAttendence.text = string.Format("Crowd: {0}", lastMatch.GetTotalCrowd());
 
         // Init logos
-        if (GameManager.s_GameManger.m_myTeam.Name == lastMatch.GetHomeTeamString())
-        {
-            m_AwayTeamLogo.sprite = GameManager.s_GameManger.GetRandomTeamLogo();
-        }
-        else
-        {
-            m_HomeTeamLogo.sprite = GameManager.s_GameManger.GetRandomTeamLogo();
-        }
+        m_HomeTeamLogo.sprite = GameManager.s_GameManger.GetTeamLogoBig(lastMatch.HomeTeamLogoIdx);
+        m_AwayTeamLogo.sprite = GameManager.s_GameManger.GetTeamLogoBig(lastMatch.AwayTeamLogoIdx);
         
 
 		playSound ();

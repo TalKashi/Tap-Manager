@@ -29,9 +29,13 @@ public class FinanceGUI : MonoBehaviour
 		m_salary.text = string.Format("{0:C0}", FinanceManager.s_FinanceManager.GetSalary());
 		m_incomeFromTickets.text = string.Format("{0:C0}", FinanceManager.s_FinanceManager.GetIncomeFromTickets ());
 		m_incomeFromMerchandise.text = string.Format("{0:C0}", FinanceManager.s_FinanceManager.GetIncomeFromMerchandise ());
+
         MatchInfo lastMatch = GameManager.s_GameManger.m_myTeam.GetLastMatchInfo();
         m_HomeTeamName.text = lastMatch.GetHomeTeamString();
         m_AwayTeamName.text = lastMatch.GetAwayTeamString();
+
+        m_HomeTeamLogo.sprite = GameManager.s_GameManger.GetTeamLogoBig(lastMatch.HomeTeamLogoIdx);
+        m_AwayTeamLogo.sprite = GameManager.s_GameManger.GetTeamLogoBig(lastMatch.AwayTeamLogoIdx);
 
         int revenue = income - outcome;
         m_Total.text = string.Format("{0:C0}", revenue < 0 ? -revenue : revenue);
