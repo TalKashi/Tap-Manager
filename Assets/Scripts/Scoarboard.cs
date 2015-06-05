@@ -11,7 +11,7 @@ public class Scoarboard : MonoBehaviour
     public Text m_CrowdAttendence;
     public Text m_FinalScore;
     public Text m_CurrentMinute;
-    public GameObject m_LosePopup;
+    public GameObject m_Popup;
 
     void Start()
     {
@@ -32,15 +32,7 @@ public class Scoarboard : MonoBehaviour
 
     public void OnSkipClick()
     {
-        switch (GameManager.s_GameManger.m_myTeam.LastResult)
-        {
-            case eResult.Lost:
-                m_LosePopup.SetActive(true);
-                break;
-                case eResult.Won:
-                break;
-        }
-        
+        m_Popup.SetActive(true);
     }
 
 	private void playSound()
@@ -62,17 +54,6 @@ public class Scoarboard : MonoBehaviour
 
 		}
 	}
-
-    public void ShareWithFriends()
-    {
-        //string linkCaption = string.Format("I've just {0} in Tap Manager!", getWinOrLoseStr());
-        //string linkName = "Check out this game!";
-        //string link = "http://apps.facebook.com/" + FB.AppId + "/?challenge_brag" + (FB.IsLoggedIn ? FB.UserId : "guest");
-        FB.Feed(linkCaption: string.Format("I've just {0} in Tap Manager!", getWinOrLoseStr()),
-            linkName: "Check out this game!",
-            link: "http://apps.facebook.com/" + FB.AppId + "/?challenge_brag" + (FB.IsLoggedIn ? FB.UserId : "guest"
-            ));
-    }
 
     string getWinOrLoseStr()
     {

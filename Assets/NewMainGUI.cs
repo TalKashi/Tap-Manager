@@ -11,6 +11,7 @@ public class NewMainGUI : MonoBehaviour
     public Text m_StartMatchText;
     public Text m_StartMatchTextTitle;
     public Text m_SquadText;
+    public Button m_CollectButton;
 
 	// Use this for initialization
 	void Start ()
@@ -50,10 +51,12 @@ public class NewMainGUI : MonoBehaviour
         if (GameManager.s_GameManger.IsBucketFull())
         {
             m_BucketText.text = string.Format("{1} {0:C0}", GameManager.s_GameManger.GetMoneyInBucket(), "Collect Money!");
+            m_CollectButton.interactable = true;
         }
         else
         {
             m_BucketText.text = string.Format("{0}", GameManager.s_GameManger.GetNextEmptyTimeSpan().ToString().Split('.')[0]);
+            m_CollectButton.interactable = false;
         }
     }
 
