@@ -719,6 +719,16 @@ public class MyUtils
             Debug.Log("WARN: Failed to get GamesHistory data from json");
         }
 
+        int logoIdx;
+        if (i_TeamJson.TryGetValue("logo", out logo) && int.TryParse(logo.ToString(), out logoIdx))
+        {
+            o_Team.LogoIdx = logoIdx;
+        }
+        else
+        {
+            Debug.Log("WARN: Failed to get LogoIdx data from json");
+        }
+
         if (i_TeamJson.TryGetValue("lastGameInfo", out lastGameInfoDict))
         {
             extractLastGameInfoData((Dictionary<string, object>)lastGameInfoDict, ref o_Team);
@@ -744,16 +754,6 @@ public class MyUtils
         else
         {
             Debug.Log("WARN: Failed to get finance data from json");
-        }
-
-        int logoIdx;
-        if (i_TeamJson.TryGetValue("logo", out logo) && int.TryParse(logo.ToString(), out logoIdx))
-        {
-            o_Team.LogoIdx = logoIdx;
-        }
-        else
-        {
-            Debug.Log("WARN: Failed to get LogoIdx data from json");
         }
     }
 
@@ -916,19 +916,19 @@ public class MyUtils
 
         if (!i_LastGameInfoDict.TryGetValue("playersScoreGoal", out playersScoreGoal))
         {
-            return;
+            playersScoreGoal = "";
         }
 
         int homeTeamLogoInt;
         if (!i_LastGameInfoDict.TryGetValue("homeTeamLogo", out homeTeamLogo)|| !int.TryParse(homeTeamLogo.ToString(), out homeTeamLogoInt))
         {
-            return;
+            homeTeamLogoInt = GameManager.s_GameManger.m_myTeam.LogoIdx;
         }
 
         int awayTeamLogoInt;
         if (!i_LastGameInfoDict.TryGetValue("awayTeamLogo", out awayTeamLogo) || !int.TryParse(awayTeamLogo.ToString(), out awayTeamLogoInt))
         {
-            return;
+            awayTeamLogoInt = GameManager.s_GameManger.m_myTeam.LogoIdx;
         }
 
         o_Team.SetLastGameInfo(new MatchInfo((string) homeTeam, (string) awayTeam, int.Parse(homeTeamGoals.ToString()),
