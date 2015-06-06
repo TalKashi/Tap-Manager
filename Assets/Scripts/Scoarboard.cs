@@ -169,7 +169,13 @@ public class Scoarboard : MonoBehaviour
     public GoalEvent[] Simulate(int i_HomeTeamGoals, int i_AwayTeamGoals, string i_PlayersScore)
     {
         GoalEvent[] timeLine = new GoalEvent[i_HomeTeamGoals + i_AwayTeamGoals];
-        string[] playersIndexs = i_PlayersScore.TrimEnd().Split(' ');
+        string playersScoreIndx = i_PlayersScore.Trim();
+        string[] playersIndexs = new string[0];
+        if (!string.IsNullOrEmpty(playersScoreIndx))
+        {
+            playersIndexs = playersScoreIndx.Split(' ');
+        }
+        
         bool isMyTeamAtHome = m_LastMatchInfo.GetHomeTeamString() == GameManager.s_GameManger.m_myTeam.Name;
 
         for (int i = 0; i < timeLine.Length; i++)

@@ -2,8 +2,6 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 
 
 public class User
@@ -140,8 +138,10 @@ public class GameManager : MonoBehaviour
 
     public Sprite[] m_TeamLogos;
     public Sprite[] m_TeamLogosSmall;
-    // TEMP FOR PRESENTATION
-    //public Sprite[] m_PlayerImages;
+
+    public GameObject m_NextMatchPopup;
+
+    private bool m_HasDisplayedNextMatchPopup = false;
 
     public const string URL = "http://tapmanger.herokuapp.com/";
     //public const string URL = "http://10.10.9.132:3000/";
@@ -149,21 +149,29 @@ public class GameManager : MonoBehaviour
 	void Awake () 
     {
 		SingletoneAwakeMethod();
-
 	}
 
     void Start()
     {
-        //FixturesManager.s_FixturesManager.GenerateFixtures(m_AllTeams);
-        StartCoroutine(SyncClientDB());
+        //StartCoroutine(SyncClientDB());
+        //Instantiate(m_NextMatchPopup);
     }
 
     void Update()
     {
         m_Bucket.AddMoneyToBucket(Time.deltaTime);
+
         if (m_GameSettings != null && m_GameSettings.TimeTillNextMatch != TimeSpan.MaxValue)
         {
             m_GameSettings.TimeTillNextMatch = TimeSpan.FromSeconds(m_GameSettings.TimeTillNextMatch.TotalSeconds - Time.deltaTime);
+
+            if (!m_HasDisplayedNextMatchPopup && GetNextMatchTimeSpan() <= TimeSpan.Zero)
+            {
+                // TODO: display next match ready popup
+                Instantiate(m_NextMatchPopup);
+                Debug.Log("NEXT MATCH READY");
+                m_HasDisplayedNextMatchPopup = true;
+            }
         }
 
         if (!k_IsCoinClickCoroutineRunning && NumOfClicksOnCoin > 0)
@@ -176,6 +184,11 @@ public class GameManager : MonoBehaviour
         {
             Application.Quit();
         }
+    }
+
+    public void TimeTillNextMatchUpdated()
+    {
+        m_HasDisplayedNextMatchPopup = false;
     }
 
     IEnumerator checkNumOfClicksOnCoin()
@@ -239,6 +252,19 @@ public class GameManager : MonoBehaviour
         int randomNumber = m_TeamLogos.Length;
         Debug.Log("randomNumber=" + randomNumber);
         return m_TeamLogos[UnityEngine.Random.Range(0, randomNumber) % m_TeamLogos.Length];
+    }
+
+    public Sprite GetTeamLogoByName(string i_TeamName)
+    {
+        foreach (TeamScript team in m_AllTeams)
+        {
+            if (team.Name == i_TeamName)
+            {
+                return GetTeamLogoBig(team.LogoIdx);
+            }
+        }
+
+        return GetRandomTeamLogo();
     }
 
     public Sprite GetTeamLogoBig(int i_Idx)

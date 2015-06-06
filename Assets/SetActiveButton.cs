@@ -8,4 +8,9 @@ public class SetActiveButton : MonoBehaviour
     {
         i_ObjectSwitchActiveState.SetActive(!i_ObjectSwitchActiveState.activeSelf);
     }
+
+    public void OnClickDestroy(GameObject i_ObjectToDestory)
+    {
+        Destroy(i_ObjectToDestory);
+    }
 }

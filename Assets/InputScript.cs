@@ -6,6 +6,8 @@ public class InputScript : MonoBehaviour
 {
     public InputField m_Input;
     public Image m_SceneImage;
+    public Button m_NextButton;
+    public Text m_NextButtonText;
     public Sprite[] m_SceneSpriteNumber;
 
     private int m_CurrentInputScene;
@@ -18,7 +20,6 @@ public class InputScript : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-        //PlayerPrefs.DeleteAll();
 	    m_CurrentInputScene = PlayerPrefs.GetInt(k_InputScene, 0);
 	    m_SceneImage.sprite = m_SceneSpriteNumber[m_CurrentInputScene];
 
@@ -32,13 +33,20 @@ public class InputScript : MonoBehaviour
 	            break;
             case k_StadiumNameScene:
                  m_Input.placeholder.GetComponent<Text>().text = "Stadium Name";
+	            m_NextButtonText.text = "START";
 	            break;
 	    }
 	}
 
+    void Update()
+    {
+        OnInputFieldChange();
+    }
+
     public void OnNextClick()
     {
         string inputText = m_Input.textComponent.text.Trim();
+
         if (inputText.Length != 0)
         {
             PlayerPrefs.SetInt(k_InputScene, m_CurrentInputScene + 1);
@@ -65,6 +73,13 @@ public class InputScript : MonoBehaviour
                 StartCoroutine(sendNewTeam());
             }
         }
+    }
+
+    public void OnInputFieldChange()
+    {
+        string inputText = m_Input.textComponent.text.Trim();
+
+        m_NextButton.interactable = !string.IsNullOrEmpty(inputText);
     }
 
     private IEnumerator sendNewTeam()

@@ -10,7 +10,13 @@ public class OneLinePlayerRow : MonoBehaviour
     public Text m_Position;
     public Text m_Age;
     public Text m_Wage;
+    public Button m_TrainButton;
     public PlayerScript m_MyPlayer;
+
+    void Update()
+    {
+        m_TrainButton.interactable = m_MyPlayer.GetPriceToBoostPlayer() <= GameManager.s_GameManger.GetCash();
+    }
 
     public void OnTrainClick()
     {

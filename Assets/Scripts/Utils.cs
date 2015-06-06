@@ -31,6 +31,7 @@ public class MyUtils
 
             o_GameSettings.TimeTillNextMatch = TimeSpan.FromMilliseconds(timeLeftInMs);
             Debug.Log("!!!! " + o_GameSettings.TimeTillNextMatch);
+            GameManager.s_GameManger.TimeTillNextMatchUpdated();
         }
         else
         {
