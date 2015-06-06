@@ -31,7 +31,7 @@ public class FinanceGUI : MonoBehaviour
         int outcome = FinanceManager.s_FinanceManager.CalculateOutcome(GameManager.s_GameManger.m_myTeam);
 
         m_Score.text = string.Format("{0} - {1}", GameManager.s_GameManger.m_myTeam.GetLastMatchInfo().GetHomeGoals(),
-            GameManager.s_GameManger.m_myTeam.GetLastMatchInfo().GetHomeGoals());
+            GameManager.s_GameManger.m_myTeam.GetLastMatchInfo().GetAwayGoals());
 		m_facilitiesCost.text = string.Format("{0:C0}", FinanceManager.s_FinanceManager.GetFacilitiesCost());
 		m_stadiumCost.text = string.Format("{0:C0}", FinanceManager.s_FinanceManager.GetStadiumCost());
 		m_salary.text = string.Format("{0:C0}", FinanceManager.s_FinanceManager.GetSalary());

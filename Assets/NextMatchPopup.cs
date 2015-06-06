@@ -14,11 +14,12 @@ public class NextMatchPopup : MonoBehaviour
         gameObject.transform.SetParent(canvas.transform);
         RectTransform rectTransform = GetComponent<RectTransform>();
         rectTransform.anchoredPosition = Vector2.zero;
-        //rectTransform.anchoredPosition3D = Vector3.zero;
-        //rectTransform.offsetMax = Vector2.zero;
+        ////rectTransform.anchoredPosition3D = Vector3.zero;
+        ////rectTransform.offsetMax = Vector2.zero;
         rectTransform.sizeDelta = Vector2.zero;
-        //rectTransform.transform.SetParent(canvas);
-        //Debug.Log(rectTransform.localPosition);
+        ////rectTransform.transform.SetParent(canvas);
+        ////Debug.Log(rectTransform.localPosition);
+        gameObject.transform.localScale = new Vector3(1, 1, 1);
     }
 
     void Start()

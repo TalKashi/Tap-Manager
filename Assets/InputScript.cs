@@ -17,6 +17,8 @@ public class InputScript : MonoBehaviour
     private const int k_TeamNameScene = 0;
     private const int k_CoachNameScene = 1;
     private const int k_StadiumNameScene = 2;
+
+    private bool k_IsLoadingData;
 	// Use this for initialization
 	void Start ()
 	{
@@ -27,21 +29,19 @@ public class InputScript : MonoBehaviour
 	    {
             case k_TeamNameScene:
 	            m_Input.placeholder.GetComponent<Text>().text = "Team Name";
+                m_Input.characterValidation = InputField.CharacterValidation.None;
 	            break;
             case k_CoachNameScene:
-                 m_Input.placeholder.GetComponent<Text>().text = "Coach Name";
+                m_Input.placeholder.GetComponent<Text>().text = "Coach Name";
+	            m_Input.characterValidation = InputField.CharacterValidation.Name;
 	            break;
             case k_StadiumNameScene:
-                 m_Input.placeholder.GetComponent<Text>().text = "Stadium Name";
-	            m_NextButtonText.text = "START";
+                m_Input.placeholder.GetComponent<Text>().text = "Stadium Name";
+                m_Input.characterValidation = InputField.CharacterValidation.Name;
+                m_NextButtonText.text = "START";
 	            break;
 	    }
 	}
-
-    void Update()
-    {
-        OnInputFieldChange();
-    }
 
     public void OnNextClick()
     {
@@ -84,6 +84,7 @@ public class InputScript : MonoBehaviour
 
     private IEnumerator sendNewTeam()
     {
+        k_IsLoadingData = true;
         WWWForm form = new WWWForm();
 
         form.AddField("id", PlayerPrefs.GetString("id"));
@@ -112,6 +113,7 @@ public class InputScript : MonoBehaviour
                 StartCoroutine(GameManager.s_GameManger.SyncClientDB("NewDesignMainScene"));
             }
         }
+        k_IsLoadingData = false;
         Debug.Log("End of addNewTeamUser()");
     }
 }

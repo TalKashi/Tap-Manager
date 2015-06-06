@@ -10,7 +10,6 @@ public class GuestLogin : MonoBehaviour
 	void Start ()
 	{
 	    m_LoginSceneScript = GetComponentInParent<LoginSceneScript>();
-        PlayerPrefs.DeleteAll();
         login();
 	}
 

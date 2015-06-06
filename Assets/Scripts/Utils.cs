@@ -5,6 +5,42 @@ using UnityEngine;
 public class MyUtils
 {
 
+    public static string AddOrdinal(int i_Num)
+    {
+        string oridnaledNum = i_Num.ToString();
+
+        if (i_Num > 0)
+        {
+            int mod = i_Num % 100;
+
+            if (mod >= 11 || mod <= 13)
+            {
+                oridnaledNum = i_Num + "th";
+            }
+            else
+            {
+                if (mod == 1)
+                {
+                    oridnaledNum = i_Num + "st";
+                }
+                else if (mod == 2)
+                {
+                    oridnaledNum = i_Num + "nd";
+                }
+                else if (mod == 3)
+                {
+                    oridnaledNum = i_Num + "rd";
+                }
+                else
+                {
+                    oridnaledNum = i_Num + "th";
+                }
+            }
+        }
+
+        return oridnaledNum;
+    }
+
     #region Game Settings Section
 
     public static void LoadGameSettings(Dictionary<string, object> i_Json, ref GameSettings o_GameSettings)
@@ -542,7 +578,7 @@ public class MyUtils
 
         if (i_PlayerDict.TryGetValue("price", out price))
         {
-            player.SetPlayerPrice(int.Parse(price.ToString()));
+            player.SetPlayerPrice(float.Parse(price.ToString()));
         }
         else
         {

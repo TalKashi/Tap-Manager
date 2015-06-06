@@ -153,6 +153,11 @@ public class PlayerScript {
         m_price = i_Price;
     }
 
+    public void SetPlayerPrice(float i_Price)
+    {
+        m_price = (int)i_Price;
+    }
+
 	public Sprite getPlayerImage ()
 	{
 		return m_PlayerImage;

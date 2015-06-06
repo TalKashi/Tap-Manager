@@ -17,6 +17,9 @@ public class LoginSceneScript : MonoBehaviour {
 
     void Awake()
     {
+#if UNITY_EDITOR
+        PlayerPrefs.DeleteAll();
+#endif
         m_Login.SetActive(false);
         m_LoadingText.SetActive(k_LoadingData);
         FB.Init(onInit);
@@ -41,9 +44,39 @@ public class LoginSceneScript : MonoBehaviour {
         }
         else
         {
-            k_LoadingData = false;
-            m_Login.SetActive(true);
+            string id = PlayerPrefs.GetString("id");
+
+            if (!string.IsNullOrEmpty(id))
+            {
+                login(id);
+            }
+            else
+            {
+                k_LoadingData = false;
+                m_Login.SetActive(true);
+            }
+            
         }
+    }
+
+    public void OnGuesLoginButtonClicked()
+    {
+        Debug.Log("Button Clicked!");
+
+        login(System.Guid.NewGuid().ToString());
+    }
+
+    private void login(string i_ID)
+    {
+        // {'id':'10153270532886624','name':'Tal Kashi','email":'shakikashi\u0040gmail.com'}
+        //string jsonString = string.Format("{{\"id\":\"{0}\", }}", i_ID);
+        k_LoadingData = true;
+        PlayerPrefs.SetString("id", i_ID);
+        string jsonString = string.Format("{{\"id\":\"{0}\"}}", i_ID);
+        Debug.Log(jsonString);
+
+        StartCoroutine(AddNewFBUser(jsonString));
+
     }
 
     public void Login()
@@ -59,7 +92,7 @@ public class LoginSceneScript : MonoBehaviour {
             Debug.Log("facebookLogIn worked");
             m_Login.SetActive(false);
             FB.API("me?fields=id,name,email", HttpMethod.GET, onGettingUserDataFromFB);
-            FB.API("me/picture?width=128&height=128", HttpMethod.GET, onGettingUserPicture);
+            //FB.API("me/picture?width=128&height=128", HttpMethod.GET, onGettingUserPicture);
         }
         else
         {
@@ -122,6 +155,7 @@ public class LoginSceneScript : MonoBehaviour {
         if (!string.IsNullOrEmpty(www.error))
         {
             Debug.Log("ERROR: " + www.error);
+            k_LoadingData = false;
         }
         else
         {

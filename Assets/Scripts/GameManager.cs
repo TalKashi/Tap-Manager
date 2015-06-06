@@ -135,6 +135,8 @@ public class GameManager : MonoBehaviour
     public User m_User;
     public GameSettings m_GameSettings;
     public int NumOfClicksOnCoin { get; set; }
+    public bool HasWatchedMatch { get; set; }
+    public bool IsLoadingData { get { return k_IsLoadingData;} }
 
     public Sprite[] m_TeamLogos;
     public Sprite[] m_TeamLogosSmall;
@@ -142,6 +144,7 @@ public class GameManager : MonoBehaviour
     public GameObject m_NextMatchPopup;
 
     private bool m_HasDisplayedNextMatchPopup = false;
+    private bool k_IsLoadingData;
 
     public const string URL = "http://tapmanger.herokuapp.com/";
     //public const string URL = "http://10.10.9.132:3000/";
@@ -171,6 +174,7 @@ public class GameManager : MonoBehaviour
                 Instantiate(m_NextMatchPopup);
                 Debug.Log("NEXT MATCH READY");
                 m_HasDisplayedNextMatchPopup = true;
+                HasWatchedMatch = false;
             }
         }
 
@@ -503,6 +507,11 @@ public class GameManager : MonoBehaviour
 
     //}
 
+    public int GetMyPosition()
+    {
+        return GetTeamPosition(m_myTeam);
+    }
+
     public int GetTeamPosition(TeamScript i_Team)
     {
 
@@ -598,6 +607,7 @@ public class GameManager : MonoBehaviour
 
     public IEnumerator SyncClientDB(string i_NextScene = null)
     {
+        k_IsLoadingData = true;
         WWWForm form = new WWWForm();
         Debug.Log("sending sync request for user: " + PlayerPrefs.GetString("id"));
         form.AddField("email", PlayerPrefs.GetString("email"));
@@ -630,6 +640,7 @@ public class GameManager : MonoBehaviour
             //}
             //k_IsDataLoaded = true;
         }
+        k_IsLoadingData = false;
         Debug.Log("End of SyncClientDB()");
 
     }

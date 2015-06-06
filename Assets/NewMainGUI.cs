@@ -12,7 +12,7 @@ public class NewMainGUI : MonoBehaviour
     public Text m_StartMatchTextTitle;
     public Text m_SquadText;
     public Button m_CollectButton;
-
+    public GameObject m_LoadingImage;
 	// Use this for initialization
 	void Start ()
 	{
@@ -26,23 +26,53 @@ public class NewMainGUI : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-	    updateStartMatchGUI();
-	    updateBucketGUI();
+	    if (GameManager.s_GameManger.IsLoadingData)
+	    {
+	        m_LoadingImage.SetActive(true);
+	    }
+	    else
+	    {
+            m_LoadingImage.SetActive(false);
+            updateStartMatchGUI();
+            updateBucketGUI();
+	    }
+	    
 	}
 
     void updateStartMatchGUI()
     {
         if (GameManager.s_GameManger.GetNextMatchTimeSpan() <= TimeSpan.Zero)
         {
-            m_StartMatchTextTitle.text = "Go To Match!";
-            m_StartMatchText.text = string.Format("vs. {0}", GameManager.s_GameManger.GetNextOpponent());
+            if (GameManager.s_GameManger.m_GameSettings.NextOpponent == "none")
+            {
+                m_StartMatchTextTitle.text = "Go To New Season!";
+                m_StartMatchText.text = string.Format("You have finished in {0} place",
+                    MyUtils.AddOrdinal(GameManager.s_GameManger.GetMyPosition()));
+            }
+            else
+            {
+                m_StartMatchTextTitle.text = "Go To Match!";
+                m_StartMatchText.text = string.Format("vs. {0}", GameManager.s_GameManger.GetNextOpponent());
+            }
+            
         }
         else
         {
             m_StartMatchTextTitle.text = "Last Match";
-            m_StartMatchText.text = string.Format("{1} Until Kickoff{0}vs. {2}", Environment.NewLine,
+            if (GameManager.s_GameManger.m_GameSettings.NextOpponent == "none")
+            {
+                m_StartMatchText.text = string.Format("{0} until next season starts{1}You have finished in {2} place",
+                    GameManager.s_GameManger.GetNextMatchTimeSpan().ToString().Split('.')[0],
+                    Environment.NewLine,
+                    MyUtils.AddOrdinal(GameManager.s_GameManger.GetMyPosition()));
+            }
+            else
+            {
+                m_StartMatchText.text = string.Format("{1} Until Kickoff{0}vs. {2}", Environment.NewLine,
             GameManager.s_GameManger.GetNextMatchTimeSpan().ToString().Split('.')[0]
             , GameManager.s_GameManger.GetNextOpponent());
+            }
+            
         }
     }
 

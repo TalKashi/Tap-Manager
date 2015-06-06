@@ -85,6 +85,15 @@ public class Scoarboard : MonoBehaviour
 
         m_MinutesLeft = TimeSpan.Zero;
         m_SecondsToDeacresEachUpdate = k_SecondsInGame / m_TimeToSimulateGame;
+
+        if (GameManager.s_GameManger.HasWatchedMatch)
+        {
+            dontDisplaySimulation();
+        }
+        else
+        {
+            GameManager.s_GameManger.HasWatchedMatch = true;
+        }
     }
 
     void Update()
@@ -133,6 +142,16 @@ public class Scoarboard : MonoBehaviour
     private void createNewGoalGUI()
     {
         m_GoalScorers[m_LastGoalIdx].MySetActive(m_GoalEvents[m_LastGoalIdx].IsHomeTeam, m_GoalEvents[m_LastGoalIdx].PlayerName, m_GoalEvents[m_LastGoalIdx].Minute);
+    }
+
+    private void dontDisplaySimulation()
+    {
+        m_HasPressedSkip = true;
+        for (int i = m_LastGoalIdx; i < m_GoalEvents.Length; i++)
+        {
+            createNewGoalGUI();
+            m_LastGoalIdx++;
+        }
     }
 
     public void OnSkipClick()
