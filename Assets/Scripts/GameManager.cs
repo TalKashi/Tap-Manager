@@ -146,6 +146,8 @@ public class GameManager : MonoBehaviour
     private bool m_HasDisplayedNextMatchPopup = false;
     private bool k_IsLoadingData;
 
+    public GoalEvent[] LastGameSimulation { get; set; }
+
     public const string URL = "http://tapmanger.herokuapp.com/";
     //public const string URL = "http://10.10.9.132:3000/";
 

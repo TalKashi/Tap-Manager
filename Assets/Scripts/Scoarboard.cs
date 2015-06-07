@@ -51,6 +51,8 @@ public class Scoarboard : MonoBehaviour
     public Text m_CurrentMinute;
     public GameObject m_Popup;
     public Text m_SkipButtonText;
+    public Button m_SkipButton;
+    public Button m_BackButton;
     public GoalScorerGUI[] m_GoalScorers;
 
     private GoalEvent[] m_GoalEvents;
@@ -88,11 +90,13 @@ public class Scoarboard : MonoBehaviour
 
         if (GameManager.s_GameManger.HasWatchedMatch)
         {
+            m_GoalEvents = GameManager.s_GameManger.LastGameSimulation;
             dontDisplaySimulation();
         }
         else
         {
             GameManager.s_GameManger.HasWatchedMatch = true;
+            GameManager.s_GameManger.LastGameSimulation = m_GoalEvents;
         }
     }
 
@@ -147,6 +151,8 @@ public class Scoarboard : MonoBehaviour
     private void dontDisplaySimulation()
     {
         m_HasPressedSkip = true;
+        m_SkipButton.gameObject.SetActive(false);
+        m_BackButton.gameObject.SetActive(true);
         for (int i = m_LastGoalIdx; i < m_GoalEvents.Length; i++)
         {
             createNewGoalGUI();

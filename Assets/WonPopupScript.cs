@@ -31,6 +31,12 @@ public class WonPopupScript : MonoBehaviour
         m_AwayTeamLogo.sprite = GameManager.s_GameManger.GetTeamLogoBig(m_LastMatchInfo.AwayTeamLogoIdx);
 	}
 
+    public void OnCloseClick()
+    {
+        v_IsShare = false;
+        OnContinueClick();
+    }
+
     public void OnCheckboxClick()
     {
         v_IsShare = !v_IsShare;
