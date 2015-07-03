@@ -47,6 +47,7 @@ public class SquadTableUI : MonoBehaviour {
             m_PlayerLineScript[count].m_XPSlider.maxValue = player.NextBoostCap;
             m_PlayerLineScript[count].m_XPSlider.minValue = 0;
             m_PlayerLineScript[count].m_XPSlider.value = player.CurrentBoost;
+            m_PlayerLineScript[count].m_Level.text = player.GetLevel().ToString();
             
             
             //m_PlayerLineScript[count].m_Age.text = player.GetAge().ToString();
@@ -61,9 +62,11 @@ public class SquadTableUI : MonoBehaviour {
         int count = 0;
         foreach (PlayerScript player in m_AllPlayers)
         {
-            m_PlayerLineScript[count].m_XP.text = string.Format("({0})", player.GetLevel());
-            m_PlayerLineScript[count].m_PlayerNameText.text = player.getPlayerLastName();
-            m_PlayerLineScript[count].m_Position.text = player.getPlayerPosition().ToString();
+            m_PlayerLineScript[count].m_XP.text = string.Format("{0}/{1}", player.CurrentBoost, player.NextBoostCap);
+            m_PlayerLineScript[count].m_XPSlider.maxValue = player.NextBoostCap;
+            m_PlayerLineScript[count].m_XPSlider.minValue = 0;
+            m_PlayerLineScript[count].m_XPSlider.value = player.CurrentBoost;
+            m_PlayerLineScript[count].m_Level.text = player.GetLevel().ToString();
             //m_PlayerLineScript[count].m_Age.text = player.GetAge().ToString();
             //m_PlayerLineScript[count].m_Wage.text = player.GetSalary().ToString();
             count++;
