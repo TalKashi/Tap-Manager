@@ -5,12 +5,14 @@ using System.Collections;
 public class OneLinePlayerRow : MonoBehaviour
 {
 
-    public Text m_XP;
-    public Text m_PlayerTextName;
     public Text m_Position;
-    public Text m_Age;
-    public Text m_Wage;
+    public Text m_PlayerNameText;
+    public Slider m_XPSlider;
+    public Text m_XP;
+    public Text m_Level;
     public Button m_TrainButton;
+    //public Text m_Age;
+    //public Text m_Wage;
     public PlayerScript m_MyPlayer;
 
     void Update()
