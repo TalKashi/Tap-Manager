@@ -17,14 +17,15 @@ public class OneLinePlayerRow : MonoBehaviour
 
     void Update()
     {
-        m_TrainButton.interactable = m_MyPlayer.GetPriceToBoostPlayer() <= GameManager.s_GameManger.GetCash();
+        m_TrainButton.interactable = GameManager.s_GameManger.m_myTeam.TotalInstantTrain > 0;
     }
 
-    public void OnTrainClick()
+    public void OnInstantTrainClick()
     {
-        if (m_MyPlayer.GetPriceToBoostPlayer() <= GameManager.s_GameManger.GetCash())
+        if (GameManager.s_GameManger.m_myTeam.TotalInstantTrain > 0)
         {
-            StartCoroutine(sendBoostClickToServer());
+            GameManager.s_GameManger.m_myTeam.TotalInstantTrain--;
+            StartCoroutine(sendBoostLevelUpClickToServer());
         }
     }
 
@@ -34,7 +35,7 @@ public class OneLinePlayerRow : MonoBehaviour
         Application.LoadLevel("PlayerScene");
     }
 
-    private IEnumerator sendBoostClickToServer()
+    private IEnumerator sendBoostLevelUpClickToServer()
     {
         //m_WaitingForServer = true;
         WWWForm form = new WWWForm();
@@ -44,7 +45,7 @@ public class OneLinePlayerRow : MonoBehaviour
 
 
         Debug.Log("Sending boostClick to server");
-        WWW request = new WWW(GameManager.URL + "playerBoostClick", form);
+        WWW request = new WWW(GameManager.URL + "boostPlayerLevelUp", form);
         yield return request;
         Debug.Log("Recieved response");
 
@@ -58,8 +59,7 @@ public class OneLinePlayerRow : MonoBehaviour
             switch (request.text)
             {
                 case "ok":
-                    GameManager.s_GameManger.AddCash(-m_MyPlayer.GetPriceToBoostPlayer());
-                    m_MyPlayer.BoostPlayer();
+                    m_MyPlayer.LevelUpPlayer();
                     break;
                 case "null":
                     Debug.Log("WARN: DB out of sync!");

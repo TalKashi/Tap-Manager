@@ -70,6 +70,7 @@ public class GameSettings
     // if level=1 then return m_FansInitCost*m_FansCostMulti)
     public int GetFansCostForLevel(int i_Level)
     {
+        Debug.Log("m_FansInitCost=" + m_FansInitCost + ";m_FansCostMulti=" + m_FansCostMulti + "i_Level=" + i_Level);
         return (int) (m_FansInitCost * Math.Pow(m_FansCostMulti, i_Level));
     }
 

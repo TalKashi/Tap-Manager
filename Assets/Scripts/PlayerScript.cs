@@ -8,6 +8,8 @@ public enum ePosition {GK,D,MF,S};
 [System.Serializable]
 public class PlayerScript {
 
+    private const int k_BasicBoostAmount = 10;
+
 	private ePosition m_position;
 	private string m_firstName;
 	private string m_lastName;
@@ -20,7 +22,7 @@ public class PlayerScript {
 	private int m_price;
 	private int m_priceToBoost;
     private int m_NextBoostCap;
-	private int m_boost = 0;
+	private int m_boost = 10;
     private int m_CurrentBoost;
 	private bool m_isPlaying;
 	private int m_gamePower = 100;
@@ -47,7 +49,7 @@ public class PlayerScript {
     {
         get
         {
-            return m_boost;
+            return k_BasicBoostAmount * (GameManager.s_GameManger.m_myTeam.Facilities + 1);
         }
     }
 
@@ -199,7 +201,12 @@ public class PlayerScript {
 
     public void BoostPlayer()
     {
-        boostPlayer(m_boost);
+        boostPlayer(BoostAmount);
+    }
+
+    public void LevelUpPlayer()
+    {
+        boostPlayer(NextBoostCap);
     }
 
     public int GetBoostLevel()

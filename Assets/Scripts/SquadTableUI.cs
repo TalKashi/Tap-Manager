@@ -5,6 +5,7 @@ public class SquadTableUI : MonoBehaviour {
 
 	public GameObject[] m_playersLines;
 
+    public Text m_InstantTrain;
     public RectTransform m_ContentPanel;
     public GameObject m_PlayerLine;
 
@@ -16,10 +17,14 @@ public class SquadTableUI : MonoBehaviour {
     void Start()
     {
         init();
+        m_InstantTrain.text = string.Format("Instant Train: {0}",
+            GameManager.s_GameManger.m_myTeam.TotalInstantTrain);
     }
 
     void Update()
     {
+        m_InstantTrain.text = string.Format("Instant Train: {0}",
+            GameManager.s_GameManger.m_myTeam.TotalInstantTrain);
         updatePlayers();
     }
 

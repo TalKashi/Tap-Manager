@@ -66,8 +66,23 @@ public class TeamScript
     private int m_facilitiesCost;
     private int m_stadiumCost;
     private int m_salary;
+    private int m_LastMatchInstantTrain;
+    
+    private int m_TotalInstantTrain;
 
     public string ID { get; set; }
+
+    public int TotalInstantTrain
+    {
+        get { return m_TotalInstantTrain; }
+        set { m_TotalInstantTrain = value; }
+    }
+
+    public int LastMatchInstantTrain
+    {
+        get { return m_LastMatchInstantTrain; }
+        set { m_LastMatchInstantTrain = value; }
+    }
 
     public int LogoIdx
     {

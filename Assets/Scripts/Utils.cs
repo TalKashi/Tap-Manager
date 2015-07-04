@@ -685,7 +685,7 @@ public class MyUtils
 
     private static void extractTeamData(Dictionary<string, object> i_TeamJson, ref TeamScript o_Team)
     {
-        object id, shopDict, gamesHistoryDict, additionalFans, lastGameInfoDict, financeDict;
+        object id, shopDict, gamesHistoryDict, additionalFans, lastGameInfoDict, financeDict, totalInstantTrainObj;
         object lastResultEnum, isLastGameIsHomeGameBool, statisticsDict, teamName, logo;
 
         if (o_Team == null)
@@ -792,12 +792,23 @@ public class MyUtils
         {
             Debug.Log("WARN: Failed to get finance data from json");
         }
+
+        float totalInstantTrain;
+        if (i_TeamJson.TryGetValue("totalInstantTrain", out totalInstantTrainObj) &&
+            float.TryParse(totalInstantTrainObj.ToString(), out totalInstantTrain))
+        {
+            o_Team.TotalInstantTrain = (int) totalInstantTrain;
+        }
+        else
+        {
+            Debug.Log("WARN: Failed to get TotalInstantTrain data from json");
+        }
     }
 
     private static void extractFinanceReport(Dictionary<string, object> i_FinanceDict, ref TeamScript o_Team)
     {
-        object incomeFromTicketsObj, incomeFromMerchandiseObj, facilitiesCostObj, stadiumCostObj, salaryObj;
-        float incomeFromTickests, incomeFromMerchandise, facilitiesCost, stadiumCost, salary;
+        object incomeFromTicketsObj, incomeFromMerchandiseObj, facilitiesCostObj, stadiumCostObj, salaryObj, instantTrainObj;
+        float incomeFromTickests, incomeFromMerchandise, facilitiesCost, stadiumCost, salary, instantTrain;
 
         if (i_FinanceDict.TryGetValue("incomeFromTickets", out incomeFromTicketsObj) &&
             float.TryParse(incomeFromTicketsObj.ToString(), out incomeFromTickests))
@@ -847,6 +858,16 @@ public class MyUtils
         else
         {
             Debug.Log("WARN: Failed to get Salary data from json");
+        }
+
+        if (i_FinanceDict.TryGetValue("instantTrain", out instantTrainObj) &&
+            float.TryParse(instantTrainObj.ToString(), out instantTrain))
+        {
+            o_Team.LastMatchInstantTrain = (int) instantTrain;
+        }
+        else
+        {
+            Debug.Log("WARN: Failed to get LastMatchInstantTrain data from json");
         }
     }
 
