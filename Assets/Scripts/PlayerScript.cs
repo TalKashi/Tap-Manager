@@ -43,6 +43,14 @@ public class PlayerScript {
         set { m_CurrentBoost = value; }
     }
 
+    public int BoostAmount
+    {
+        get
+        {
+            return m_boost;
+        }
+    }
+
 	public void SetPriceToBoostPlayer(int i_priceToBoost)
 	{
 		m_priceToBoost = i_priceToBoost;

@@ -28,6 +28,12 @@ public class OneLinePlayerRow : MonoBehaviour
         }
     }
 
+    public void OnPlayerRowClick()
+    {
+        PlayerPrefs.SetInt("SelectedPlayer", m_MyPlayer.ID);
+        Application.LoadLevel("PlayerScene");
+    }
+
     private IEnumerator sendBoostClickToServer()
     {
         //m_WaitingForServer = true;

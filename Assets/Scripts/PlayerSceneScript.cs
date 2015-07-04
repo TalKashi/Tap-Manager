@@ -2,7 +2,8 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class PlayerSceneScript : MonoBehaviour {
+public class PlayerSceneScript : MonoBehaviour 
+{
 
 	private PlayerScript m_playerScript;
 	public Text m_position;
