@@ -673,9 +673,10 @@ public class MyUtils
             Debug.Log("WARN: Failed to get ID from json");
         }
 
-        if (i_PlayerDict.TryGetValue("nextBoost", out nextBoost))
+        float nextBoostCap;
+        if (i_PlayerDict.TryGetValue("nextBoost", out nextBoost) && float.TryParse(nextBoost.ToString(), out nextBoostCap))
         {
-            player.NextBoostCap = int.Parse(nextBoost.ToString());
+            player.NextBoostCap =(int) nextBoostCap;
         }
         else
         {
