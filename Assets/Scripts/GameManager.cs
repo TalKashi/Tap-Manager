@@ -16,6 +16,12 @@ public class User
     public int Age { get; set; }
     public int CoinValue { get; set; }
     public Sprite ProfilePic { get; set; }
+    public List<Message> Messages { get; private set; }
+
+    public User()
+    {
+        Messages = Message.LoadMessagesData();
+    }
 }
 
 public class GameSettings
@@ -173,7 +179,6 @@ public class GameManager : MonoBehaviour
 
             if (!m_HasDisplayedNextMatchPopup && GetNextMatchTimeSpan() <= TimeSpan.Zero)
             {
-                // TODO: display next match ready popup
                 Instantiate(m_NextMatchPopup);
                 Debug.Log("NEXT MATCH READY");
                 m_HasDisplayedNextMatchPopup = true;
@@ -190,6 +195,15 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Application.Quit();
+        }
+
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            foreach (Message message in m_User.Messages)
+            {
+                Debug.Log("Header: " + message.Header);
+                Debug.Log("Content: " + message.Content);
+            }
         }
     }
 
@@ -397,6 +411,10 @@ public class GameManager : MonoBehaviour
         if (s_GameManger == this)
         {
             //saveData();
+            if (m_User != null)
+            {
+                Message.SaveMessagesData(m_User.Messages);
+            }
         }
     }
 

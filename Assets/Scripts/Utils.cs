@@ -201,7 +201,7 @@ public class MyUtils
 
     private static void extractUserData(Dictionary<string, object> i_UserDict, ref User o_User)
     {
-        object id, email, age, money, name, managerName, birthday, coinValue, fbId;
+        object id, email, age, money, name, managerName, birthday, coinValue, fbId, messagesArrayObj;
 
         if (i_UserDict.TryGetValue("id", out id))
         {
@@ -282,6 +282,40 @@ public class MyUtils
         else
         {
             Debug.Log("WARN: Failed to get Birthday from json");
+        }
+
+        
+        if (i_UserDict.TryGetValue("message", out messagesArrayObj))
+        {
+            extractMessagesData((List<object>)messagesArrayObj, ref o_User);
+        }
+        else
+        {
+            Debug.Log("WARN: Failed to get messages array from json");
+        }
+        
+    }
+
+    private static void extractMessagesData(List<object> i_Messages, ref User o_User)
+    {
+        foreach (object message in i_Messages)
+        {
+            extractSingleMessage((Dictionary<string, object>) message, ref o_User);
+        }
+    }
+
+    private static void extractSingleMessage(Dictionary<string, object> i_Message, ref User o_User)
+    {
+        object header, content;
+
+        if (i_Message.TryGetValue("header", out header) && i_Message.TryGetValue("content", out content))
+        {
+            Message message = new Message(header.ToString(), content.ToString());
+            o_User.Messages.Add(message);
+        }
+        else
+        {
+            Debug.Log("WARN: Failed to get header or content in message from json");
         }
     }
 
