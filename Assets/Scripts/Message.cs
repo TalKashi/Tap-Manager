@@ -45,6 +45,7 @@ public class Message
 
     private string m_Header;
     private string m_Content;
+    private bool m_HasReadMessage;
 
     public string Header
     {
@@ -59,9 +60,18 @@ public class Message
         }
     }
 
+    public bool HasReadMessage
+    {
+        get
+        {
+            return m_HasReadMessage;
+        }
+    }
+
     public Message(string i_Header, string i_Content)
     {
         m_Header = i_Header;
         m_Content = i_Content;
+        m_HasReadMessage = false;
     }
 }

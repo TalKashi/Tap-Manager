@@ -155,8 +155,8 @@ public class GameManager : MonoBehaviour
 
     public GoalEvent[] LastGameSimulation { get; set; }
 
-    public const string URL = "http://tapmanger.herokuapp.com/";
-    //public const string URL = "http://10.10.9.132:3000/";
+    //public const string URL = "http://tapmanger.herokuapp.com/";
+    public const string URL = "http://93.173.135.194:3000/";
 
 	void Awake () 
     {
@@ -197,14 +197,17 @@ public class GameManager : MonoBehaviour
             Application.Quit();
         }
 
+#if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.K))
         {
             foreach (Message message in m_User.Messages)
             {
                 Debug.Log("Header: " + message.Header);
                 Debug.Log("Content: " + message.Content);
+                Debug.Log("HasRead: " + message.HasReadMessage);
             }
         }
+#endif
     }
 
     public void TimeTillNextMatchUpdated()
