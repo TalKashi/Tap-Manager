@@ -49,29 +49,31 @@ public class InputScript : MonoBehaviour
 
         if (inputText.Length != 0)
         {
-            PlayerPrefs.SetInt(k_InputScene, m_CurrentInputScene + 1);
-            switch (m_CurrentInputScene)
-            {
-                case k_TeamNameScene:
-                    PlayerPrefs.SetString("teamName", inputText);
-                    break;
-                case k_CoachNameScene:
-                    PlayerPrefs.SetString("name", inputText);
-                    break;
-                case k_StadiumNameScene:
-                    PlayerPrefs.SetString("stadiumName", inputText);
-                    break;
-            }
+            PlayerPrefs.SetString("teamName", inputText);
+            //PlayerPrefs.SetInt(k_InputScene, m_CurrentInputScene + 1);
+            //switch (m_CurrentInputScene)
+            //{
+            //    case k_TeamNameScene:
+            //        PlayerPrefs.SetString("teamName", inputText);
+            //        break;
+            //    case k_CoachNameScene:
+            //        PlayerPrefs.SetString("name", inputText);
+            //        break;
+            //    case k_StadiumNameScene:
+            //        PlayerPrefs.SetString("stadiumName", inputText);
+            //        break;
+            //}
 
-            if (m_CurrentInputScene != k_StadiumNameScene)
-            {
-                Application.LoadLevel("NewDesignInput");
-            }
-            else
-            {
-                PlayerPrefs.DeleteKey(k_InputScene);
-                StartCoroutine(sendNewTeam());
-            }
+            //if (m_CurrentInputScene != k_StadiumNameScene)
+            //{
+            //    Application.LoadLevel("NewDesignInput");
+            //}
+            StartCoroutine(sendNewTeam());
+            //else
+            //{
+            //    PlayerPrefs.DeleteKey(k_InputScene);
+                
+            //}
         }
     }
 
