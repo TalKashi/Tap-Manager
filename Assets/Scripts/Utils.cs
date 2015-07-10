@@ -974,6 +974,8 @@ public class MyUtils
         records.currentWinlessStreak = int.Parse(currentWinlessStreak.ToString()) ;
         records.currentUndefeatedStreak = int.Parse(currentUndefeatedStreak.ToString());
 
+        o_Team.TeamRecords = records;
+
     }
 
     private static void extractLastGameInfoData(Dictionary<string, object> i_LastGameInfoDict, ref TeamScript o_Team)
@@ -1087,7 +1089,7 @@ public class MyUtils
 
     private static void extractGamesStats(Dictionary<string, object> gameHistoryDict, TeamScript o_Team, bool i_IsThisSeasonStats)
     {
-        object wins, losts, draws, goalsFor, goalsAgainst, homeGames;
+        object wins, losts, draws, goalsFor, goalsAgainst, homeGames, crowdObj;
         GamesStatistics stats = new GamesStatistics();
 
         if (gameHistoryDict.TryGetValue("wins", out wins))
@@ -1142,6 +1144,16 @@ public class MyUtils
         else
         {
             Debug.Log("WARN: Failed to get HomeGames data from json");
+        }
+
+        float crowd;
+        if (gameHistoryDict.TryGetValue("crowd", out crowdObj) && float.TryParse(crowdObj.ToString(), out crowd))
+        {
+            stats.crowd = (int) crowd;
+        }
+        else
+        {
+            Debug.Log("WARN: Failed to get crowd data from json");
         }
 
         o_Team.SetGamesStatistics(stats, i_IsThisSeasonStats);

@@ -72,6 +72,17 @@ public class TeamScript
 
     public string ID { get; set; }
 
+    public GamesStatistics AllTimeStatistics
+    {
+        get { return m_AllTimeStats;}
+    }
+
+    public RecordsStatistics TeamRecords
+    {
+        get { return m_RecordsStats; }
+        set { m_RecordsStats = value; }
+    }
+
     public int TotalInstantTrain
     {
         get { return m_TotalInstantTrain; }
