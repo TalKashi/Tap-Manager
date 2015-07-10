@@ -25,6 +25,7 @@ public class HeaderGUI : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
     {
+        m_TeamNameText.text = GameManager.s_GameManger.m_myTeam.Name;
         m_CashText.text = string.Format("{0:C0}", GameManager.s_GameManger.GetCash());
         m_TeamLevel.text = GameManager.s_GameManger.m_MySquad.GetLevel().ToString();
 	}

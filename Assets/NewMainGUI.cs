@@ -176,6 +176,53 @@ public class NewMainGUI : MonoBehaviour
         }
     }
 
+    public void OnChangeTeamNameClickTest(string i_NewTeamName)
+    {
+        string newTeamName;
+        if (!string.IsNullOrEmpty(i_NewTeamName) && (newTeamName = i_NewTeamName.Trim()) != string.Empty)
+        {
+            StartCoroutine(changeTeamName(newTeamName));
+        }
+    }
+
+    IEnumerator changeTeamName(string i_NewTeamName)
+    {
+        //m_WaitingForServer = true;
+        WWWForm form = new WWWForm();
+        Debug.Log("id=" + GameManager.s_GameManger.m_User.ID);
+        
+        form.AddField("id", GameManager.s_GameManger.m_User.ID);
+        form.AddField("name", i_NewTeamName);
+
+        Debug.Log("newTeamName=" + i_NewTeamName);
+        Debug.Log("Sending changeTeamName to server");
+        WWW request = new WWW(GameManager.URL + "changeTeamName", form);
+        yield return request;
+        Debug.Log("Recieved response");
+
+        if (!string.IsNullOrEmpty(request.error))
+        {
+            Debug.Log("ERROR: " + request.error);
+        }
+        else
+        {
+            Debug.Log(request.text);
+            // Check ok response
+            switch (request.text)
+            {
+                case "ok":
+                    GameManager.s_GameManger.m_myTeam.Name = i_NewTeamName;
+                    break;
+                case "null":
+                    Debug.Log("WARN: DB out of sync!");
+                    // TODO: Sync DB
+                    break;
+            }
+        }
+
+        //m_WaitingForServer = false;
+    }
+
     IEnumerator sendEmptyBucketClick()
     {
         //m_WaitingForServer = true;
