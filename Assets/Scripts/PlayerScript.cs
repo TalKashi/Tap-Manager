@@ -21,9 +21,9 @@ public class PlayerScript {
 	private int m_level;
 	private int m_price;
 	private int m_priceToBoost;
-    private int m_NextBoostCap;
+    private ulong m_NextBoostCap;
 	private int m_boost = 10;
-    private int m_CurrentBoost;
+    private ulong m_CurrentBoost;
 	private bool m_isPlaying;
 	private int m_gamePower = 100;
 	private int m_yearOfJoiningTheClub;
@@ -33,13 +33,13 @@ public class PlayerScript {
     public int PlayerSpriteIndex { get; set; }
     public int ID { get; set; }
 
-    public int NextBoostCap
+    public ulong NextBoostCap
     {
         get { return m_NextBoostCap; }
         set { m_NextBoostCap = value; }
     }
 
-    public int CurrentBoost
+    public ulong CurrentBoost
     {
         get { return m_CurrentBoost; }
         set { m_CurrentBoost = value; }
@@ -183,33 +183,38 @@ public class PlayerScript {
 		m_gamesPlayed++;
 	}
 
-	private void boostPlayer(int i_boost)
+	private void boostPlayer(uint i_boost)
 	{
         Debug.Log("i_boost=" + i_boost + ";m_CurrentBoost=" + m_CurrentBoost + ";m_NextBoostCap=" + m_NextBoostCap + ";PlayerBoostCostMultiplier=" + GameManager.s_GameManger.m_GameSettings.PlayerBoostCostMultiplier);
         m_CurrentBoost += i_boost;
         if (m_CurrentBoost >= m_NextBoostCap) 
 		{
-            Debug.Log("Old Salary=" + m_salary);
             m_CurrentBoost = m_CurrentBoost % m_NextBoostCap;
-		    m_salary *= 1.1f;
-		    m_NextBoostCap *= 2;
-			m_level++;
-            m_priceToBoost = (int)(m_priceToBoost*GameManager.s_GameManger.m_GameSettings.PlayerBoostCostMultiplier);
-            Debug.Log("New Salary=" + m_salary);
+
+		    if (m_level < 24)
+		    {
+                Debug.Log("Old Salary=" + m_salary);
+                //m_salary *= 1.1f;
+                m_NextBoostCap *= 2;
+                //m_priceToBoost = (int)(m_priceToBoost * GameManager.s_GameManger.m_GameSettings.PlayerBoostCostMultiplier);
+                Debug.Log("New Salary=" + m_salary);
+		    }
+
+            m_level++;
 		}
 	}
 
     public void BoostPlayer()
     {
-        boostPlayer(BoostAmount);
+        boostPlayer((uint)BoostAmount);
     }
 
     public void LevelUpPlayer()
     {
-        boostPlayer(NextBoostCap);
+        boostPlayer((uint)NextBoostCap);
     }
 
-    public int GetBoostLevel()
+    public ulong GetBoostLevel()
     {
         return m_CurrentBoost;
     }

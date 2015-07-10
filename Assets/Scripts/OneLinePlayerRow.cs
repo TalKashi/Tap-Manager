@@ -108,6 +108,7 @@ public class OneLinePlayerRow : MonoBehaviour
         else
         {
             // Check ok response
+            Debug.Log(request.text);
             switch (request.text)
             {
                 case "ok":
