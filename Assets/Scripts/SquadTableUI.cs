@@ -9,13 +9,13 @@ public class SquadTableUI : MonoBehaviour {
     public RectTransform m_ContentPanel;
     public GameObject m_PlayerLine;
 
-
     private PlayerScript[] m_AllPlayers;
     private GameObject[] m_PlayerLineGameObject;
     private OneLinePlayerRow[] m_PlayerLineScript;
 
     void Start()
     {
+        GameManager.s_GameManger.IsEditPlayerMode = false;
         init();
         m_InstantTrain.text = string.Format("Instant Train: {0}",
             GameManager.s_GameManger.m_myTeam.TotalInstantTrain);
@@ -34,6 +34,11 @@ public class SquadTableUI : MonoBehaviour {
         m_PlayerLineGameObject = new GameObject[m_AllPlayers.Length];
         m_PlayerLineScript = new OneLinePlayerRow[m_AllPlayers.Length];
         initPlayers();
+    }
+
+    public void OnEditPlayerModeClick()
+    {
+        GameManager.s_GameManger.IsEditPlayerMode = !GameManager.s_GameManger.IsEditPlayerMode;
     }
 
     private void initPlayers()
@@ -68,6 +73,7 @@ public class SquadTableUI : MonoBehaviour {
         foreach (PlayerScript player in m_AllPlayers)
         {
             m_PlayerLineScript[count].m_XP.text = string.Format("{0}/{1}", player.CurrentBoost, player.NextBoostCap);
+            m_PlayerLineScript[count].m_PlayerNameText.text = player.GetFullName();
             m_PlayerLineScript[count].m_XPSlider.maxValue = player.NextBoostCap;
             m_PlayerLineScript[count].m_XPSlider.minValue = 0;
             m_PlayerLineScript[count].m_XPSlider.value = player.CurrentBoost;

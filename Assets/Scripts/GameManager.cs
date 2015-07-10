@@ -155,6 +155,8 @@ public class GameManager : MonoBehaviour
 
     public GoalEvent[] LastGameSimulation { get; set; }
 
+    public bool IsEditPlayerMode { get; set; }
+
     //public const string URL = "http://tapmanger.herokuapp.com/";
     public const string URL = "http://109.186.30.3:3000/";
 

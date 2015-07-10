@@ -32,7 +32,59 @@ public class OneLinePlayerRow : MonoBehaviour
     public void OnPlayerRowClick()
     {
         PlayerPrefs.SetInt("SelectedPlayer", m_MyPlayer.ID);
-        Application.LoadLevel("PlayerScene");
+        if (GameManager.s_GameManger.IsEditPlayerMode)
+        {
+            StartCoroutine(changePlayerName());
+        }
+        else
+        {
+            Application.LoadLevel("PlayerScene");
+        }
+        
+    }
+
+    private IEnumerator changePlayerName()
+    {
+        //m_WaitingForServer = true;
+        WWWForm form = new WWWForm();
+        form.AddField("id", GameManager.s_GameManger.m_User.ID);
+        form.AddField("indexPlayer", m_MyPlayer.ID);
+        form.AddField("firstName", "");
+        form.AddField("lastName", "Kashi");
+        Debug.Log("indexPlayer=" + m_MyPlayer.ID);
+
+
+
+        Debug.Log("Sending changePlayerName to server");
+        WWW request = new WWW(GameManager.URL + "changePlayerName", form);
+        yield return request;
+        Debug.Log("Recieved response");
+
+        if (!string.IsNullOrEmpty(request.error))
+        {
+            Debug.Log("ERROR: " + request.error);
+        }
+        else
+        {
+            // Check ok response
+            switch (request.text)
+            {
+                case "ok":
+                    m_MyPlayer.SetFirstName("");
+                    m_MyPlayer.SetLastName("Kashi");
+                    break;
+                case "null":
+                    Debug.Log("WARN: DB out of sync!");
+                    // Sync DB
+                    break;
+
+                default:
+                    // Do nothing
+                    break;
+            }
+        }
+
+        //m_WaitingForServer = false;
     }
 
     private IEnumerator sendBoostLevelUpClickToServer()
