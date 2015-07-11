@@ -25,7 +25,6 @@ public class HeaderGUI : MonoBehaviour
 	    m_Position.text = GameManager.s_GameManger.GetTeamPosition(GameManager.s_GameManger.m_myTeam).ToString();
 
 	    //m_MailImg.sprite = GameManager.s_GameManger.m_User.Inbox.HasUnreadMessages ? spriteUnreadMsg : spriteReadMsg;
-	    m_SceneHeader.text = GameManager.s_GameManger.CurrentSceneHeaderName;
     }
 	
 	// Update is called once per frame
@@ -41,5 +40,6 @@ public class HeaderGUI : MonoBehaviour
         m_TeamLevel.text = GameManager.s_GameManger.m_MySquad.GetLevel().ToString();
         //m_MailImg.sprite = GameManager.s_GameManger.m_User.Inbox.HasUnreadMessages ? spriteUnreadMsg : spriteReadMsg;
         m_InstantTrainText.text = GameManager.s_GameManger.m_myTeam.TotalInstantTrain.ToString();
+        m_SceneHeader.text = GameManager.s_GameManger.CurrentSceneHeaderName;
     }
 }
