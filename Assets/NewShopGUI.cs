@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using Soomla.Store;
 
 public class NewShopGUI : MonoBehaviour
 {

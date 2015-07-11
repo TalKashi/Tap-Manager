@@ -311,7 +311,7 @@ public class MyUtils
         if (i_Message.TryGetValue("header", out header) && i_Message.TryGetValue("content", out content))
         {
             Message message = new Message(header.ToString(), content.ToString());
-            o_User.Messages.Add(message);
+            o_User.Inbox.AddNewMessage(message);
         }
         else
         {

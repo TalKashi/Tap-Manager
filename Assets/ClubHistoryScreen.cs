@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using Soomla.Store;
 
 public class ClubHistoryScreen : MonoBehaviour
 {
@@ -30,4 +31,8 @@ Total Crowd: {9}",
             allTimeStatistics.goalsFor, allTimeStatistics.goalsAgainst, allTimeStatistics.crowd);
     }
 
+    public void OnSoomlaTestClick()
+    {
+        StoreInventory.BuyItem(Store.INSTANT_TRAIN.ItemId);
+    }
 }

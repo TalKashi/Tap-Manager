@@ -2,6 +2,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Soomla.Store;
 
 
 public class User
@@ -16,11 +17,14 @@ public class User
     public int Age { get; set; }
     public int CoinValue { get; set; }
     public Sprite ProfilePic { get; set; }
-    public List<Message> Messages { get; private set; }
+    //public List<Message> Messages { get; private set; }
+    public Inbox Inbox { get; set; }
+
 
     public User()
     {
-        Messages = Message.LoadMessagesData();
+        //Messages = Message.LoadMessagesData();
+        Inbox = Inbox.LoadMessagesData();
     }
 }
 
@@ -157,6 +161,8 @@ public class GameManager : MonoBehaviour
 
     public bool IsEditPlayerMode { get; set; }
 
+    public string CurrentSceneHeaderName { get; set; }
+
     //public const string URL = "http://tapmanger.herokuapp.com/";
     public const string URL = "http://109.186.30.3:3000/";
 
@@ -202,11 +208,24 @@ public class GameManager : MonoBehaviour
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.K))
         {
-            foreach (Message message in m_User.Messages)
+            Debug.Log("HasUnreadMessages=" + m_User.Inbox.HasUnreadMessages);
+            for(int i=0; i < m_User.Inbox.TotalMessages; i++)
             {
+                Debug.Log("HasRead: " + m_User.Inbox[i].HasReadMessage);
+                Debug.Log("Header: " + m_User.Inbox[i].Header);
+                Debug.Log("Content: " + m_User.Inbox[i].Content);
+                
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Debug.Log("HasUnreadMessages=" + m_User.Inbox.HasUnreadMessages);
+            foreach (Message message in m_User.Inbox.Messages)
+            {
+                Debug.Log("HasRead: " + message.HasReadMessage);
                 Debug.Log("Header: " + message.Header);
                 Debug.Log("Content: " + message.Content);
-                Debug.Log("HasRead: " + message.HasReadMessage);
             }
         }
 #endif
@@ -418,7 +437,7 @@ public class GameManager : MonoBehaviour
             //saveData();
             if (m_User != null)
             {
-                Message.SaveMessagesData(m_User.Messages);
+                Inbox.SaveMessagesData(m_User.Inbox);
             }
         }
     }
@@ -676,6 +695,7 @@ public class GameManager : MonoBehaviour
         if (s_GameManger == null)
         {
             s_GameManger = this;
+            //SoomlaStore.Initialize(new Store());
             m_TeamLogos = Resources.LoadAll<Sprite>("Match Sybmols");
             m_TeamLogosSmall = Resources.LoadAll<Sprite>("Top Bar Symbols");
             //loadData();

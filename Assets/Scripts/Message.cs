@@ -5,6 +5,83 @@ using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
 [Serializable]
+public class Inbox
+{
+    private static readonly string sr_InboxFilePath = Application.persistentDataPath + "/inbox.dat";
+
+    private int m_NumOfUnreadMessages;
+    private List<Message> m_Messages;
+
+    public int TotalMessages { get; private set; }
+
+    public static Inbox LoadMessagesData()
+    {
+        Debug.Log("Loading Messages");
+
+        Inbox messages = new Inbox();
+        BinaryFormatter binaryFormatter = new BinaryFormatter();
+
+        if (File.Exists(sr_InboxFilePath))
+        {
+            FileStream file = File.OpenRead(sr_InboxFilePath);
+            messages = (Inbox)binaryFormatter.Deserialize(file);
+            file.Close();
+            Debug.Log("Loaded All Messages");
+        }
+        else
+        {
+            Debug.Log("Messages file was not found");
+        }
+
+        return messages;
+    }
+
+    public static void SaveMessagesData(Inbox i_Messages)
+    {
+        Debug.Log("Saving Messages");
+        BinaryFormatter binaryFormatter = new BinaryFormatter();
+
+        FileStream file = File.Create(sr_InboxFilePath);
+        binaryFormatter.Serialize(file, i_Messages);
+        file.Close();
+
+        Debug.Log("Messages Saved");
+    }
+
+    public bool HasUnreadMessages
+    {
+        get { return m_NumOfUnreadMessages > 0; }
+    }
+
+    public Inbox()
+    {
+        m_Messages = new List<Message>();
+    }
+
+    public void AddNewMessage(Message i_NewMessage)
+    {
+        m_NumOfUnreadMessages++;
+        TotalMessages++;
+        m_Messages.Add(i_NewMessage);
+    }
+
+    public Message this[int i_Idx]
+    {
+        get
+        {
+            if (m_Messages[i_Idx].HasReadMessage == false)
+            {
+                m_Messages[i_Idx].HasReadMessage = true;
+                m_NumOfUnreadMessages--;
+            }
+            return m_Messages[i_Idx];
+        }
+    }
+
+    public List<Message> Messages { get { return m_Messages;} } 
+}
+
+[Serializable]
 public class Message
 {
     private static readonly string sr_MessagesFilePath = Application.persistentDataPath + "/messages.dat";
@@ -66,6 +143,7 @@ public class Message
         {
             return m_HasReadMessage;
         }
+        set { m_HasReadMessage = value; }
     }
 
     public Message(string i_Header, string i_Content)
