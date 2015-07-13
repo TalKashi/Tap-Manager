@@ -7,7 +7,7 @@ public class OneLinePlayerRow : MonoBehaviour
 
     public Text m_Position;
     public Text m_PlayerNameText;
-    public Slider m_XPSlider;
+    //public Slider m_XPSlider;
     public Text m_XP;
     public Text m_Level;
     public Button m_TrainButton;

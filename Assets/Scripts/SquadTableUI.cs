@@ -1,11 +1,11 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class SquadTableUI : MonoBehaviour {
 
 	public GameObject[] m_playersLines;
 
-    public Text m_InstantTrain;
     public RectTransform m_ContentPanel;
     public GameObject m_PlayerLine;
 
@@ -15,16 +15,13 @@ public class SquadTableUI : MonoBehaviour {
 
     void Start()
     {
+        GameManager.s_GameManger.CurrentSceneHeaderName = GameManager.k_Squad;
         GameManager.s_GameManger.IsEditPlayerMode = false;
         init();
-        m_InstantTrain.text = string.Format("Instant Train: {0}",
-            GameManager.s_GameManger.m_myTeam.TotalInstantTrain);
     }
 
     void Update()
     {
-        m_InstantTrain.text = string.Format("Instant Train: {0}",
-            GameManager.s_GameManger.m_myTeam.TotalInstantTrain);
         updatePlayers();
     }
 
@@ -53,10 +50,10 @@ public class SquadTableUI : MonoBehaviour {
             m_PlayerLineScript[count] = m_PlayerLineGameObject[count].GetComponent<OneLinePlayerRow>();
             m_PlayerLineScript[count].m_Position.text = player.getPlayerPosition().ToString();
             m_PlayerLineScript[count].m_PlayerNameText.text = player.GetFullName();
-            m_PlayerLineScript[count].m_XP.text = string.Format("{0}/{1}", player.CurrentBoost, player.NextBoostCap);
-            m_PlayerLineScript[count].m_XPSlider.maxValue = player.NextBoostCap;
-            m_PlayerLineScript[count].m_XPSlider.minValue = 0;
-            m_PlayerLineScript[count].m_XPSlider.value = player.CurrentBoost;
+            m_PlayerLineScript[count].m_XP.text = string.Format("{0}%", getPercentage(player.CurrentBoost, player.NextBoostCap));
+            //m_PlayerLineScript[count].m_XPSlider.maxValue = player.NextBoostCap;
+            //m_PlayerLineScript[count].m_XPSlider.minValue = 0;
+            //m_PlayerLineScript[count].m_XPSlider.value = player.CurrentBoost;
             m_PlayerLineScript[count].m_Level.text = player.GetLevel().ToString();
             
             
@@ -67,16 +64,23 @@ public class SquadTableUI : MonoBehaviour {
         }
     }
 
+    private int getPercentage(ulong i_Num1, ulong i_Num2)
+    {
+        double percentage = (double)i_Num1 / (double)i_Num2;
+
+        return (int) (percentage * 100);
+    }
+
     private void updatePlayers()
     {
         int count = 0;
         foreach (PlayerScript player in m_AllPlayers)
         {
-            m_PlayerLineScript[count].m_XP.text = string.Format("{0}/{1}", player.CurrentBoost, player.NextBoostCap);
+            m_PlayerLineScript[count].m_XP.text = string.Format("{0}%", getPercentage(player.CurrentBoost, player.NextBoostCap));
             m_PlayerLineScript[count].m_PlayerNameText.text = player.GetFullName();
-            m_PlayerLineScript[count].m_XPSlider.maxValue = player.NextBoostCap;
-            m_PlayerLineScript[count].m_XPSlider.minValue = 0;
-            m_PlayerLineScript[count].m_XPSlider.value = player.CurrentBoost;
+            //m_PlayerLineScript[count].m_XPSlider.maxValue = player.NextBoostCap;
+            //m_PlayerLineScript[count].m_XPSlider.minValue = 0;
+            //m_PlayerLineScript[count].m_XPSlider.value = player.CurrentBoost;
             m_PlayerLineScript[count].m_Level.text = player.GetLevel().ToString();
             //m_PlayerLineScript[count].m_Age.text = player.GetAge().ToString();
             //m_PlayerLineScript[count].m_Wage.text = player.GetSalary().ToString();
