@@ -16,6 +16,7 @@ public class NewMainGUI : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
+	    GameManager.s_GameManger.CurrentSceneHeaderName = GameManager.k_Lobby;
 	    updateStartMatchGUI();
 	    m_ShopText.text = string.Format("Total Fans: {1}{0}Facilities Level: {2}{0}Stadium: {3}k seats",
 	        Environment.NewLine, GameManager.s_GameManger.m_myTeam.GetFanBase(),

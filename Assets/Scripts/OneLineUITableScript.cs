@@ -2,10 +2,10 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class OneLineUITableScript : MonoBehaviour {
+public class OneLineUITableScript : MonoBehaviour
+{
 
-	public int place;
-	public Text m_place;
+    public Image m_BubbleImg;
 	public Text m_team;
 	public Text m_played;
 	public Text m_won;

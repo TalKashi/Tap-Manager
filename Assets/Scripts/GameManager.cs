@@ -19,6 +19,14 @@ public class User
     public Sprite ProfilePic { get; set; }
     //public List<Message> Messages { get; private set; }
     public Inbox Inbox { get; set; }
+    public Color TeamColor 
+    {
+        get
+        {
+            return new Color(0.8125f, 0f, 0.15234375f);
+        }
+        
+    }
 
 
     public User()
@@ -156,6 +164,7 @@ public class GameManager : MonoBehaviour
 
     private bool m_HasDisplayedNextMatchPopup = false;
     private bool k_IsLoadingData;
+    
 
     public GoalEvent[] LastGameSimulation { get; set; }
 
@@ -163,8 +172,16 @@ public class GameManager : MonoBehaviour
 
     public string CurrentSceneHeaderName { get; set; }
 
-    //public const string URL = "http://tapmanger.herokuapp.com/";
-    public const string URL = "http://109.186.30.3:3000/";
+    public const string URL = "http://tapmanger.herokuapp.com/";
+    //public const string URL = "http://109.186.30.3:3000/";
+    public const string k_Lobby = "LOBBY";
+    public const string k_Match = "MATCH";
+    public const string k_League = "LEAGUE";
+    public const string k_Squad = "SQUAD";
+    public const string k_Shop = "SHOP";
+    public const string k_Inbox = "INBOX";
+    public const string k_About = "ABOUT";
+    public const string k_Player = "PLAYER";
 
 	void Awake () 
     {
@@ -202,7 +219,7 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Application.Quit();
+            GoBack();
         }
 
 #if UNITY_EDITOR
@@ -622,11 +639,31 @@ public class GameManager : MonoBehaviour
             m_table.UpdateLine((m_AllTeams.Length - i - 1), (m_AllTeams.Length - i),
                                m_AllTeams[i].GetName(), m_AllTeams[i].GetMatchPlayed(), m_AllTeams[i].GetMatchWon(),
                                m_AllTeams[i].GetMatchLost(), m_AllTeams[i].GetMatchDrawn(), m_AllTeams[i].GetGoalsFor(),
-                               m_AllTeams[i].GetGoalsAgainst(), m_AllTeams[i].GetPoints());
+                               m_AllTeams[i].GetGoalsAgainst(), m_AllTeams[i].GetPoints(), m_AllTeams[i].ID == m_myTeam.ID);
 
 		}
 		
 	}
+
+    public void GoBack()
+    {
+        switch (CurrentSceneHeaderName)
+        {
+            case k_League:
+            case k_Squad:
+            case k_Shop:
+            case k_Inbox:
+            case k_About:
+                Application.LoadLevel("NewDesignMainScene");
+                break;
+            case k_Player:
+                Application.LoadLevel("NewDesignSquad");
+                break;
+            default:
+                Application.Quit();
+                break;
+        }
+    }
 
     public int GetCash()
     {

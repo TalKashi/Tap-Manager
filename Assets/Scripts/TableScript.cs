@@ -10,6 +10,7 @@ public class TableScript : MonoBehaviour {
 
 	void Start()
 	{
+	    GameManager.s_GameManger.CurrentSceneHeaderName = GameManager.k_League;
 		GameManager.s_GameManger.updateTableLeague ();
 	}
 
@@ -30,12 +31,12 @@ public class TableScript : MonoBehaviour {
 
     }
 
-	public void UpdateLine(int i_lineNum, int i_place, string i_team, int i_played, int i_won, int i_lost, int i_drawn, int i_for, int i_against, int i_points)
+	public void UpdateLine(int i_lineNum, int i_place, string i_team, int i_played, int i_won, int i_lost, int i_drawn, int i_for, int i_against, int i_points, bool i_IsMyTeam)
     {
 
 		OneLineUITableScript oneLineUITableScript = m_lines [i_lineNum].GetComponent<OneLineUITableScript> ();
-		oneLineUITableScript.m_place.text = string.Format("{0}.", +i_place);
-		oneLineUITableScript.m_team.text = i_team;
+		//oneLineUITableScript.m_place.text = string.Format("{0}.", +i_place);
+	    oneLineUITableScript.m_team.text = string.Format("{0}. {1}", i_place, i_team);
 		oneLineUITableScript.m_played.text = i_played.ToString();
 		oneLineUITableScript.m_won.text = i_won.ToString();
 		oneLineUITableScript.m_lost.text = i_lost.ToString();
@@ -43,6 +44,20 @@ public class TableScript : MonoBehaviour {
 		oneLineUITableScript.m_for.text =  i_for.ToString();
 		oneLineUITableScript.m_against.text =  i_against.ToString();
 		oneLineUITableScript.m_points.text =  i_points.ToString();
+
+	    if (i_IsMyTeam)
+	    {
+            Color myTeamTextColor = new Color(0.8984375f, 0.8984375f, 0.8984375f);
+	        oneLineUITableScript.m_BubbleImg.color = GameManager.s_GameManger.m_User.TeamColor;
+	        oneLineUITableScript.m_team.color = myTeamTextColor;
+            oneLineUITableScript.m_played.color = myTeamTextColor;
+            oneLineUITableScript.m_won.color = myTeamTextColor;
+            oneLineUITableScript.m_lost.color = myTeamTextColor;
+            oneLineUITableScript.m_drawn.color = myTeamTextColor;
+            oneLineUITableScript.m_for.color = myTeamTextColor;
+            oneLineUITableScript.m_against.color = myTeamTextColor;
+            oneLineUITableScript.m_points.color = myTeamTextColor;
+	    }
 	}
 
 
