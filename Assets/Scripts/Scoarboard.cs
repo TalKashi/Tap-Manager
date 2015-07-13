@@ -145,7 +145,8 @@ public class Scoarboard : MonoBehaviour
 
     private void createNewGoalGUI()
     {
-        m_GoalScorers[m_LastGoalIdx].MySetActive(m_GoalEvents[m_LastGoalIdx].IsHomeTeam, m_GoalEvents[m_LastGoalIdx].PlayerName, m_GoalEvents[m_LastGoalIdx].Minute);
+        int currectIndx = m_GoalScorers.Length - m_LastGoalIdx - 1;
+        m_GoalScorers[currectIndx].MySetActive(m_GoalEvents[m_LastGoalIdx].IsHomeTeam, m_GoalEvents[m_LastGoalIdx].PlayerName, m_GoalEvents[m_LastGoalIdx].Minute);
     }
 
     private void dontDisplaySimulation()
