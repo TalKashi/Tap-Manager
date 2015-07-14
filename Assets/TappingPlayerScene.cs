@@ -4,11 +4,12 @@ using UnityEngine.UI;
 
 public class TappingPlayerScene : MonoBehaviour
 {
-    public Text m_PlayerName;
+    public Text m_PlayerPosition;
     public Text m_PlayerLevel;
-    public Text m_ClickValue;
-    public Slider m_PlayerXPSlider;
+    //public Text m_ClickValue;
+    //public Slider m_PlayerXPSlider;
     public Text m_PlayerXPSliderText;
+    public Image m_PlayerPicture;
 
     private int m_PlayerID;
     private PlayerScript m_Player;
@@ -24,6 +25,8 @@ public class TappingPlayerScene : MonoBehaviour
 	    }
 
 	    m_Player = GameManager.s_GameManger.m_MySquad.GetPlayerInIndex(m_PlayerID);
+	    GameManager.s_GameManger.CurrentSceneHeaderName = m_Player.GetFullName();
+	    GameManager.s_GameManger.CurrentScene = GameManager.k_Player;
 
 	    updatePlayerData();
 	}
@@ -36,18 +39,19 @@ public class TappingPlayerScene : MonoBehaviour
 
     private void updatePlayerData()
     {
-        m_PlayerName.text = m_Player.GetFullName();
-        m_ClickValue.text = string.Format("XP Boost: {0}", m_Player.BoostAmount);
-        m_PlayerLevel.text = string.Format("Level: {0}", m_Player.GetLevel());
-        m_PlayerXPSlider.maxValue = m_Player.NextBoostCap;
-        m_PlayerXPSlider.minValue = 0;
-        m_PlayerXPSlider.value = m_Player.CurrentBoost;
-        m_PlayerXPSliderText.text = string.Format("{0}/{1}", m_Player.CurrentBoost, m_Player.NextBoostCap);
+        m_PlayerPosition.text = m_Player.GetFullPosition();
+        //m_ClickValue.text = string.Format("XP Boost: {0}", m_Player.BoostAmount);
+        m_PlayerLevel.text = string.Format("LEVEL {0}", m_Player.GetLevel());
+        //m_PlayerXPSlider.maxValue = m_Player.NextBoostCap;
+        //m_PlayerXPSlider.minValue = 0;
+        //m_PlayerXPSlider.value = m_Player.CurrentBoost;
+        m_PlayerXPSliderText.text = string.Format("{0}%", MyUtils.GetPercentage(m_Player.CurrentBoost, m_Player.NextBoostCap));
     }
 
     public void OnTrainClick()
     {
         StartCoroutine(sendBoostClickToServer());
+        m_Player.BoostPlayer();
     }
 
     private IEnumerator sendBoostClickToServer()
@@ -74,7 +78,7 @@ public class TappingPlayerScene : MonoBehaviour
             switch (request.text)
             {
                 case "ok":
-                    m_Player.BoostPlayer();
+                    //m_Player.BoostPlayer();
                     break;
                 case "null":
                     Debug.Log("WARN: DB out of sync!");

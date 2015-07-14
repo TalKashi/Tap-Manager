@@ -14,5 +14,7 @@ public class OneLineUITableScript : MonoBehaviour
 	public Text m_for;
 	public Text m_against;
 	public Text m_points;
+    public GameObject m_PromotionIcon;
+    public GameObject m_RelegationIcon;
 
 }

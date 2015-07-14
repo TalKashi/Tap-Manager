@@ -41,6 +41,13 @@ public class MyUtils
         return oridnaledNum;
     }
 
+    public static int GetPercentage(ulong i_Num1, ulong i_Num2)
+    {
+        double percentage = (double)i_Num1 / (double)i_Num2;
+
+        return (int)(percentage * 100);
+    }
+
     #region Game Settings Section
 
     public static void LoadGameSettings(Dictionary<string, object> i_Json, ref GameSettings o_GameSettings)

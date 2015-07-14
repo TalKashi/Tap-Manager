@@ -167,10 +167,11 @@ public class GameManager : MonoBehaviour
     
 
     public GoalEvent[] LastGameSimulation { get; set; }
-
     public bool IsEditPlayerMode { get; set; }
-
     public string CurrentSceneHeaderName { get; set; }
+    public string CurrentScene { get; set; }
+    public bool IsPromotionLeague { get { return true; } }
+    public bool IsRelegationLeague { get { return true; } }
 
     public const string URL = "http://tapmanger.herokuapp.com/";
     //public const string URL = "http://109.186.30.3:3000/";
@@ -647,7 +648,7 @@ public class GameManager : MonoBehaviour
 
     public void GoBack()
     {
-        switch (CurrentSceneHeaderName)
+        switch (CurrentScene)
         {
             case k_League:
             case k_Squad:

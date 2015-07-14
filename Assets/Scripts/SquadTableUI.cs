@@ -16,6 +16,7 @@ public class SquadTableUI : MonoBehaviour {
     void Start()
     {
         GameManager.s_GameManger.CurrentSceneHeaderName = GameManager.k_Squad;
+        GameManager.s_GameManger.CurrentScene = GameManager.k_Squad;
         GameManager.s_GameManger.IsEditPlayerMode = false;
         init();
     }
@@ -50,7 +51,7 @@ public class SquadTableUI : MonoBehaviour {
             m_PlayerLineScript[count] = m_PlayerLineGameObject[count].GetComponent<OneLinePlayerRow>();
             m_PlayerLineScript[count].m_Position.text = player.getPlayerPosition().ToString();
             m_PlayerLineScript[count].m_PlayerNameText.text = player.GetFullName();
-            m_PlayerLineScript[count].m_XP.text = string.Format("{0}%", getPercentage(player.CurrentBoost, player.NextBoostCap));
+            m_PlayerLineScript[count].m_XP.text = string.Format("{0}%", MyUtils.GetPercentage(player.CurrentBoost, player.NextBoostCap));
             //m_PlayerLineScript[count].m_XPSlider.maxValue = player.NextBoostCap;
             //m_PlayerLineScript[count].m_XPSlider.minValue = 0;
             //m_PlayerLineScript[count].m_XPSlider.value = player.CurrentBoost;
@@ -64,19 +65,12 @@ public class SquadTableUI : MonoBehaviour {
         }
     }
 
-    private int getPercentage(ulong i_Num1, ulong i_Num2)
-    {
-        double percentage = (double)i_Num1 / (double)i_Num2;
-
-        return (int) (percentage * 100);
-    }
-
     private void updatePlayers()
     {
         int count = 0;
         foreach (PlayerScript player in m_AllPlayers)
         {
-            m_PlayerLineScript[count].m_XP.text = string.Format("{0}%", getPercentage(player.CurrentBoost, player.NextBoostCap));
+            m_PlayerLineScript[count].m_XP.text = string.Format("{0}%", MyUtils.GetPercentage(player.CurrentBoost, player.NextBoostCap));
             m_PlayerLineScript[count].m_PlayerNameText.text = player.GetFullName();
             //m_PlayerLineScript[count].m_XPSlider.maxValue = player.NextBoostCap;
             //m_PlayerLineScript[count].m_XPSlider.minValue = 0;

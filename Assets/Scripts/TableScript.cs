@@ -11,6 +11,7 @@ public class TableScript : MonoBehaviour {
 	void Start()
 	{
 	    GameManager.s_GameManger.CurrentSceneHeaderName = GameManager.k_League;
+        GameManager.s_GameManger.CurrentScene = GameManager.k_League;
 		GameManager.s_GameManger.updateTableLeague ();
 	}
 
@@ -58,6 +59,16 @@ public class TableScript : MonoBehaviour {
             oneLineUITableScript.m_against.color = myTeamTextColor;
             oneLineUITableScript.m_points.color = myTeamTextColor;
 	    }
+
+	    int leagueSize = GameManager.s_GameManger.m_AllTeams.Length;
+	    if ((i_place == 1 || i_place == 2) && GameManager.s_GameManger.IsPromotionLeague)
+	    {
+	        oneLineUITableScript.m_PromotionIcon.SetActive(true);
+	    }
+        else if ((i_place == leagueSize || (i_place == leagueSize - 1)) && GameManager.s_GameManger.IsRelegationLeague)
+        {
+            oneLineUITableScript.m_RelegationIcon.SetActive(true);
+        }
 	}
 
 

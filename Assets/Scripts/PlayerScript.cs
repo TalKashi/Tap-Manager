@@ -103,6 +103,24 @@ public class PlayerScript {
 		return m_position;
 	}
 
+    public string GetFullPosition()
+    {
+        switch (m_position)
+        {
+            case ePosition.GK:
+                return "GOALKEEPER";
+            case ePosition.D:
+                return "DEFENDER";
+            case ePosition.MF:
+                return "MIDFIELDER";
+            case ePosition.S:
+                return "STRIKER";
+            default:
+                Debug.LogError("GOT UNKNOWN POS");
+                return "UNKNOWN!";
+        }
+    }
+
 	public int GetGoalScored ()
 	{
 		return m_goalsScored;
