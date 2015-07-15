@@ -89,6 +89,8 @@ public class MyUtils
         {
             Debug.Log("WARN: Failed to get NextMatch from json");
         }
+
+        // TODO: Num of leagues
     }
 
     private static void extractNextMatchData(Dictionary<string, object> i_NextMatchDict, ref GameSettings o_GameSettings)
