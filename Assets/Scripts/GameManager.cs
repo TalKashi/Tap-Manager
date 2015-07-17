@@ -173,8 +173,8 @@ public class GameManager : MonoBehaviour
     public bool IsPromotionLeague { get { return true; } }
     public bool IsRelegationLeague { get { return true; } }
 
-    public const string URL = "http://tapmanger.herokuapp.com/";
-    //public const string URL = "http://109.186.30.3:3000/";
+    //public const string URL = "http://tapmanger.herokuapp.com/";
+    public const string URL = "http://77.125.2.181:4000/";
     public const string k_Lobby = "LOBBY";
     public const string k_Match = "MATCH";
     public const string k_League = "LEAGUE";
@@ -734,8 +734,8 @@ public class GameManager : MonoBehaviour
         {
             s_GameManger = this;
             //SoomlaStore.Initialize(new Store());
-            m_TeamLogos = Resources.LoadAll<Sprite>("Match Sybmols");
-            m_TeamLogosSmall = Resources.LoadAll<Sprite>("Top Bar Symbols");
+            //m_TeamLogos = Resources.LoadAll<Sprite>("Match Sybmols");
+            //m_TeamLogosSmall = Resources.LoadAll<Sprite>("Top Bar Symbols");
             //loadData();
             //StartCoroutine(loadDataFromServer());
             DontDestroyOnLoad(gameObject);

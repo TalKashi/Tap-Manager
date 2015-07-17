@@ -164,7 +164,7 @@ public class LoginSceneScript : MonoBehaviour {
             {
                 // Go to new team scene
                 PlayerPrefs.DeleteKey(InputScript.k_InputScene);
-                Application.LoadLevel("NewDesignInput");
+                Application.LoadLevel("InputDevelopment");
             }
             else
             {

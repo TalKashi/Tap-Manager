@@ -2,8 +2,34 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MyUtils
+public static class MyUtils
 {
+    public static Color GetColorByTeamLogo(int i_TeamLogoId)
+    {
+        const int k_Red = 0;
+        const int k_Purple = 1;
+        const int k_Blue = 2;
+        const int k_Cyan = 3;
+        const int k_Green = 4;
+        const int k_Turqouiz = 5;
+        switch (i_TeamLogoId)
+        {
+            case k_Red:
+                return new Color(0.8125f, 0f, 0.15234375f);
+            case k_Purple:
+                return new Color(0.64453125f, 0f, 0.15234375f);
+            case k_Blue:
+                return new Color(0f, 0.15234375f, 0.64453125f);
+            case k_Cyan:
+                return new Color(0f, 0.58203125f, 0.64453125f);
+            case k_Green:
+                return new Color(0f, 0.64453125f, 0.171875f);
+            case k_Turqouiz:
+                return new Color(0f, 0.64453125f, 0.44140625f);
+            default:
+                return new Color(0.23046875f, 0.23046875f, 0.23046875f); // BLACK
+        }
+    }
 
     public static string AddOrdinal(int i_Num)
     {
@@ -803,7 +829,7 @@ public class MyUtils
         int logoIdx;
         if (i_TeamJson.TryGetValue("logo", out logo) && int.TryParse(logo.ToString(), out logoIdx))
         {
-            o_Team.LogoIdx = logoIdx;
+            o_Team.LogoIdx = logoIdx % GameManager.s_GameManger.m_TeamLogos.Length;
         }
         else
         {

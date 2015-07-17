@@ -15,11 +15,21 @@ public class HeaderGUI : MonoBehaviour
     public Text m_SceneHeader;
     public GameObject m_BackButton;
     public GameObject m_EditNameButton;
+    public Image m_TopBar;
+    public Image m_MiddleBar;
+    public Image m_BottomBar;
 
 	// Use this for initialization
 	void Start () 
     {
 	    //m_TeamLogo.sprite = GameManager.s_GameManger.GetMyTeamLogoSmall();
+	    Color headerColor = MyUtils.GetColorByTeamLogo(GameManager.s_GameManger.m_myTeam.LogoIdx);
+	    headerColor.a = 0.59765625f;
+        m_TopBar.color = headerColor; // alpha 153
+	    headerColor.a = 0.84765625f;
+	    m_MiddleBar.color = headerColor; // alpha 217
+        headerColor.a = 1;
+	    m_BottomBar.color = headerColor; // alpha 256
 
 	    everyFrameUpdate();
 	    m_Position.text = GameManager.s_GameManger.GetTeamPosition(GameManager.s_GameManger.m_myTeam).ToString();
