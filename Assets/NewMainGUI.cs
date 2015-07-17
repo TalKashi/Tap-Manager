@@ -6,11 +6,20 @@ using System.Collections.Generic;
 
 public class NewMainGUI : MonoBehaviour
 {
-    public Text m_ShopText;
-    public Text m_BucketText;
-    public Text m_StartMatchText;
+    public Text m_StartMatchTextBody;
     public Text m_StartMatchTextTitle;
-    public Text m_SquadText;
+    public Image m_HomeTeamLogo;
+    public Image m_AwayTeamLogo;
+
+    public Image m_SquadIconBackground;
+    public Image m_LeagueIconBackground;
+    public Image m_ShopIconBackground;
+
+    public Image m_ClubInfoImage;
+
+    public Image m_InboxImage;
+    public Text m_BonusText;
+    
     public Button m_CollectButton;
     public GameObject m_LoadingImage;
 	// Use this for initialization
@@ -18,11 +27,37 @@ public class NewMainGUI : MonoBehaviour
 	{
 	    GameManager.s_GameManger.CurrentSceneHeaderName = GameManager.k_Lobby;
         GameManager.s_GameManger.CurrentScene = GameManager.k_Lobby;
+
+	    m_StartMatchTextTitle.text = string.Format("Vs. {0}", GameManager.s_GameManger.GetNextOpponent());
+	    if (GameManager.s_GameManger.m_GameSettings.IsNextMatchAtHome)
+	    {
+	        m_HomeTeamLogo.sprite = GameManager.s_GameManger.GetMyTeamLogoBig();
+	        m_AwayTeamLogo.sprite =
+	            GameManager.s_GameManger.GetTeamLogoByName(GameManager.s_GameManger.m_GameSettings.NextOpponent);
+	    }
+	    else
+	    {
+            m_AwayTeamLogo.sprite = GameManager.s_GameManger.GetMyTeamLogoBig();
+            m_HomeTeamLogo.sprite =
+                GameManager.s_GameManger.GetTeamLogoByName(GameManager.s_GameManger.m_GameSettings.NextOpponent);
+	    }
+
+	    Color myColor = MyUtils.GetColorByTeamLogo(GameManager.s_GameManger.m_myTeam.LogoIdx);
+	    m_SquadIconBackground.color = myColor;
+        m_LeagueIconBackground.color = myColor;
+        m_ShopIconBackground.color = myColor;
+
+	    m_ClubInfoImage.sprite = GameManager.s_GameManger.GetMyTeamLogoBig();
+
+	    m_InboxImage.sprite = GameManager.s_GameManger.m_User.Inbox.HasUnreadMessages
+	        ? GameManager.s_GameManger.m_UnreadMailSprite
+	        : GameManager.s_GameManger.m_ReadMailSprite;
 	    updateStartMatchGUI();
-	    m_ShopText.text = string.Format("Total Fans: {1}{0}Facilities Level: {2}{0}Stadium: {3}k seats",
-	        Environment.NewLine, GameManager.s_GameManger.m_myTeam.GetFanBase(),
-	        GameManager.s_GameManger.m_myTeam.Facilities + 1, GameManager.s_GameManger.m_myTeam.TotalSeats / 1000);
-	    updateBucketGUI();
+        updateBucketGUI();
+        //m_ShopText.text = string.Format("Total Fans: {1}{0}Facilities Level: {2}{0}Stadium: {3}k seats",
+        //    Environment.NewLine, GameManager.s_GameManger.m_myTeam.GetFanBase(),
+        //    GameManager.s_GameManger.m_myTeam.Facilities + 1, GameManager.s_GameManger.m_myTeam.TotalSeats / 1000);
+	   
 	}
 	
 	// Update is called once per frame
@@ -43,36 +78,34 @@ public class NewMainGUI : MonoBehaviour
 
     void updateStartMatchGUI()
     {
-        if (GameManager.s_GameManger.GetNextMatchTimeSpan() <= TimeSpan.Zero)
+        TimeSpan nextMatchTimeSpan = GameManager.s_GameManger.GetNextMatchTimeSpan();
+        if (nextMatchTimeSpan <= TimeSpan.Zero)
         {
             if (GameManager.s_GameManger.m_GameSettings.NextOpponent == "none")
             {
                 m_StartMatchTextTitle.text = "Go To New Season!";
-                m_StartMatchText.text = string.Format("You have finished in {0} place",
-                    MyUtils.AddOrdinal(GameManager.s_GameManger.GetMyPosition()));
+                //m_StartMatchText.text = string.Format("You have finished in {0} place",
+                //    MyUtils.AddOrdinal(GameManager.s_GameManger.GetMyPosition()));
             }
             else
             {
-                m_StartMatchTextTitle.text = "Go To Match!";
-                m_StartMatchText.text = string.Format("vs. {0}", GameManager.s_GameManger.GetNextOpponent());
+                m_StartMatchTextBody.text = "GO TO MATCH!";
+                //m_StartMatchText.text = string.Format("vs. {0}", GameManager.s_GameManger.GetNextOpponent());
             }
             
         }
         else
         {
-            m_StartMatchTextTitle.text = "Last Match";
+            //m_StartMatchTextTitle.text = "Last Match";
             if (GameManager.s_GameManger.m_GameSettings.NextOpponent == "none")
             {
-                m_StartMatchText.text = string.Format("{0} until next season starts{1}You have finished in {2} place",
-                    GameManager.s_GameManger.GetNextMatchTimeSpan().ToString().Split('.')[0],
-                    Environment.NewLine,
-                    MyUtils.AddOrdinal(GameManager.s_GameManger.GetMyPosition()));
+                m_StartMatchTextTitle.text = string.Format("{0:D2}:{1:D2} until next season starts",
+                    nextMatchTimeSpan.Minutes, nextMatchTimeSpan.Seconds);
             }
             else
             {
-                m_StartMatchText.text = string.Format("{1} Until Kickoff{0}vs. {2}", Environment.NewLine,
-            GameManager.s_GameManger.GetNextMatchTimeSpan().ToString().Split('.')[0]
-            , GameManager.s_GameManger.GetNextOpponent());
+                
+                m_StartMatchTextBody.text = string.Format("{0:D2}:{1:D2}", nextMatchTimeSpan.Minutes, nextMatchTimeSpan.Seconds);
             }
             
         }
@@ -82,12 +115,13 @@ public class NewMainGUI : MonoBehaviour
     {
         if (GameManager.s_GameManger.IsBucketFull())
         {
-            m_BucketText.text = string.Format("{1} {0:C0}", GameManager.s_GameManger.GetMoneyInBucket(), "Collect Money!");
+            m_BonusText.text = string.Format("{1} {0:C0}", GameManager.s_GameManger.GetMoneyInBucket(), "COLLECT BONUS!");
             m_CollectButton.interactable = true;
         }
         else
         {
-            m_BucketText.text = string.Format("{0}", GameManager.s_GameManger.GetNextEmptyTimeSpan().ToString().Split('.')[0]);
+            TimeSpan nextEmptyTimeSpan = GameManager.s_GameManger.GetNextEmptyTimeSpan();
+            m_BonusText.text = string.Format("BONUS: {0:D2}:{1:D2}", nextEmptyTimeSpan.Minutes, nextEmptyTimeSpan.Seconds);
             m_CollectButton.interactable = false;
         }
     }

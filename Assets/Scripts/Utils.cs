@@ -134,11 +134,11 @@ public static class MyUtils
 
         if (i_NextMatchDict.TryGetValue("isHomeMatch", out isHomeMatch))
         {
-            o_GameSettings.IsHomeOrAway = bool.Parse(isHomeMatch.ToString());
+            o_GameSettings.IsNextMatchAtHome = bool.Parse(isHomeMatch.ToString());
         }
         else
         {
-            Debug.Log("WARN: Failed to get IsHomeOrAway from json");
+            Debug.Log("WARN: Failed to get IsNextMatchAtHome from json");
         }
     }
 

@@ -28,8 +28,10 @@ public class InboxScene : MonoBehaviour
             m_AllMessagesObjects[count].transform.localScale = new Vector3(1, 1, 1);
 
             m_AllMessagesScripts[count] = m_AllMessagesObjects[count].GetComponent<MessageLineScript>();
-            m_AllMessagesScripts[count].m_HeaderText.text = message.Header + " HasRead=" + message.HasReadMessage;
-            //m_AllMessagesScripts[count].m_MailImage = message.HasReadMessage
+            m_AllMessagesScripts[count].m_HeaderText.text = message.Header;
+            m_AllMessagesScripts[count].m_MailImage.sprite = message.HasReadMessage
+                ? GameManager.s_GameManger.m_ReadMailSprite
+                : GameManager.s_GameManger.m_UnreadMailSprite;
             m_AllMessagesScripts[count].m_Index = count;
             m_AllMessagesScripts[count].m_GenericPopup = m_GenericPopup;
 
@@ -43,8 +45,10 @@ public class InboxScene : MonoBehaviour
         int count = 0;
         foreach (Message message in m_Inbox.Messages)
         {
-            //m_AllMessagesScripts[count].m_MailImage = message.HasReadMessage
-            m_AllMessagesScripts[count].m_HeaderText.text = message.Header + " HasRead=" + message.HasReadMessage;
+            m_AllMessagesScripts[count].m_MailImage.sprite = message.HasReadMessage
+                ? GameManager.s_GameManger.m_ReadMailSprite
+                : GameManager.s_GameManger.m_UnreadMailSprite;
+            m_AllMessagesScripts[count].m_HeaderText.text = message.Header;
             m_AllMessagesScripts[count].m_Index = count;
 
             count++;

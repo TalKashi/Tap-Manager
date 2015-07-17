@@ -33,8 +33,6 @@ public class HeaderGUI : MonoBehaviour
 
 	    everyFrameUpdate();
 	    m_Position.text = GameManager.s_GameManger.GetTeamPosition(GameManager.s_GameManger.m_myTeam).ToString();
-
-	    //m_MailImg.sprite = GameManager.s_GameManger.m_User.Inbox.HasUnreadMessages ? spriteUnreadMsg : spriteReadMsg;
     }
 	
 	// Update is called once per frame
@@ -55,6 +53,9 @@ public class HeaderGUI : MonoBehaviour
         //m_MailImg.sprite = GameManager.s_GameManger.m_User.Inbox.HasUnreadMessages ? spriteUnreadMsg : spriteReadMsg;
         m_InstantTrainText.text = GameManager.s_GameManger.m_myTeam.TotalInstantTrain.ToString();
         m_SceneHeader.text = GameManager.s_GameManger.CurrentSceneHeaderName;
+        m_MailImg.sprite = GameManager.s_GameManger.m_User.Inbox.HasUnreadMessages
+            ? GameManager.s_GameManger.m_UnreadMailSprite
+            : GameManager.s_GameManger.m_ReadMailSprite;
     }
 
     public void OnBackClick()

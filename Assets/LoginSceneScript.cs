@@ -168,7 +168,7 @@ public class LoginSceneScript : MonoBehaviour {
             }
             else
             {
-                StartCoroutine(GameManager.s_GameManger.SyncClientDB("NewDesignMainScene"));
+                StartCoroutine(GameManager.s_GameManger.SyncClientDB("LobbyDevelopment"));
             }
             // Check ok response
             // if new user go to new team screen

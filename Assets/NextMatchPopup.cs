@@ -24,7 +24,7 @@ public class NextMatchPopup : MonoBehaviour
 
     void Start()
     {
-        bool isHomeGame = GameManager.s_GameManger.m_GameSettings.IsHomeOrAway;
+        bool isHomeGame = GameManager.s_GameManger.m_GameSettings.IsNextMatchAtHome;
 
         if (isHomeGame)
         {

@@ -60,7 +60,7 @@ public class GameSettings
         set { m_NextOpponent = value; } 
     }
 
-    public bool IsHomeOrAway
+    public bool IsNextMatchAtHome
     {
         get { return m_IsNextMatchAtHome; }
         set { m_IsNextMatchAtHome = value; }
@@ -172,6 +172,9 @@ public class GameManager : MonoBehaviour
     public string CurrentScene { get; set; }
     public bool IsPromotionLeague { get { return true; } }
     public bool IsRelegationLeague { get { return true; } }
+
+    public Sprite m_UnreadMailSprite;
+    public Sprite m_ReadMailSprite;
 
     //public const string URL = "http://tapmanger.herokuapp.com/";
     public const string URL = "http://77.125.2.181:4000/";
@@ -655,10 +658,10 @@ public class GameManager : MonoBehaviour
             case k_Shop:
             case k_Inbox:
             case k_About:
-                Application.LoadLevel("NewDesignMainScene");
+                Application.LoadLevel("LobbyDevelopment");
                 break;
             case k_Player:
-                Application.LoadLevel("NewDesignSquad");
+                Application.LoadLevel("SquadDevelopment");
                 break;
             default:
                 Application.Quit();
@@ -684,7 +687,7 @@ public class GameManager : MonoBehaviour
 
     public string GetNextOpponent()
     {
-        string homeOrAway = m_GameSettings.IsHomeOrAway ? " (Home)" : " (Away)";
+        string homeOrAway = m_GameSettings.IsNextMatchAtHome ? " (H)" : " (A)";
         return m_GameSettings.NextOpponent + homeOrAway;
     }
 

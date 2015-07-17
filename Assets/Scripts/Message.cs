@@ -69,12 +69,13 @@ public class Inbox
     {
         get
         {
-            if (m_Messages[i_Idx].HasReadMessage == false)
+            int currectIndx = m_Messages.Count - i_Idx - 1;
+            if (m_Messages[currectIndx].HasReadMessage == false)
             {
-                m_Messages[i_Idx].HasReadMessage = true;
+                m_Messages[currectIndx].HasReadMessage = true;
                 m_NumOfUnreadMessages--;
             }
-            return m_Messages[i_Idx];
+            return m_Messages[currectIndx];
         }
     }
 
