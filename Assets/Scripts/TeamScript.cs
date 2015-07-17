@@ -72,6 +72,8 @@ public class TeamScript
 
     public string ID { get; set; }
 
+    public int LeagueIndex { get; set; }
+
     public GamesStatistics AllTimeStatistics
     {
         get { return m_AllTimeStats;}
@@ -133,7 +135,15 @@ public class TeamScript
 
     public int TotalSeats
     {
-        get { return Stadium * 1500 + 1000; }
+        get
+        {
+            return TotalSeatsForLevel(Stadium);
+        }
+    }
+
+    public int TotalSeatsForLevel(int i_Level)
+    {
+        return i_Level * 1500 + 1000;
     }
 
     public string Name 
@@ -380,15 +390,19 @@ public class TeamScript
 
 	public int GetFanBase()
 	{
-		//Temp solution
-        int fanBase =(int) (m_fansLevel+1) * 1000 + m_AdditionalFans;
-	    if (fanBase < 0)
-	    {
-	        fanBase = 0;
-	    }
-
-	    return fanBase;
+		return GetFanBaseByLevel(Fans);
 	}
+
+    public int GetFanBaseByLevel(int i_Level)
+    {
+        int fanBase = (i_Level + 1) * 200 + m_AdditionalFans;
+        if (fanBase < 0)
+        {
+            fanBase = 0;
+        }
+
+        return fanBase;
+    }
 
     public string GetName()
     {

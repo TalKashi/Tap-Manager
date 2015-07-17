@@ -4,6 +4,22 @@ using UnityEngine;
 
 public static class MyUtils
 {
+    public static string ConvertNumber(int i_Number)
+    {
+        if (i_Number >= 1000000)
+        {
+            return string.Format("{0}M", i_Number / 1000000f);
+        }
+        else if (i_Number >= 1000)
+        {
+            return string.Format("{0}K", i_Number / 1000f);
+        }
+        else
+        {
+            return string.Format("{0}", i_Number);
+        }
+    }
+
     public static Color GetColorByTeamLogo(int i_TeamLogoId)
     {
         const int k_Red = 0;
@@ -78,7 +94,7 @@ public static class MyUtils
 
     public static void LoadGameSettings(Dictionary<string, object> i_Json, ref GameSettings o_GameSettings)
     {
-        object gameSettingsDict, timeTillNextMatchMs, nextMatchDict;
+        object gameSettingsDict, timeTillNextMatchMs, nextMatchDict, numOfLeaguesObj;
 
         if (o_GameSettings == null)
         {
@@ -116,7 +132,15 @@ public static class MyUtils
             Debug.Log("WARN: Failed to get NextMatch from json");
         }
 
-        // TODO: Num of leagues
+        float numOfLeagues;
+        if (i_Json.TryGetValue("numOfLeagues", out numOfLeaguesObj) && float.TryParse(numOfLeaguesObj.ToString(), out numOfLeagues))
+        {
+            o_GameSettings.NumOfLeagues = (int) numOfLeagues;
+        }
+        else
+        {
+            Debug.Log("WARN: Failed to get numOfLeagues from json");
+        }
     }
 
     private static void extractNextMatchData(Dictionary<string, object> i_NextMatchDict, ref GameSettings o_GameSettings)
@@ -756,7 +780,7 @@ public static class MyUtils
     private static void extractTeamData(Dictionary<string, object> i_TeamJson, ref TeamScript o_Team)
     {
         object id, shopDict, gamesHistoryDict, additionalFans, lastGameInfoDict, financeDict, totalInstantTrainObj;
-        object lastResultEnum, isLastGameIsHomeGameBool, statisticsDict, teamName, logo;
+        object lastResultEnum, isLastGameIsHomeGameBool, statisticsDict, teamName, logo, myLeagueIndxObj;
 
         if (o_Team == null)
         {
@@ -872,6 +896,17 @@ public static class MyUtils
         else
         {
             Debug.Log("WARN: Failed to get TotalInstantTrain data from json");
+        }
+
+        float myLeagueIndx;
+        if (i_TeamJson.TryGetValue("league", out myLeagueIndxObj) &&
+            float.TryParse(myLeagueIndxObj.ToString(), out myLeagueIndx))
+        {
+            o_Team.LeagueIndex = (int)myLeagueIndx;
+        }
+        else
+        {
+            Debug.Log("WARN: Failed to get myLeagueIndx data from json");
         }
     }
 

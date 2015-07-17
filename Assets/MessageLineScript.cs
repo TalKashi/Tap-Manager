@@ -15,6 +15,7 @@ public class MessageLineScript : MonoBehaviour
         Message message = GameManager.s_GameManger.m_User.Inbox[m_Index];
         popUpScript.m_HeaderText.text = message.Header;
         popUpScript.m_ContentText.text = message.Content;
+        popUpScript.m_HeaderImage.color = MyUtils.GetColorByTeamLogo(GameManager.s_GameManger.m_myTeam.LogoIdx);
 
         m_GenericPopup.SetActive(true);
     }

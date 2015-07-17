@@ -5,66 +5,120 @@ using Soomla.Store;
 
 public class NewShopGUI : MonoBehaviour
 {
+    public GameObject m_ImprovePanel;
+    public GameObject m_BuyPanel;
 
-    public Text m_FansUpgradeText;
-    public Text m_FansUpgradeTitleText;
-    public Text m_FacilitiesUpgradeText;
-    public Text m_FacilitiesUpgradeTitleText;
-    public Text m_StadiumUpgradeText;
-    public Text m_StadiumUpgradeTitleText;
+    public Text m_StadiumLevel;
+    public Text m_StadiumSeats;
+    public Text m_StadiumUpgradeCost;
+    public Text m_StadiumUpgradeBonus;
 
-    public Button m_FansUpgradeButton;
-    public Button m_FacilitiesUpgradeButton;
-    public Button m_StadiumUpgradeButton;
+    public Text m_FansLevel;
+    public Text m_FansTotal;
+    public Text m_FansUpgradeCost;
+    public Text m_FansUpgradeBonus;
+
+    public Text m_FacilitesLevel;
+    public Text m_FacilitesPower; // not used ATM
+    public Text m_FacilitesUpgradeCost;
+    public Text m_FacilitesUpgradeBonus; // Not used ATM
+
+    public GameObject m_ImproveUnderlineObject;
+    public Image m_ImproveUnderline;
+    public GameObject m_BuyUnderlineObject;
+    public Image m_BuyUnderline;
+
+    //public Text m_FansUpgradeText;
+    //public Text m_FansUpgradeTitleText;
+    //public Text m_FacilitiesUpgradeText;
+    //public Text m_FacilitiesUpgradeTitleText;
+    //public Text m_StadiumUpgradeText;
+    //public Text m_StadiumUpgradeTitleText;
+
+    //public Button m_FansUpgradeButton;
+    //public Button m_FacilitiesUpgradeButton;
+    //public Button m_StadiumUpgradeButton;
 
     private bool m_WaitingForServer = false;
+    private bool m_ShowImprove = true;
 
 	// Use this for initialization
 	void Start ()
 	{
-	    m_FansUpgradeTitleText.text = string.Format("Total Fans: {0}", GameManager.s_GameManger.m_myTeam.GetFanBase());
-        m_FansUpgradeText.text = string.Format("Invest in your fans{0}{1:C0}",
-	            System.Environment.NewLine,
-	            GameManager.s_GameManger.m_GameSettings.GetFansCostForLevel(GameManager.s_GameManger.m_myTeam.Fans));
+	    GameManager.s_GameManger.CurrentSceneHeaderName = GameManager.k_Shop;
+        GameManager.s_GameManger.CurrentScene = GameManager.k_Shop;
 
-	    m_FacilitiesUpgradeTitleText.text = string.Format("Facilities Level: {0}",
-	        GameManager.s_GameManger.m_myTeam.Facilities + 1);
-	    m_FacilitiesUpgradeText.text = string.Format("Improve your training facilities{0}{1:C0}",
-	            System.Environment.NewLine,
-	            GameManager.s_GameManger.m_GameSettings.GetFacilitiesCostForLevel(
-	                GameManager.s_GameManger.m_myTeam.Facilities));
+	    Color myColor = MyUtils.GetColorByTeamLogo(GameManager.s_GameManger.m_myTeam.LogoIdx);
+	    m_ImproveUnderline.color = myColor;
+        m_BuyUnderline.color = myColor;
 
-	    m_StadiumUpgradeTitleText.text = string.Format("Stadium Capacity: {0}k",
-	        GameManager.s_GameManger.m_myTeam.TotalSeats/1000);
-        m_StadiumUpgradeText.text = string.Format("Increase your stadium capacity{0}{1:C0}",
-            System.Environment.NewLine, GameManager.s_GameManger.m_GameSettings.GetStadiumCostForLevel(
-                    GameManager.s_GameManger.m_myTeam.Stadium));
+	    int stadiumLevel = GameManager.s_GameManger.m_myTeam.Stadium;
+        m_StadiumLevel.text = string.Format("LEVEL: {0}", stadiumLevel + 1);
+        m_StadiumSeats.text = string.Format("SEATS: {0}", MyUtils.ConvertNumber(GameManager.s_GameManger.m_myTeam.TotalSeats));
+	    m_StadiumUpgradeCost.text = string.Format("{0}",
+	        MyUtils.ConvertNumber(
+	            GameManager.s_GameManger.m_GameSettings.GetStadiumCostForLevel(stadiumLevel)));
+	    int newCapacityDiff = GameManager.s_GameManger.m_myTeam.TotalSeatsForLevel(stadiumLevel + 1) -
+	                      GameManager.s_GameManger.m_myTeam.TotalSeats;
+	    m_StadiumUpgradeBonus.text = string.Format("+ {0} SEATS", MyUtils.ConvertNumber(newCapacityDiff));
+
+	    int fansLevel = GameManager.s_GameManger.m_myTeam.Fans;
+	    m_FansLevel.text = string.Format("LEVEL: {0}", fansLevel + 1);
+	    m_FansTotal.text = string.Format("TOTAL: {0}", MyUtils.ConvertNumber(GameManager.s_GameManger.m_myTeam.GetFanBase()));
+	    m_FansUpgradeCost.text = string.Format("{0}",
+	        MyUtils.ConvertNumber(GameManager.s_GameManger.m_GameSettings.GetFansCostForLevel(fansLevel)));
+	    int newFansTotalDiff = GameManager.s_GameManger.m_myTeam.GetFanBaseByLevel(fansLevel + 1) -
+	                           GameManager.s_GameManger.m_myTeam.GetFanBase();
+	    m_FansUpgradeBonus.text = string.Format("+ {0} FANS", newFansTotalDiff);
+
+	    int facilitesLevel = GameManager.s_GameManger.m_myTeam.Facilities;
+	    m_FacilitesLevel.text = string.Format("LEVEL: {0}", facilitesLevel + 1);
+	    m_FacilitesUpgradeCost.text = string.Format("{0}",
+	        MyUtils.ConvertNumber(GameManager.s_GameManger.m_GameSettings.GetStadiumCostForLevel(facilitesLevel)));
+
+	    //m_FansUpgradeTitleText.text = string.Format("Total Fans: {0}", GameManager.s_GameManger.m_myTeam.GetFanBase());
+	    //m_FansUpgradeText.text = string.Format("Invest in your fans{0}{1:C0}",
+	    //        System.Environment.NewLine,
+	    //        GameManager.s_GameManger.m_GameSettings.GetFansCostForLevel(GameManager.s_GameManger.m_myTeam.Fans));
+
+	    //m_FacilitiesUpgradeTitleText.text = string.Format("Facilities Level: {0}",
+	    //    GameManager.s_GameManger.m_myTeam.Facilities + 1);
+	    //m_FacilitiesUpgradeText.text = string.Format("Improve your training facilities{0}{1:C0}",
+	    //        System.Environment.NewLine,
+	    //        GameManager.s_GameManger.m_GameSettings.GetFacilitiesCostForLevel(
+	    //            GameManager.s_GameManger.m_myTeam.Facilities));
+
+	    //m_StadiumUpgradeTitleText.text = string.Format("Stadium Capacity: {0}k",
+	    //    GameManager.s_GameManger.m_myTeam.TotalSeats/1000);
+	    //m_StadiumUpgradeText.text = string.Format("Increase your stadium capacity{0}{1:C0}",
+	    //    System.Environment.NewLine, GameManager.s_GameManger.m_GameSettings.GetStadiumCostForLevel(
+	    //            GameManager.s_GameManger.m_myTeam.Stadium));
 	}
 	
 	// Update is called once per frame
 	void Update ()
 	{
-	    int costForFans = GameManager.s_GameManger.m_GameSettings.GetFansCostForLevel(GameManager.s_GameManger.m_myTeam.Fans);
-        m_FansUpgradeTitleText.text = string.Format("Total Fans: {0}", GameManager.s_GameManger.m_myTeam.GetFanBase());
-        m_FansUpgradeText.text = string.Format("Invest in your fans{0}{1:C0}",
-                System.Environment.NewLine,
-                costForFans);
-	    m_FansUpgradeButton.interactable = GameManager.s_GameManger.GetCash() >= costForFans;
+        //int costForFans = GameManager.s_GameManger.m_GameSettings.GetFansCostForLevel(GameManager.s_GameManger.m_myTeam.Fans);
+        //m_FansUpgradeTitleText.text = string.Format("Total Fans: {0}", GameManager.s_GameManger.m_myTeam.GetFanBase());
+        //m_FansUpgradeText.text = string.Format("Invest in your fans{0}{1:C0}",
+        //        System.Environment.NewLine,
+        //        costForFans);
+        //m_FansUpgradeButton.interactable = GameManager.s_GameManger.GetCash() >= costForFans;
 
-        int costForFacilities = GameManager.s_GameManger.m_GameSettings.GetFacilitiesCostForLevel(GameManager.s_GameManger.m_myTeam.Facilities);
-        m_FacilitiesUpgradeTitleText.text = string.Format("Facilities Level: {0}",
-            GameManager.s_GameManger.m_myTeam.Facilities + 1);
-        m_FacilitiesUpgradeText.text = string.Format("Improve your training facilities{0}{1:C0}",
-                System.Environment.NewLine,
-                costForFacilities);
-        m_FacilitiesUpgradeButton.interactable = GameManager.s_GameManger.GetCash() >= costForFacilities;
+        //int costForFacilities = GameManager.s_GameManger.m_GameSettings.GetFacilitiesCostForLevel(GameManager.s_GameManger.m_myTeam.Facilities);
+        //m_FacilitiesUpgradeTitleText.text = string.Format("Facilities Level: {0}",
+        //    GameManager.s_GameManger.m_myTeam.Facilities + 1);
+        //m_FacilitiesUpgradeText.text = string.Format("Improve your training facilities{0}{1:C0}",
+        //        System.Environment.NewLine,
+        //        costForFacilities);
+        //m_FacilitiesUpgradeButton.interactable = GameManager.s_GameManger.GetCash() >= costForFacilities;
 
-        int costForStadium = GameManager.s_GameManger.m_GameSettings.GetStadiumCostForLevel(GameManager.s_GameManger.m_myTeam.Stadium);
-        m_StadiumUpgradeTitleText.text = string.Format("Stadium Capacity: {0}k",
-            GameManager.s_GameManger.m_myTeam.TotalSeats / 1000);
-        m_StadiumUpgradeText.text = string.Format("Increase your stadium capacity{0}{1:C0}",
-            System.Environment.NewLine, costForStadium);
-        m_StadiumUpgradeButton.interactable = GameManager.s_GameManger.GetCash() >= costForStadium;
+        //int costForStadium = GameManager.s_GameManger.m_GameSettings.GetStadiumCostForLevel(GameManager.s_GameManger.m_myTeam.Stadium);
+        //m_StadiumUpgradeTitleText.text = string.Format("Stadium Capacity: {0}k",
+        //    GameManager.s_GameManger.m_myTeam.TotalSeats / 1000);
+        //m_StadiumUpgradeText.text = string.Format("Increase your stadium capacity{0}{1:C0}",
+        //    System.Environment.NewLine, costForStadium);
+        //m_StadiumUpgradeButton.interactable = GameManager.s_GameManger.GetCash() >= costForStadium;
 	}
 
     public void OnFansClick()
@@ -80,6 +134,22 @@ public class NewShopGUI : MonoBehaviour
         {
             // TODO: Notify player that he doesn't have money
         }
+    }
+
+    public void OnImproveClick()
+    {
+        m_ImprovePanel.SetActive(true);
+        m_BuyPanel.SetActive(false);
+        m_ImproveUnderlineObject.SetActive(true);
+        m_BuyUnderlineObject.SetActive(false);
+    }
+
+    public void OnBuyClick()
+    {
+        m_ImprovePanel.SetActive(false);
+        m_BuyPanel.SetActive(true);
+        m_ImproveUnderlineObject.SetActive(false);
+        m_BuyUnderlineObject.SetActive(true);
     }
 
     IEnumerator sendFansClickToServer()

@@ -20,7 +20,8 @@ public class InboxScene : MonoBehaviour
 
         m_AllMessagesObjects = new GameObject[m_Inbox.TotalMessages];
         m_AllMessagesScripts = new MessageLineScript[m_Inbox.TotalMessages];
-        int count = 0;
+        int count = m_Inbox.Messages.Count - 1;
+	    int id = 0;
         foreach (Message message in m_Inbox.Messages)
         {
             m_AllMessagesObjects[count] = Instantiate(m_MessageLinePrefab);
@@ -32,10 +33,11 @@ public class InboxScene : MonoBehaviour
             m_AllMessagesScripts[count].m_MailImage.sprite = message.HasReadMessage
                 ? GameManager.s_GameManger.m_ReadMailSprite
                 : GameManager.s_GameManger.m_UnreadMailSprite;
-            m_AllMessagesScripts[count].m_Index = count;
+            m_AllMessagesScripts[count].m_Index = id;
             m_AllMessagesScripts[count].m_GenericPopup = m_GenericPopup;
 
-            count++;
+            count--;
+            id++;
         }
 	}
 	

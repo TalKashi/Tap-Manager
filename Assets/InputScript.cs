@@ -124,7 +124,7 @@ public class InputScript : MonoBehaviour
             print(request.text);
             if (request.text == "ok")
             {
-                StartCoroutine(GameManager.s_GameManger.SyncClientDB("NewDesignMainScene"));
+                StartCoroutine(GameManager.s_GameManger.SyncClientDB("LobbyDevelopment"));
             }
         }
         k_IsLoadingData = false;

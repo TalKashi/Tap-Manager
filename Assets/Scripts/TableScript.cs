@@ -49,7 +49,7 @@ public class TableScript : MonoBehaviour {
 	    if (i_IsMyTeam)
 	    {
             Color myTeamTextColor = new Color(0.8984375f, 0.8984375f, 0.8984375f);
-	        oneLineUITableScript.m_BubbleImg.color = GameManager.s_GameManger.m_User.TeamColor;
+            oneLineUITableScript.m_BubbleImg.color = MyUtils.GetColorByTeamLogo(GameManager.s_GameManger.m_myTeam.LogoIdx);
 	        oneLineUITableScript.m_team.color = myTeamTextColor;
             oneLineUITableScript.m_played.color = myTeamTextColor;
             oneLineUITableScript.m_won.color = myTeamTextColor;

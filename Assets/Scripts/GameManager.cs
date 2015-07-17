@@ -19,15 +19,6 @@ public class User
     public Sprite ProfilePic { get; set; }
     //public List<Message> Messages { get; private set; }
     public Inbox Inbox { get; set; }
-    public Color TeamColor 
-    {
-        get
-        {
-            return new Color(0.8125f, 0f, 0.15234375f);
-        }
-        
-    }
-
 
     public User()
     {
@@ -59,6 +50,8 @@ public class GameSettings
         get { return m_NextOpponent; }
         set { m_NextOpponent = value; } 
     }
+
+    public int NumOfLeagues { get; set; }
 
     public bool IsNextMatchAtHome
     {
@@ -170,8 +163,20 @@ public class GameManager : MonoBehaviour
     public bool IsEditPlayerMode { get; set; }
     public string CurrentSceneHeaderName { get; set; }
     public string CurrentScene { get; set; }
-    public bool IsPromotionLeague { get { return true; } }
-    public bool IsRelegationLeague { get { return true; } }
+
+    public bool IsPromotionLeague
+    {
+        get { return m_myTeam.LeagueIndex < m_GameSettings.NumOfLeagues; }
+    }
+
+    public bool IsRelegationLeague
+    {
+        get
+        {
+            return m_myTeam.LeagueIndex > 1;
+        }
+        
+    }
 
     public Sprite m_UnreadMailSprite;
     public Sprite m_ReadMailSprite;
