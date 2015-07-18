@@ -6,6 +6,7 @@ public class SquadTableUI : MonoBehaviour {
 
 	public GameObject[] m_playersLines;
     public GameObject m_LoadingDataImage;
+    public GameObject m_GenericPopup;
 
     public RectTransform m_ContentPanel;
     public GameObject m_PlayerLine;
@@ -16,6 +17,7 @@ public class SquadTableUI : MonoBehaviour {
 
     void Start()
     {
+        GameManager.s_GameManger.m_GenericPopup = m_GenericPopup;
         GameManager.s_GameManger.CurrentSceneHeaderName = GameManager.k_Squad;
         GameManager.s_GameManger.CurrentScene = GameManager.k_Squad;
         GameManager.s_GameManger.IsEditPlayerMode = false;
@@ -70,6 +72,7 @@ public class SquadTableUI : MonoBehaviour {
             //m_PlayerLineScript[count].m_Age.text = player.GetAge().ToString();
             //m_PlayerLineScript[count].m_Wage.text = player.GetSalary().ToString();
             m_PlayerLineScript[count].m_MyPlayer = player;
+            m_PlayerLineScript[count].m_GenericPopup = m_GenericPopup;
             count++;
         }
     }

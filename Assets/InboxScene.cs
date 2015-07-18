@@ -18,6 +18,7 @@ public class InboxScene : MonoBehaviour
         GameManager.s_GameManger.CurrentSceneHeaderName = GameManager.k_Inbox;
         GameManager.s_GameManger.CurrentScene = GameManager.k_Inbox;
         m_Inbox = GameManager.s_GameManger.m_User.Inbox;
+	    GameManager.s_GameManger.m_GenericPopup = m_GenericPopup;
 
         m_AllMessagesObjects = new GameObject[m_Inbox.TotalMessages];
         m_AllMessagesScripts = new MessageLineScript[m_Inbox.TotalMessages];

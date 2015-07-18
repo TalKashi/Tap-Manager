@@ -8,6 +8,7 @@ public class NewPlayerNamePopup : MonoBehaviour
     public InputField m_NewPlayerNameInputField;
     public Button m_SendButton;
     public GameObject m_HeaderGameObject;
+    public GameObject m_GenericPopup;
 
     private PlayerScript m_MyPlayer;
 
@@ -53,8 +54,6 @@ public class NewPlayerNamePopup : MonoBehaviour
 
     private IEnumerator changePlayerName(string i_FirstName, string i_LastName)
     {
-        
-
         //m_WaitingForServer = true;
         WWWForm form = new WWWForm();
         form.AddField("id", GameManager.s_GameManger.m_User.ID);
@@ -71,6 +70,13 @@ public class NewPlayerNamePopup : MonoBehaviour
         if (!string.IsNullOrEmpty(request.error))
         {
             Debug.Log("ERROR: " + request.error);
+            const string k_ErrorMsg = 
+@"Something wrong has happened...
+Unable to change player name!
+Are you connected to the internet?
+
+Please try again soon";
+            MyUtils.DisplayErrorMessage(m_GenericPopup, k_ErrorMsg);
         }
         else
         {

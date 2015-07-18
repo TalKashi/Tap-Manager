@@ -148,12 +148,13 @@ public class GameManager : MonoBehaviour
     public GameSettings m_GameSettings;
     public int NumOfClicksOnCoin { get; set; }
     public bool HasWatchedMatch { get; set; }
-    public bool IsLoadingData { get { return k_IsLoadingData;} }
+    public bool IsLoadingData { get { return k_IsLoadingData;} set { k_IsLoadingData = value; }}
 
     public Sprite[] m_TeamLogos;
     public Sprite[] m_TeamLogosSmall;
 
     public GameObject m_NextMatchPopup;
+    public GameObject m_GenericPopup;
 
     private bool m_HasDisplayedNextMatchPopup = false;
     private bool k_IsLoadingData;
@@ -182,8 +183,8 @@ public class GameManager : MonoBehaviour
     public Sprite m_ReadMailSprite;
     public Sprite[] m_PlayersSprites;
 
-    public const string URL = "http://tapmanger.herokuapp.com/";
-    //public const string URL = "http://77.125.2.181:4000/";
+    //public const string URL = "http://tapmanger.herokuapp.com/";
+    public const string URL = "http://77.125.2.181:4000/";
     public const string k_Lobby = "LOBBY";
     public const string k_Match = "MATCH";
     public const string k_League = "LEAGUE";
@@ -716,6 +717,7 @@ public class GameManager : MonoBehaviour
         if (!string.IsNullOrEmpty(request.error))
         {
             Debug.Log("ERROR: " + request.error);
+            MyUtils.DisplayErrorMessage(m_GenericPopup);
         }
         else
         {

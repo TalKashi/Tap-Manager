@@ -12,6 +12,7 @@ public class InputScript : MonoBehaviour
     public GameObject m_TeamNameGameObject;
     public GameObject m_LogosGameObject;
     public GameObject m_LoadingImage;
+    public GameObject m_GenericPopup;
 
     private int m_CurrentInputScene;
 
@@ -25,6 +26,7 @@ public class InputScript : MonoBehaviour
 	void Start ()
 	{
 	    m_CurrentInputScene = PlayerPrefs.GetInt(k_InputScene, 0);
+        GameManager.s_GameManger.m_GenericPopup = m_GenericPopup;
 	    //m_SceneImage.sprite = m_SceneSpriteNumber[m_CurrentInputScene];
 
 	    switch (m_CurrentInputScene)
@@ -127,6 +129,7 @@ public class InputScript : MonoBehaviour
         if (!string.IsNullOrEmpty(request.error))
         {
             Debug.Log("ERROR: " + request.error);
+            MyUtils.DisplayErrorMessage(m_GenericPopup);
         }
         else
         {
@@ -134,6 +137,15 @@ public class InputScript : MonoBehaviour
             if (request.text == "ok")
             {
                 StartCoroutine(GameManager.s_GameManger.SyncClientDB("LobbyDevelopment"));
+            }
+            else
+            {
+                const string k_ErrorMsg = 
+@"Something wrong has happened...
+
+Please try again soon";
+
+                MyUtils.DisplayErrorMessage(m_GenericPopup, k_ErrorMsg);
             }
         }
         k_IsLoadingData = false;

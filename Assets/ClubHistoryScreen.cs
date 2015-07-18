@@ -6,6 +6,7 @@ using Soomla.Store;
 public class ClubHistoryScreen : MonoBehaviour
 {
     public GameObject m_LoadingDataImage;
+    public GameObject m_GenericPopup;
 
 	public Text	m_LongestWinningStreak;
 	public Text m_LongestLosingStreak;
@@ -23,6 +24,7 @@ public class ClubHistoryScreen : MonoBehaviour
 
     void Start()
     {
+        GameManager.s_GameManger.m_GenericPopup = m_GenericPopup;
         GameManager.s_GameManger.CurrentSceneHeaderName = GameManager.k_ClubInfo;
         GameManager.s_GameManger.CurrentScene = GameManager.k_ClubInfo;
 

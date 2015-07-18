@@ -7,6 +7,7 @@ public class TableScript : MonoBehaviour {
 	public RectTransform m_contentPanel;
 	public GameObject m_rowPrefab;
     public GameObject m_LoadingDataImage;
+    public GameObject m_GenericPopup;
 
 	private GameObject[] m_lines;
 
@@ -15,6 +16,7 @@ public class TableScript : MonoBehaviour {
 	    GameManager.s_GameManger.CurrentSceneHeaderName = GameManager.k_League;
         GameManager.s_GameManger.CurrentScene = GameManager.k_League;
 		GameManager.s_GameManger.updateTableLeague ();
+        GameManager.s_GameManger.m_GenericPopup = m_GenericPopup;
 	}
 
     void Update()

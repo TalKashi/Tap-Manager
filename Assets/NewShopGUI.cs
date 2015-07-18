@@ -8,6 +8,7 @@ public class NewShopGUI : MonoBehaviour
     public GameObject m_ImprovePanel;
     public GameObject m_BuyPanel;
     public GameObject m_LoadingDataImage;
+    public GameObject m_GenericPopup;
 
     public Text m_StadiumLevel;
     public Text m_StadiumSeats;
@@ -47,6 +48,7 @@ public class NewShopGUI : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
+        GameManager.s_GameManger.m_GenericPopup = m_GenericPopup;
 	    GameManager.s_GameManger.CurrentSceneHeaderName = GameManager.k_Shop;
         GameManager.s_GameManger.CurrentScene = GameManager.k_Shop;
 
@@ -156,6 +158,7 @@ public class NewShopGUI : MonoBehaviour
         if (!string.IsNullOrEmpty(request.error))
         {
             Debug.Log("ERROR: " + request.error);
+            MyUtils.DisplayErrorMessage(m_GenericPopup);
         }
         else
         {
@@ -170,6 +173,8 @@ public class NewShopGUI : MonoBehaviour
                     break;
                 case "null":
                     Debug.Log("WARN: DB out of sync!");
+                    MyUtils.DisplayOutOfSyncErrorMessage(m_GenericPopup);
+                    StartCoroutine(GameManager.s_GameManger.SyncClientDB());
                     // Sync DB
                     break;
 
@@ -213,6 +218,7 @@ public class NewShopGUI : MonoBehaviour
         if (!string.IsNullOrEmpty(request.error))
         {
             Debug.Log("ERROR: " + request.error);
+            MyUtils.DisplayErrorMessage(m_GenericPopup);
         }
         else
         {
@@ -225,6 +231,8 @@ public class NewShopGUI : MonoBehaviour
                     break;
                 case "null":
                     Debug.Log("WARN: DB out of sync!");
+                    MyUtils.DisplayOutOfSyncErrorMessage(m_GenericPopup);
+                    StartCoroutine(GameManager.s_GameManger.SyncClientDB());
                     // Sync DB
                     break;
 
@@ -268,6 +276,7 @@ public class NewShopGUI : MonoBehaviour
         if (!string.IsNullOrEmpty(request.error))
         {
             Debug.Log("ERROR: " + request.error);
+            MyUtils.DisplayErrorMessage(m_GenericPopup);
         }
         else
         {
@@ -280,6 +289,8 @@ public class NewShopGUI : MonoBehaviour
                     break;
                 case "null":
                     Debug.Log("WARN: DB out of sync!");
+                    MyUtils.DisplayOutOfSyncErrorMessage(m_GenericPopup);
+                    StartCoroutine(GameManager.s_GameManger.SyncClientDB());
                     // Sync DB
                     break;
 

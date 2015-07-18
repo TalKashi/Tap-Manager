@@ -4,6 +4,43 @@ using UnityEngine;
 
 public static class MyUtils
 {
+    public const int k_Red = 0;
+    public const int k_Purple = 1;
+    public const int k_Blue = 2;
+    public const int k_Cyan = 3;
+    public const int k_Green = 4;
+    public const int k_Turqouiz = 5;
+
+    public static void DisplayErrorMessage(GameObject i_GenericPopupGameObject)
+    {
+        const string k_ErrorMsg = @"Something wrong has happened...
+
+Are you connected to the internet?
+
+Please try again soon";
+
+        DisplayErrorMessage(i_GenericPopupGameObject, k_ErrorMsg);
+    }
+
+    public static void DisplayOutOfSyncErrorMessage(GameObject i_GenericPopupGameObject)
+    {
+        const string k_ErrorMsg =
+@"You were out of sync with the our database.
+Syncing you!";
+
+        DisplayErrorMessage(i_GenericPopupGameObject, k_ErrorMsg);
+    }
+
+    public static void DisplayErrorMessage(GameObject i_GenericPopupGameObject, string i_ErrorMsg)
+    {
+        GenericPopup popUpScript = i_GenericPopupGameObject.GetComponent<GenericPopup>();
+        popUpScript.m_HeaderText.text = "ERROR!";
+        popUpScript.m_ContentText.text = i_ErrorMsg;
+        popUpScript.m_HeaderImage.color = GetColorByTeamLogo(k_Red);
+
+        i_GenericPopupGameObject.SetActive(true);
+    }
+
     public static string ConvertNumber(int i_Number)
     {
         if (i_Number >= 1000000)
@@ -22,12 +59,6 @@ public static class MyUtils
 
     public static Color GetColorByTeamLogo(int i_TeamLogoId)
     {
-        const int k_Red = 0;
-        const int k_Purple = 1;
-        const int k_Blue = 2;
-        const int k_Cyan = 3;
-        const int k_Green = 4;
-        const int k_Turqouiz = 5;
         switch (i_TeamLogoId)
         {
             case k_Red:

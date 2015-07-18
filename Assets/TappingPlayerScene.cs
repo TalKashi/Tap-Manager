@@ -13,6 +13,7 @@ public class TappingPlayerScene : MonoBehaviour
     public Image m_PlayerShirt;
     public Image m_FillImage;
     public GameObject m_LoadingDataImage;
+    public GameObject m_GenericPopup;
 
     private int m_PlayerID;
     private PlayerScript m_Player;
@@ -21,6 +22,7 @@ public class TappingPlayerScene : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
+        GameManager.s_GameManger.m_GenericPopup = m_GenericPopup;
 	    Color myColor = MyUtils.GetColorByTeamLogo(GameManager.s_GameManger.m_myTeam.LogoIdx);
         m_PlayerID = PlayerPrefs.GetInt("SelectedPlayer", -1);
 	    if (m_PlayerID == -1)
@@ -87,6 +89,7 @@ public class TappingPlayerScene : MonoBehaviour
         if (!string.IsNullOrEmpty(request.error))
         {
             Debug.Log("ERROR: " + request.error);
+            MyUtils.DisplayErrorMessage(m_GenericPopup);
         }
         else
         {

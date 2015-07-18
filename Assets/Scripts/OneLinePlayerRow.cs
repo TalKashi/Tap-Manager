@@ -14,6 +14,7 @@ public class OneLinePlayerRow : MonoBehaviour
     //public Text m_Age;
     //public Text m_Wage;
     public PlayerScript m_MyPlayer;
+    public GameObject m_GenericPopup;
 
     void Update()
     {
@@ -39,7 +40,7 @@ public class OneLinePlayerRow : MonoBehaviour
 
     private IEnumerator sendBoostLevelUpClickToServer()
     {
-        //m_WaitingForServer = true;
+        GameManager.s_GameManger.IsLoadingData = true;
         WWWForm form = new WWWForm();
         form.AddField("id", GameManager.s_GameManger.m_User.ID);
         form.AddField("playerId", m_MyPlayer.ID);
@@ -54,6 +55,8 @@ public class OneLinePlayerRow : MonoBehaviour
         if (!string.IsNullOrEmpty(request.error))
         {
             Debug.Log("ERROR: " + request.error);
+            MyUtils.DisplayErrorMessage(m_GenericPopup);
+            GameManager.s_GameManger.IsLoadingData = false;
         }
         else
         {
@@ -63,14 +66,18 @@ public class OneLinePlayerRow : MonoBehaviour
             {
                 case "ok":
                     m_MyPlayer.LevelUpPlayer();
+                    GameManager.s_GameManger.IsLoadingData = false;
                     break;
                 case "null":
                     Debug.Log("WARN: DB out of sync!");
                     // Sync DB
+                    MyUtils.DisplayOutOfSyncErrorMessage(m_GenericPopup);
+                    StartCoroutine(GameManager.s_GameManger.SyncClientDB());
                     break;
 
                 default:
-                    // Do nothing
+                    MyUtils.DisplayOutOfSyncErrorMessage(m_GenericPopup);
+                    StartCoroutine(GameManager.s_GameManger.SyncClientDB());
                     break;
             }
         }

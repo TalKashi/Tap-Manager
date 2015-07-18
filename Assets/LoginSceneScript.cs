@@ -9,6 +9,7 @@ public class LoginSceneScript : MonoBehaviour {
     public GameObject m_Login;
     private Sprite m_ProfilePic;
     public GameObject m_LoadingText;
+    public GameObject m_GenericPopup;
 
     bool k_IsDataLoaded = false;
     bool k_LoadingData = true;
@@ -23,6 +24,11 @@ public class LoginSceneScript : MonoBehaviour {
         m_Login.SetActive(false);
         m_LoadingText.SetActive(k_LoadingData);
         FB.Init(onInit);
+    }
+
+    void Start()
+    {
+        GameManager.s_GameManger.m_GenericPopup = m_GenericPopup;
     }
 
     void Update()
@@ -118,6 +124,13 @@ public class LoginSceneScript : MonoBehaviour {
         if (!string.IsNullOrEmpty(i_FBResult.Error))
         {
             Debug.LogError("ERROR: " + i_FBResult.Error);
+
+            const string k_ErrorMsg =
+                @"Failed to get information from Facebook
+Check that you are logged into Facebook or connect as a guest";
+
+            MyUtils.DisplayErrorMessage(m_GenericPopup, k_ErrorMsg);
+
             return;
         }
 
@@ -133,6 +146,11 @@ public class LoginSceneScript : MonoBehaviour {
         else
         {
             Debug.LogError("Missing user data from facebook!");
+            const string k_ErrorMsg =
+@"Failed to get required information from Facebook
+Please check that you give permission for basic information from Facebook or connect as guest";
+
+            MyUtils.DisplayErrorMessage(m_GenericPopup, k_ErrorMsg);
         }
     }
 
@@ -155,7 +173,9 @@ public class LoginSceneScript : MonoBehaviour {
         if (!string.IsNullOrEmpty(www.error))
         {
             Debug.Log("ERROR: " + www.error);
+            MyUtils.DisplayErrorMessage(m_GenericPopup);
             k_LoadingData = false;
+            m_Login.SetActive(true);
         }
         else
         {
@@ -190,6 +210,7 @@ public class LoginSceneScript : MonoBehaviour {
         if (!string.IsNullOrEmpty(request.error))
         {
             Debug.Log("ERROR: " + request.error);
+            MyUtils.DisplayErrorMessage(m_GenericPopup);
         }
         else
         {

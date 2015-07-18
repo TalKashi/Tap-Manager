@@ -27,11 +27,13 @@ public class NewMainGUI : MonoBehaviour
     
     public Button m_CollectButton;
     public GameObject m_LoadingImage;
-	// Use this for initialization
+    public GameObject m_GenericPopup;
+
 	void Start ()
 	{
 	    GameManager.s_GameManger.CurrentSceneHeaderName = GameManager.k_Lobby;
         GameManager.s_GameManger.CurrentScene = GameManager.k_Lobby;
+        GameManager.s_GameManger.m_GenericPopup = m_GenericPopup;
 
 	    m_StartMatchTextTitle.text = string.Format("Vs. {0}", GameManager.s_GameManger.GetNextOpponent());
 	    if (GameManager.s_GameManger.m_GameSettings.IsNextMatchAtHome)
@@ -152,73 +154,6 @@ public class NewMainGUI : MonoBehaviour
         Application.LoadLevel("MatchDevelopment");
     }
 
-    IEnumerator sendNextMatchClick()
-    {
-        WWWForm form = new WWWForm();
-        Debug.Log("sending request match result for user: " + GameManager.s_GameManger.m_User.Email);
-        form.AddField("email", GameManager.s_GameManger.m_User.Email);
-        WWW request = new WWW(GameManager.URL + "matchResult", form);
-
-        Debug.Log("Sending matchResult request");
-        yield return request;
-        Debug.Log("Recieved matchResult response");
-
-        if (!string.IsNullOrEmpty(request.error))
-        {
-            Debug.Log("ERROR: " + request.error);
-        }
-        else
-        {
-            print(request.text);
-            if (request.text == "null")
-            {
-                // TODO: Tell user to try again soon
-            }
-            else
-            {
-                Dictionary<string, object> json = Facebook.MiniJSON.Json.Deserialize(request.text) as Dictionary<string, object>;
-                MyUtils.LoadTeamData(json, ref GameManager.s_GameManger.m_myTeam);
-                MyUtils.LoadLeagueData(json, ref GameManager.s_GameManger.m_AllTeams);
-                MyUtils.LoadBucketData(json, ref GameManager.s_GameManger.m_Bucket);
-                MyUtils.LoadSquadData(json, ref GameManager.s_GameManger.m_MySquad);
-                MyUtils.LoadGameSettings(json, ref GameManager.s_GameManger.m_GameSettings);
-                MyUtils.LoadUserData(json, ref GameManager.s_GameManger.m_User);
-                
-            }
-        }
-        Debug.Log("End of sendNextMatchClick()");
-    }
-
-    IEnumerator syncClientDB()
-    {
-        WWWForm form = new WWWForm();
-        Debug.Log("sending sync request for user: " + GameManager.s_GameManger.m_User.Email);
-        form.AddField("email", GameManager.s_GameManger.m_User.Email);
-        form.AddField("fbid", GameManager.s_GameManger.m_User.FBId);
-        WWW request = new WWW(GameManager.URL + "getInfoByEmail", form);
-
-        yield return request;
-
-        if (!string.IsNullOrEmpty(request.error))
-        {
-            Debug.Log("ERROR: " + request.error);
-        }
-        else
-        {
-            Debug.Log(request.text);
-            Dictionary<string, object> json = Facebook.MiniJSON.Json.Deserialize(request.text) as Dictionary<string, object>;
-            MyUtils.LoadTeamData(json, ref GameManager.s_GameManger.m_myTeam);
-            MyUtils.LoadLeagueData(json, ref GameManager.s_GameManger.m_AllTeams);
-            MyUtils.LoadBucketData(json, ref GameManager.s_GameManger.m_Bucket);
-            MyUtils.LoadSquadData(json, ref GameManager.s_GameManger.m_MySquad);
-            MyUtils.LoadGameSettings(json, ref GameManager.s_GameManger.m_GameSettings);
-            MyUtils.LoadUserData(json, ref GameManager.s_GameManger.m_User);
-            Application.LoadLevel("MatchResultScene");
-        }
-        Debug.Log("End of syncClientDB()");
-
-    }
-
     public void OnCollectMoneyClick()
     {
         if (GameManager.s_GameManger.IsBucketFull())
@@ -290,6 +225,7 @@ public class NewMainGUI : MonoBehaviour
         if (!string.IsNullOrEmpty(request.error))
         {
             Debug.Log("ERROR: " + request.error);
+            MyUtils.DisplayErrorMessage(m_GenericPopup);
         }
         else
         {
@@ -302,7 +238,8 @@ public class NewMainGUI : MonoBehaviour
                     break;
                 case "null":
                     Debug.Log("WARN: DB out of sync!");
-                    // TODO: Sync DB
+                    MyUtils.DisplayOutOfSyncErrorMessage(m_GenericPopup);
+                    StartCoroutine(GameManager.s_GameManger.SyncClientDB());
                     break;
             }
         }

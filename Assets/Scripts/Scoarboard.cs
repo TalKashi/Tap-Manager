@@ -55,6 +55,7 @@ public class Scoarboard : MonoBehaviour
     public Button m_BackButton;
     public GoalScorerGUI[] m_GoalScorers;
     public GameObject m_LoadingDataImage;
+    public GameObject m_GenericPopup;
 
     private GoalEvent[] m_GoalEvents;
     private TimeSpan m_MinutesLeft;
@@ -71,6 +72,7 @@ public class Scoarboard : MonoBehaviour
 
     void Start()
     {
+        GameManager.s_GameManger.m_GenericPopup = m_GenericPopup;
         m_LastMatchInfo = GameManager.s_GameManger.m_myTeam.GetLastMatchInfo();
         //m_LastMatchInfo = new MatchInfo("TeamA", "TeamB", 3, 4, 255, "3 5 8 4", 2, 3);
 
