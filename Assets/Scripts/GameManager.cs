@@ -181,8 +181,8 @@ public class GameManager : MonoBehaviour
     public Sprite m_UnreadMailSprite;
     public Sprite m_ReadMailSprite;
 
-    //public const string URL = "http://tapmanger.herokuapp.com/";
-    public const string URL = "http://77.125.2.181:4000/";
+    public const string URL = "http://tapmanger.herokuapp.com/";
+    //public const string URL = "http://77.125.2.181:4000/";
     public const string k_Lobby = "LOBBY";
     public const string k_Match = "MATCH";
     public const string k_League = "LEAGUE";

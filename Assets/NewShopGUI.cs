@@ -41,6 +41,7 @@ public class NewShopGUI : MonoBehaviour
 
     private bool m_WaitingForServer = false;
     private bool m_ShowImprove = true;
+    private const int k_BasicBoostAmount = 10;
 
 	// Use this for initialization
 	void Start ()
@@ -84,6 +85,8 @@ public class NewShopGUI : MonoBehaviour
 	    m_FacilitesUpgradeCost.text = string.Format("{0}",
 	        MyUtils.ConvertNumber(GameManager.s_GameManger.m_GameSettings.GetFacilitiesCostForLevel(facilitesLevel)));
         m_FacilitiesUpgradeButton.interactable = upgradeCost < GameManager.s_GameManger.GetCash();
+        float tapPowerDiff = ((k_BasicBoostAmount * (facilitesLevel + 2)) / ((float) k_BasicBoostAmount * (facilitesLevel + 1))) - 1f;
+        m_FacilitesUpgradeBonus.text = string.Format("+ {0:P0} IMPROVE", tapPowerDiff);
     }
 	
 	// Update is called once per frame

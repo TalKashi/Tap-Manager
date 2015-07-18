@@ -131,7 +131,7 @@ public class NewMainGUI : MonoBehaviour
     {
         if (GameManager.s_GameManger.IsBucketFull())
         {
-            m_BonusText.text = string.Format("{1} {0:C0}", GameManager.s_GameManger.GetMoneyInBucket(), "COLLECT BONUS!");
+            m_BonusText.text = string.Format("{1} {0}", GameManager.s_GameManger.GetMoneyInBucket(), "COLLECT BONUS!");
             m_CollectButton.interactable = true;
         }
         else

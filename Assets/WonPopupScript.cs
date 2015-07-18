@@ -65,7 +65,7 @@ public class WonPopupScript : MonoBehaviour
         {
             FB.Feed(linkCaption: string.Format("I've just WON in Tap Manager!"),
                 linkName: "Check out this game!",
-                link: "http://apps.facebook.com/" + FB.AppId + "/?challenge_brag" + (FB.IsLoggedIn ? FB.UserId : "guest"),
+                link: "https://play.google.com/store/apps/details?id=com.TeamVanilla.TKSO",
                 callback: isOK);
         }
         else

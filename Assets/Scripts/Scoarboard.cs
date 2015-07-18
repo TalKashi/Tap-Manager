@@ -119,6 +119,7 @@ public class Scoarboard : MonoBehaviour
             {
                 playSound();
                 m_HasPlayedSound = true;
+                m_HasPressedSkip = true;
                 m_SkipButtonText.text = "CONTINUE";
             }
         }
@@ -163,13 +164,17 @@ public class Scoarboard : MonoBehaviour
 
     public void OnSkipClick()
     {
+        if (m_HasPressedSkip)
+        {
+            m_Popup.SetActive(true);
+        }
+
         m_HasPressedSkip = true;
         for (int i = m_LastGoalIdx; i < m_GoalEvents.Length; i++)
         {
             createNewGoalGUI();
             m_LastGoalIdx++;
         }
-        m_Popup.SetActive(true);
     }
 
 	private void playSound()

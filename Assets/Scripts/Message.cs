@@ -7,7 +7,7 @@ using UnityEngine;
 [Serializable]
 public class Inbox
 {
-    private static readonly string sr_InboxFilePath = Application.persistentDataPath + "/inbox.dat";
+    private static readonly string sr_InboxFilePath = Application.persistentDataPath + "/";
 
     private int m_NumOfUnreadMessages;
     private List<Message> m_Messages;
@@ -17,13 +17,14 @@ public class Inbox
     public static Inbox LoadMessagesData()
     {
         Debug.Log("Loading Messages");
+        string path = sr_InboxFilePath + PlayerPrefs.GetString("id") + ".dat";
 
         Inbox messages = new Inbox();
         BinaryFormatter binaryFormatter = new BinaryFormatter();
 
-        if (File.Exists(sr_InboxFilePath))
+        if (File.Exists(path))
         {
-            FileStream file = File.OpenRead(sr_InboxFilePath);
+            FileStream file = File.OpenRead(path);
             messages = (Inbox)binaryFormatter.Deserialize(file);
             file.Close();
             Debug.Log("Loaded All Messages");
@@ -39,9 +40,10 @@ public class Inbox
     public static void SaveMessagesData(Inbox i_Messages)
     {
         Debug.Log("Saving Messages");
+        string path = sr_InboxFilePath + PlayerPrefs.GetString("id") + ".dat";
         BinaryFormatter binaryFormatter = new BinaryFormatter();
 
-        FileStream file = File.Create(sr_InboxFilePath);
+        FileStream file = File.Create(path);
         binaryFormatter.Serialize(file, i_Messages);
         file.Close();
 
