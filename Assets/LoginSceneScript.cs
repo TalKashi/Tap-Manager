@@ -29,7 +29,7 @@ public class LoginSceneScript : MonoBehaviour {
     {
         if (k_IsDataLoaded)
         {
-            Application.LoadLevel("NewMainScene");
+            Application.LoadLevel("LobbyDevelopment");
         }
         m_LoadingText.SetActive(k_LoadingData);
     }

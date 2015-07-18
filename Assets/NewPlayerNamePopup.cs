@@ -29,14 +29,10 @@ public class NewPlayerNamePopup : MonoBehaviour
     {
         string newName = m_NewPlayerNameInputField.text.Trim();
 
-        StartCoroutine(changePlayerName(newName));
-    }
-
-    private IEnumerator changePlayerName(string i_NewName)
-    {
-        string[] splitArr = Regex.Split(i_NewName, @"\W+");
+        string[] splitArr = Regex.Split(newName, @"\W+");
         string firstName = splitArr[0];
         string lastName = string.Empty;
+
         for (int i = 1; i < splitArr.Length; i++)
         {
             if (i + 1 < splitArr.Length)
@@ -46,18 +42,26 @@ public class NewPlayerNamePopup : MonoBehaviour
             else
             {
                 lastName += splitArr[i];
-            }            
+            }
         }
+
+        StartCoroutine(changePlayerName(firstName, lastName));
+        m_MyPlayer.SetFirstName(firstName);
+        m_MyPlayer.SetLastName(lastName);
+        gameObject.SetActive(false);
+    }
+
+    private IEnumerator changePlayerName(string i_FirstName, string i_LastName)
+    {
+        
 
         //m_WaitingForServer = true;
         WWWForm form = new WWWForm();
         form.AddField("id", GameManager.s_GameManger.m_User.ID);
         form.AddField("indexPlayer", m_MyPlayer.ID);
-        form.AddField("firstName", firstName);
-        form.AddField("lastName", lastName);
+        form.AddField("firstName", i_FirstName);
+        form.AddField("lastName", i_LastName);
         Debug.Log("indexPlayer=" + m_MyPlayer.ID);
-
-
          
         Debug.Log("Sending changePlayerName to server");
         WWW request = new WWW(GameManager.URL + "changePlayerName", form);
@@ -75,9 +79,6 @@ public class NewPlayerNamePopup : MonoBehaviour
             switch (request.text)
             {
                 case "ok":
-                    m_MyPlayer.SetFirstName(firstName);
-                    m_MyPlayer.SetLastName(lastName);
-                    gameObject.SetActive(false);
                     break;
                 case "null":
                     Debug.Log("WARN: DB out of sync!");

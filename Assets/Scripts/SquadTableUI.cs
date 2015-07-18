@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class SquadTableUI : MonoBehaviour {
 
 	public GameObject[] m_playersLines;
+    public GameObject m_LoadingDataImage;
 
     public RectTransform m_ContentPanel;
     public GameObject m_PlayerLine;
@@ -23,7 +24,15 @@ public class SquadTableUI : MonoBehaviour {
 
     void Update()
     {
-        updatePlayers();
+        if (GameManager.s_GameManger.IsLoadingData)
+        {
+            m_LoadingDataImage.SetActive(true);
+        }
+        else
+        {
+            m_LoadingDataImage.SetActive(false);
+            updatePlayers();
+        }
     }
 
     public void init()

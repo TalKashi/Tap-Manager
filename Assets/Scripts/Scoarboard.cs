@@ -54,6 +54,7 @@ public class Scoarboard : MonoBehaviour
     public Button m_SkipButton;
     public Button m_BackButton;
     public GoalScorerGUI[] m_GoalScorers;
+    public GameObject m_LoadingDataImage;
 
     private GoalEvent[] m_GoalEvents;
     private TimeSpan m_MinutesLeft;
@@ -102,8 +103,13 @@ public class Scoarboard : MonoBehaviour
 
     void Update()
     {
-        if (!m_HasPressedSkip && m_MinutesLeft < sr_NintyMins)
+        if (GameManager.s_GameManger.IsLoadingData)
         {
+            m_LoadingDataImage.SetActive(true);
+        }
+        else if (!m_HasPressedSkip && m_MinutesLeft < sr_NintyMins)
+        {
+            m_LoadingDataImage.SetActive(false);
             m_CurrentMinute.text = string.Format("{0:D2}:{1:D2}", (int) m_MinutesLeft.TotalMinutes,
                 m_MinutesLeft.Seconds);
 
@@ -112,6 +118,7 @@ public class Scoarboard : MonoBehaviour
         }
         else
         {
+            m_LoadingDataImage.SetActive(false);
             m_CurrentMinute.text = "90:00";
             m_FinalScore.text = string.Format("{0} - {1}", m_LastMatchInfo.GetHomeGoals(),
                 m_LastMatchInfo.GetAwayGoals());

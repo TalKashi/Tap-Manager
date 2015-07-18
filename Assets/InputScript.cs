@@ -11,6 +11,7 @@ public class InputScript : MonoBehaviour
     //public Sprite[] m_SceneSpriteNumber;
     public GameObject m_TeamNameGameObject;
     public GameObject m_LogosGameObject;
+    public GameObject m_LoadingImage;
 
     private int m_CurrentInputScene;
 
@@ -47,6 +48,14 @@ public class InputScript : MonoBehaviour
             //    break;
 	    }
 	}
+
+    void Update()
+    {
+        if (k_IsLoadingData)
+        {
+            m_LoadingImage.SetActive(true);
+        }
+    }
 
     public void OnNextClick()
     {

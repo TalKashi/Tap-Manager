@@ -5,6 +5,8 @@ using Soomla.Store;
 
 public class ClubHistoryScreen : MonoBehaviour
 {
+    public GameObject m_LoadingDataImage;
+
 	public Text	m_LongestWinningStreak;
 	public Text m_LongestLosingStreak;
 	public Text m_LongestUndefeatedStreak;
@@ -37,6 +39,11 @@ public class ClubHistoryScreen : MonoBehaviour
 		m_TotalGoalsConceded.text = allTimeStatistics.goalsAgainst.ToString();
 		m_TotalCrowd.text = allTimeStatistics.crowd.ToString();
         m_TotalChampionships.text = GameManager.s_GameManger.m_myTeam.TotalChampionships.ToString();
+    }
+
+    void Update()
+    {
+        m_LoadingDataImage.SetActive(GameManager.s_GameManger.IsLoadingData);
     }
 
 }

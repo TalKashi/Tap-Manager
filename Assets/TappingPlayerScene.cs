@@ -12,6 +12,7 @@ public class TappingPlayerScene : MonoBehaviour
     public Image m_PlayerPicture;
     public Image m_PlayerShirt;
     public Image m_FillImage;
+    public GameObject m_LoadingDataImage;
 
     private int m_PlayerID;
     private PlayerScript m_Player;
@@ -38,7 +39,15 @@ public class TappingPlayerScene : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-        updatePlayerData();
+	    if (GameManager.s_GameManger.IsLoadingData)
+	    {
+	        m_LoadingDataImage.SetActive(true);
+	    }
+	    else
+	    {
+            m_LoadingDataImage.SetActive(false);
+            updatePlayerData();
+	    }
 	}
 
     private void updatePlayerData()

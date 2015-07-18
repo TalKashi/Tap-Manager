@@ -7,6 +7,7 @@ public class NewShopGUI : MonoBehaviour
 {
     public GameObject m_ImprovePanel;
     public GameObject m_BuyPanel;
+    public GameObject m_LoadingDataImage;
 
     public Text m_StadiumLevel;
     public Text m_StadiumSeats;
@@ -92,7 +93,15 @@ public class NewShopGUI : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-        updateGUI();
+	    if (GameManager.s_GameManger.IsLoadingData)
+	    {
+	        m_LoadingDataImage.SetActive(true);
+	    }
+	    else
+	    {
+	        m_LoadingDataImage.SetActive(false);
+            updateGUI();
+	    }
 	}
 
     public void OnFansClick()

@@ -6,6 +6,7 @@ public class InboxScene : MonoBehaviour
     public GameObject m_GenericPopup;
     public GameObject m_MessageLinePrefab;
     public RectTransform m_contentPanel;
+    public GameObject m_LoadingImage;
 
     private GameObject[] m_AllMessagesObjects;
     private MessageLineScript[] m_AllMessagesScripts;
@@ -44,16 +45,24 @@ public class InboxScene : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
     {
-        int count = 0;
-        foreach (Message message in m_Inbox.Messages)
-        {
-            m_AllMessagesScripts[count].m_MailImage.sprite = message.HasReadMessage
-                ? GameManager.s_GameManger.m_ReadMailSprite
-                : GameManager.s_GameManger.m_UnreadMailSprite;
-            m_AllMessagesScripts[count].m_HeaderText.text = message.Header;
-            m_AllMessagesScripts[count].m_Index = count;
+	    if (GameManager.s_GameManger.IsLoadingData)
+	    {
+	        m_LoadingImage.SetActive(true);
+	    }
+	    else
+	    {
+            m_LoadingImage.SetActive(false);
+            int count = 0;
+            foreach (Message message in m_Inbox.Messages)
+            {
+                m_AllMessagesScripts[count].m_MailImage.sprite = message.HasReadMessage
+                    ? GameManager.s_GameManger.m_ReadMailSprite
+                    : GameManager.s_GameManger.m_UnreadMailSprite;
+                m_AllMessagesScripts[count].m_HeaderText.text = message.Header;
+                m_AllMessagesScripts[count].m_Index = count;
 
-            count++;
-        }
+                count++;
+            }
+	    }
 	}
 }

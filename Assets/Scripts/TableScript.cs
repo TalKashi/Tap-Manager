@@ -6,6 +6,8 @@ public class TableScript : MonoBehaviour {
 
 	public RectTransform m_contentPanel;
 	public GameObject m_rowPrefab;
+    public GameObject m_LoadingDataImage;
+
 	private GameObject[] m_lines;
 
 	void Start()
@@ -15,6 +17,10 @@ public class TableScript : MonoBehaviour {
 		GameManager.s_GameManger.updateTableLeague ();
 	}
 
+    void Update()
+    {
+        m_LoadingDataImage.SetActive(GameManager.s_GameManger.IsLoadingData);
+    }
 
 	public void InitTable(int i_numOfTeams)
     {
