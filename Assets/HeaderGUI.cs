@@ -19,6 +19,8 @@ public class HeaderGUI : MonoBehaviour
     public Image m_MiddleBar;
     public Image m_BottomBar;
 
+    public GameObject m_PopupGameObject;
+
 	// Use this for initialization
 	void Start () 
     {
@@ -65,6 +67,6 @@ public class HeaderGUI : MonoBehaviour
 
     public void OnChangeNameClick()
     {
-        //TODO: popup with input field to enter new name
+        m_PopupGameObject.SetActive(true);
     }
 }

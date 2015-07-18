@@ -48,6 +48,6 @@ public class NextMatchPopup : MonoBehaviour
 
     public void OnGoToMatchClick()
     {
-        StartCoroutine(GameManager.s_GameManger.SyncClientDB("NewDesignMatchResult"));
+        StartCoroutine(GameManager.s_GameManger.SyncClientDB("MatchDevelopment"));
     }
 }

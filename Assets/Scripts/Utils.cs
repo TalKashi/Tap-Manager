@@ -780,7 +780,7 @@ public static class MyUtils
     private static void extractTeamData(Dictionary<string, object> i_TeamJson, ref TeamScript o_Team)
     {
         object id, shopDict, gamesHistoryDict, additionalFans, lastGameInfoDict, financeDict, totalInstantTrainObj;
-        object lastResultEnum, isLastGameIsHomeGameBool, statisticsDict, teamName, logo, myLeagueIndxObj;
+        object lastResultEnum, isLastGameIsHomeGameBool, statisticsDict, teamName, logo, myLeagueIndxObj, totalChapionshipsObj;
 
         if (o_Team == null)
         {
@@ -907,6 +907,17 @@ public static class MyUtils
         else
         {
             Debug.Log("WARN: Failed to get myLeagueIndx data from json");
+        }
+
+        float totalChapionships;
+        if (i_TeamJson.TryGetValue("totalChampionships", out totalChapionshipsObj) &&
+            float.TryParse(totalChapionshipsObj.ToString(), out totalChapionships))
+        {
+            o_Team.TotalChampionships = (int)totalChapionships;
+        }
+        else
+        {
+            Debug.Log("WARN: Failed to get totalChampionships data from json");
         }
     }
 

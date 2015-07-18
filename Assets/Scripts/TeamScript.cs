@@ -74,6 +74,8 @@ public class TeamScript
 
     public int LeagueIndex { get; set; }
 
+    public int TotalChampionships { get; set; }
+
     public GamesStatistics AllTimeStatistics
     {
         get { return m_AllTimeStats;}

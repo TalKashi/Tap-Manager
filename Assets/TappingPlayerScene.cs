@@ -10,6 +10,8 @@ public class TappingPlayerScene : MonoBehaviour
     //public Slider m_PlayerXPSlider;
     public Text m_PlayerXPSliderText;
     public Image m_PlayerPicture;
+    public Image m_PlayerShirt;
+    public Image m_FillImage;
 
     private int m_PlayerID;
     private PlayerScript m_Player;
@@ -18,14 +20,15 @@ public class TappingPlayerScene : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
+	    Color myColor = MyUtils.GetColorByTeamLogo(GameManager.s_GameManger.m_myTeam.LogoIdx);
         m_PlayerID = PlayerPrefs.GetInt("SelectedPlayer", -1);
 	    if (m_PlayerID == -1)
 	    {
             Debug.Log("ERROR: SelectedPlayer was not found in PlayerPrefs!!!");
 	    }
 
+	    m_PlayerShirt.color = myColor;
 	    m_Player = GameManager.s_GameManger.m_MySquad.GetPlayerInIndex(m_PlayerID);
-	    GameManager.s_GameManger.CurrentSceneHeaderName = m_Player.GetFullName();
 	    GameManager.s_GameManger.CurrentScene = GameManager.k_Player;
 
 	    updatePlayerData();
@@ -39,13 +42,16 @@ public class TappingPlayerScene : MonoBehaviour
 
     private void updatePlayerData()
     {
+        GameManager.s_GameManger.CurrentSceneHeaderName = m_Player.GetFullName();
         m_PlayerPosition.text = m_Player.GetFullPosition();
         //m_ClickValue.text = string.Format("XP Boost: {0}", m_Player.BoostAmount);
         m_PlayerLevel.text = string.Format("LEVEL {0}", m_Player.GetLevel());
         //m_PlayerXPSlider.maxValue = m_Player.NextBoostCap;
         //m_PlayerXPSlider.minValue = 0;
         //m_PlayerXPSlider.value = m_Player.CurrentBoost;
-        m_PlayerXPSliderText.text = string.Format("{0:P2}", MyUtils.GetPercentage(m_Player.CurrentBoost, m_Player.NextBoostCap));
+        double percentage = MyUtils.GetPercentage(m_Player.CurrentBoost, m_Player.NextBoostCap);
+        m_PlayerXPSliderText.text = string.Format("{0:P2}", percentage);
+        m_FillImage.fillAmount = (float)percentage;
     }
 
     public void OnTrainClick()
