@@ -107,6 +107,11 @@ public class NewShopGUI : MonoBehaviour
         }
     }
 
+    public void OnSingleInstantTrainClick()
+    {
+        StoreInventory.BuyItem(Store.INSTANT_TRAIN.ItemId);
+    }
+
     public void OnImproveClick()
     {
         m_ImprovePanel.SetActive(true);

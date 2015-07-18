@@ -21,6 +21,9 @@ public class ClubHistoryScreen : MonoBehaviour
 
     void Start()
     {
+        GameManager.s_GameManger.CurrentSceneHeaderName = GameManager.k_ClubInfo;
+        GameManager.s_GameManger.CurrentScene = GameManager.k_ClubInfo;
+
         GamesStatistics allTimeStatistics = GameManager.s_GameManger.m_myTeam.AllTimeStatistics;
         RecordsStatistics teamRecords = GameManager.s_GameManger.m_myTeam.TeamRecords;
 		m_LongestWinningStreak.text = teamRecords.longestWinStreak.ToString();  

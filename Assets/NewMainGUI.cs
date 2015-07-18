@@ -6,10 +6,15 @@ using System.Collections.Generic;
 
 public class NewMainGUI : MonoBehaviour
 {
+    public Button m_NextMatchButton;
     public Text m_StartMatchTextBody;
     public Text m_StartMatchTextTitle;
     public Image m_HomeTeamLogo;
     public Image m_AwayTeamLogo;
+
+    public Text m_LastMatchTextBody;
+    public Image m_LastMatchHomeTeamLogo;
+    public Image m_LastMatchAwayTeamLogo;
 
     public Image m_SquadIconBackground;
     public Image m_LeagueIconBackground;
@@ -54,6 +59,7 @@ public class NewMainGUI : MonoBehaviour
 	        : GameManager.s_GameManger.m_ReadMailSprite;
 	    updateStartMatchGUI();
         updateBucketGUI();
+        updateLastMatcGUI();
         //m_ShopText.text = string.Format("Total Fans: {1}{0}Facilities Level: {2}{0}Stadium: {3}k seats",
         //    Environment.NewLine, GameManager.s_GameManger.m_myTeam.GetFanBase(),
         //    GameManager.s_GameManger.m_myTeam.Facilities + 1, GameManager.s_GameManger.m_myTeam.TotalSeats / 1000);
@@ -72,6 +78,7 @@ public class NewMainGUI : MonoBehaviour
             m_LoadingImage.SetActive(false);
             updateStartMatchGUI();
             updateBucketGUI();
+            updateLastMatcGUI();
 	    }
 	    
 	}
@@ -81,6 +88,7 @@ public class NewMainGUI : MonoBehaviour
         TimeSpan nextMatchTimeSpan = GameManager.s_GameManger.GetNextMatchTimeSpan();
         if (nextMatchTimeSpan <= TimeSpan.Zero)
         {
+            m_NextMatchButton.interactable = true;
             if (GameManager.s_GameManger.m_GameSettings.NextOpponent == "none")
             {
                 m_StartMatchTextTitle.text = "Go To New Season!";
@@ -97,6 +105,7 @@ public class NewMainGUI : MonoBehaviour
         else
         {
             //m_StartMatchTextTitle.text = "Last Match";
+            m_NextMatchButton.interactable = false;
             if (GameManager.s_GameManger.m_GameSettings.NextOpponent == "none")
             {
                 m_StartMatchTextTitle.text = string.Format("{0:D2}:{1:D2} until next season starts",
@@ -107,8 +116,15 @@ public class NewMainGUI : MonoBehaviour
                 
                 m_StartMatchTextBody.text = string.Format("{0:D2}:{1:D2}", nextMatchTimeSpan.Minutes, nextMatchTimeSpan.Seconds);
             }
-            
         }
+    }
+
+    private void updateLastMatcGUI()
+    {
+        MatchInfo lastMatchInfo = GameManager.s_GameManger.m_myTeam.GetLastMatchInfo();
+        m_LastMatchTextBody.text = string.Format("{0} - {1}", lastMatchInfo.GetHomeGoals(), lastMatchInfo.GetAwayGoals());
+        m_LastMatchHomeTeamLogo.sprite = GameManager.s_GameManger.GetTeamLogoBig(lastMatchInfo.HomeTeamLogoIdx);
+        m_LastMatchAwayTeamLogo.sprite = GameManager.s_GameManger.GetTeamLogoBig(lastMatchInfo.AwayTeamLogoIdx);
     }
 
     void updateBucketGUI()
@@ -128,13 +144,12 @@ public class NewMainGUI : MonoBehaviour
 
     public void OnNextMatchClick()
     {
-        //if (GameManager.s_GameManger.GetNextMatchTimeSpan() > TimeSpan.Zero)
-        //{
-        //    // TODO: Tell user to wait until the time of the match
-        //    return;
-        //}
+        StartCoroutine(GameManager.s_GameManger.SyncClientDB("MatchDevelopment"));
+    }
 
-        StartCoroutine(GameManager.s_GameManger.SyncClientDB("NewDesignMatchResult"));
+    public void OnLastMatchClick()
+    {
+        Application.LoadLevel("MatchDevelopment");
     }
 
     IEnumerator sendNextMatchClick()

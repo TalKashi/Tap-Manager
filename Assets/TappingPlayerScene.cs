@@ -45,7 +45,7 @@ public class TappingPlayerScene : MonoBehaviour
         //m_PlayerXPSlider.maxValue = m_Player.NextBoostCap;
         //m_PlayerXPSlider.minValue = 0;
         //m_PlayerXPSlider.value = m_Player.CurrentBoost;
-        m_PlayerXPSliderText.text = string.Format("{0}%", MyUtils.GetPercentage(m_Player.CurrentBoost, m_Player.NextBoostCap));
+        m_PlayerXPSliderText.text = string.Format("{0:P2}", MyUtils.GetPercentage(m_Player.CurrentBoost, m_Player.NextBoostCap));
     }
 
     public void OnTrainClick()

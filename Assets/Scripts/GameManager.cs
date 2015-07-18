@@ -191,6 +191,8 @@ public class GameManager : MonoBehaviour
     public const string k_Inbox = "INBOX";
     public const string k_About = "ABOUT";
     public const string k_Player = "PLAYER";
+    public const string k_ClubInfo = "CLUB STATS";
+    
 
 	void Awake () 
     {
@@ -659,18 +661,14 @@ public class GameManager : MonoBehaviour
     {
         switch (CurrentScene)
         {
-            case k_League:
-            case k_Squad:
-            case k_Shop:
-            case k_Inbox:
-            case k_About:
-                Application.LoadLevel("LobbyDevelopment");
+            case k_Lobby:
+                Application.Quit();
                 break;
             case k_Player:
                 Application.LoadLevel("SquadDevelopment");
                 break;
             default:
-                Application.Quit();
+                Application.LoadLevel("LobbyDevelopment");
                 break;
         }
     }
