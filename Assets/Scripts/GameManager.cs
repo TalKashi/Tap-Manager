@@ -180,6 +180,7 @@ public class GameManager : MonoBehaviour
 
     public Sprite m_UnreadMailSprite;
     public Sprite m_ReadMailSprite;
+    public Sprite[] m_PlayersSprites;
 
     public const string URL = "http://tapmanger.herokuapp.com/";
     //public const string URL = "http://77.125.2.181:4000/";
@@ -262,6 +263,12 @@ public class GameManager : MonoBehaviour
     public void TimeTillNextMatchUpdated()
     {
         m_HasDisplayedNextMatchPopup = false;
+    }
+
+    public Sprite GetPlayerSpriteByImgIndx(int i_Index)
+    {
+        int currectIndx = i_Index % m_PlayersSprites.Length;
+        return m_PlayersSprites[currectIndx];
     }
 
     IEnumerator checkNumOfClicksOnCoin()
@@ -740,7 +747,7 @@ public class GameManager : MonoBehaviour
         if (s_GameManger == null)
         {
             s_GameManger = this;
-            //SoomlaStore.Initialize(new Store());
+            m_PlayersSprites = Resources.LoadAll<Sprite>("Players");
             //m_TeamLogos = Resources.LoadAll<Sprite>("Match Sybmols");
             //m_TeamLogosSmall = Resources.LoadAll<Sprite>("Top Bar Symbols");
             //loadData();

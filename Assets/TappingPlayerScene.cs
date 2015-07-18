@@ -29,6 +29,7 @@ public class TappingPlayerScene : MonoBehaviour
 
 	    m_PlayerShirt.color = myColor;
 	    m_Player = GameManager.s_GameManger.m_MySquad.GetPlayerInIndex(m_PlayerID);
+	    m_PlayerPicture.sprite = GameManager.s_GameManger.GetPlayerSpriteByImgIndx(m_Player.PlayerSpriteIndex);
 	    GameManager.s_GameManger.CurrentScene = GameManager.k_Player;
 
 	    updatePlayerData();
