@@ -126,6 +126,26 @@ public class NewShopGUI : MonoBehaviour
         StoreInventory.BuyItem(Store.INSTANT_TRAIN.ItemId);
     }
 
+    public void OnPackInstantTrainClick()
+    {
+        StoreInventory.BuyItem(Store.INSTANT_TRAIN_PACK.ItemId);
+    }
+
+    public void On500KCoinsClick()
+    {
+        StoreInventory.BuyItem(Store.FIVE_K_COINS.ItemId);
+    }
+
+    public void On5MCoinsClick()
+    {
+        StoreInventory.BuyItem(Store.FIVE_M_COINS.ItemId);
+    }
+
+    public void On10MCoinsClick()
+    {
+        StoreInventory.BuyItem(Store.TEN_M_COINS.ItemId);
+    }
+
     public void OnImproveClick()
     {
         m_ImprovePanel.SetActive(true);
