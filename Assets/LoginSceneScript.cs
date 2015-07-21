@@ -19,7 +19,7 @@ public class LoginSceneScript : MonoBehaviour {
     void Awake()
     {
 #if UNITY_EDITOR
-        PlayerPrefs.DeleteAll();
+        //PlayerPrefs.DeleteAll();
 #endif
         m_Login.SetActive(false);
         m_LoadingText.SetActive(k_LoadingData);

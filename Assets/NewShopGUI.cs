@@ -14,16 +14,19 @@ public class NewShopGUI : MonoBehaviour
     public Text m_StadiumSeats;
     public Text m_StadiumUpgradeCost;
     public Text m_StadiumUpgradeBonus;
+    public Image m_StadiumIconBackground;
 
     public Text m_FansLevel;
     public Text m_FansTotal;
     public Text m_FansUpgradeCost;
     public Text m_FansUpgradeBonus;
+    public Image m_FansIconBackground;
 
     public Text m_FacilitesLevel;
     public Text m_FacilitesPower; // not used ATM
     public Text m_FacilitesUpgradeCost;
     public Text m_FacilitesUpgradeBonus; // Not used ATM
+    public Image m_FacilitesIconBackground;
 
     public GameObject m_ImproveUnderlineObject;
     public Image m_ImproveUnderline;
@@ -55,6 +58,9 @@ public class NewShopGUI : MonoBehaviour
 	    Color myColor = MyUtils.GetColorByTeamLogo(GameManager.s_GameManger.m_myTeam.LogoIdx);
 	    m_ImproveUnderline.color = myColor;
         m_BuyUnderline.color = myColor;
+	    m_StadiumIconBackground.color = myColor;
+        m_FansIconBackground.color = myColor;
+        m_FacilitesIconBackground.color = myColor;
 
 	    updateGUI();
 	}

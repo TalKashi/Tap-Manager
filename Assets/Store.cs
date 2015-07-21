@@ -15,7 +15,7 @@ public class Store : IStoreAssets
 
     public VirtualGood[] GetGoods()
     {
-        return new VirtualGood[] {INSTANT_TRAIN};
+        return new VirtualGood[] { INSTANT_TRAIN, INSTANT_TRAIN_PACK , FIVE_K_COINS, FIVE_M_COINS, TEN_M_COINS};
     }
 
     public VirtualCurrencyPack[] GetCurrencyPacks()
@@ -79,6 +79,6 @@ public class Store : IStoreAssets
     /** Virtual Categories **/
     // The muffin rush theme doesn't support categories, so we just put everything under a general category.
     public static VirtualCategory GENERAL_CATEGORY = new VirtualCategory(
-            "General", new List<string>(new string[] { INSTANT_TRAIN_ID})
+            "General", new List<string>(new string[] { INSTANT_TRAIN_ID, INSTANT_TRAIN_PACK_ID, FIVE_K_COINS_ID, FIVE_M_COINS_ID, TEN_M_COINS_ID })
     );
 }

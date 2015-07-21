@@ -28,6 +28,11 @@ public class ShopEventHandler : MonoBehaviour
     private void OnUnexpectedErrorInStore(string i_Payload)
     {
         Debug.Log("ERROR: " + i_Payload);
+        string erorMsg =
+            @"We failed to complete your purchase.
+Please send mail to team.vanilla.dev@gmail.com so we can figure it out
+User: " + GameManager.s_GameManger.m_User.ID;
+        MyUtils.DisplayErrorMessage(GameManager.s_GameManger.m_GenericPopup, erorMsg);
     }
 
     private void OnMarketPurchase(PurchasableVirtualItem i_PurchasableVirtualItem, string i_Payload, Dictionary<string, string> i_Extras)

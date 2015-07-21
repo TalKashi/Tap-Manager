@@ -70,6 +70,7 @@ public class TappingPlayerScene : MonoBehaviour
     {
         StartCoroutine(sendBoostClickToServer());
         m_Player.BoostPlayer();
+        SoundManager.s_SoundManager.playClickSound();
     }
 
     private IEnumerator sendBoostClickToServer()
