@@ -50,7 +50,6 @@ public class Bucket
         //Debug.Log("Adding money to bucket of " + i_deltaTime + " seconds");
         if (m_currentMoneyInBucket == m_maxAmount)
         {
-            Debug.Log("Can't add more money to bucket. Bucket is full!");
             return;
         }
         //Debug.Log("deltaTime=" + i_deltaTime + ";adding=" + m_valueForSecond * i_deltaTime);
@@ -59,7 +58,6 @@ public class Bucket
         if (m_currentMoneyInBucket > m_maxAmount)
         {
             m_currentMoneyInBucket = m_maxAmount;
-            Debug.Log("Bucket is full! (" + m_currentMoneyInBucket + ")");
         }
 
 

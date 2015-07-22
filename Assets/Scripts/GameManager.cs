@@ -81,7 +81,6 @@ public class GameSettings
     // if level=1 then return m_FansInitCost*m_FansCostMulti)
     public int GetFansCostForLevel(int i_Level)
     {
-        Debug.Log("m_FansInitCost=" + m_FansInitCost + ";m_FansCostMulti=" + m_FansCostMulti + "i_Level=" + i_Level);
         return (int) (m_FansInitCost * Math.Pow(m_FansCostMulti, i_Level));
     }
 
@@ -194,6 +193,8 @@ public class GameManager : MonoBehaviour
     public const string k_About = "ABOUT";
     public const string k_Player = "PLAYER";
     public const string k_ClubInfo = "CLUB STATS";
+    public const string k_Login = "LOGIN";
+    public const string k_Input = "INPUT";
     
 
 	void Awake () 
@@ -665,15 +666,28 @@ public class GameManager : MonoBehaviour
 		
 	}
 
+    void OnApplicationFocus(bool i_IsFocus)
+    {
+        if (i_IsFocus && CurrentScene != k_Login && CurrentScene != k_Input)
+        {
+            StartCoroutine(SyncClientDB());
+        }
+    }
+
     public void GoBack()
     {
         switch (CurrentScene)
         {
+            case k_Login: // intended fall through
             case k_Lobby:
                 Application.Quit();
                 break;
             case k_Player:
                 Application.LoadLevel("SquadDevelopment");
+                break;
+            case k_Input:
+                PlayerPrefs.DeleteKey("id");
+                Application.LoadLevel("LoginDevelopment");
                 break;
             default:
                 Application.LoadLevel("LobbyDevelopment");

@@ -29,6 +29,8 @@ public class LoginSceneScript : MonoBehaviour {
     void Start()
     {
         GameManager.s_GameManger.m_GenericPopup = m_GenericPopup;
+        GameManager.s_GameManger.CurrentSceneHeaderName = GameManager.k_Login;
+        GameManager.s_GameManger.CurrentScene = GameManager.k_Login;
     }
 
     void Update()

@@ -27,6 +27,8 @@ public class InputScript : MonoBehaviour
 	{
 	    m_CurrentInputScene = PlayerPrefs.GetInt(k_InputScene, 0);
         GameManager.s_GameManger.m_GenericPopup = m_GenericPopup;
+	    GameManager.s_GameManger.CurrentSceneHeaderName = GameManager.k_Input;
+        GameManager.s_GameManger.CurrentScene = GameManager.k_Input;
 	    //m_SceneImage.sprite = m_SceneSpriteNumber[m_CurrentInputScene];
 
 	    switch (m_CurrentInputScene)
