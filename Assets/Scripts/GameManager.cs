@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using Soomla.Store;
+using UnityEngine.Advertisements;
 
 
 public class User
@@ -12,13 +13,14 @@ public class User
     public string FBId { get; set; }
     public string Name { get; set; }
     public string ManagerName { get; set; }
-    public int Money { get; set; }
+    public long Money { get; set; }
     public string Birthday { get; set; }
     public int Age { get; set; }
     public int CoinValue { get; set; }
     public Sprite ProfilePic { get; set; }
     //public List<Message> Messages { get; private set; }
     public Inbox Inbox { get; set; }
+    public int TotalChampionships { get; set; }
 
     public User()
     {
@@ -79,9 +81,9 @@ public class GameSettings
 
     // Returns the i_Level cost (if level=0 then returns m_FansInitCost,
     // if level=1 then return m_FansInitCost*m_FansCostMulti)
-    public int GetFansCostForLevel(int i_Level)
+    public long GetFansCostForLevel(int i_Level)
     {
-        return (int) (m_FansInitCost * Math.Pow(m_FansCostMulti, i_Level));
+        return (long) (m_FansInitCost * Math.Pow(m_FansCostMulti, i_Level));
     }
 
     public int FacilitiesIntitalCost
@@ -96,9 +98,9 @@ public class GameSettings
         set { m_FacilitiesCostMulti = value; }
     }
 
-    public int GetFacilitiesCostForLevel(int i_Level)
+    public long GetFacilitiesCostForLevel(int i_Level)
     {
-        return (int)(m_FacilitiesInitCost * Math.Pow(m_FacilitiesCostMulti, i_Level));
+        return (long)(m_FacilitiesInitCost * Math.Pow(m_FacilitiesCostMulti, i_Level));
     }
 
     public int StadiumIntitalCost
@@ -113,9 +115,9 @@ public class GameSettings
         set { m_StadiumCostMulti = value; }
     }
 
-    public int GetStadiumCostForLevel(int i_Level)
+    public long GetStadiumCostForLevel(int i_Level)
     {
-        return (int)(m_StadiumInitCost * Math.Pow(m_StadiumCostMulti, i_Level));
+        return (long)(m_StadiumInitCost * Math.Pow(m_StadiumCostMulti, i_Level));
     }
 
     public TimeSpan TimeTillNextMatch
@@ -157,12 +159,12 @@ public class GameManager : MonoBehaviour
 
     private bool m_HasDisplayedNextMatchPopup = false;
     private bool k_IsLoadingData;
-    
+    private string m_CurrentScene = k_Login;
 
     public GoalEvent[] LastGameSimulation { get; set; }
     public bool IsEditPlayerMode { get; set; }
     public string CurrentSceneHeaderName { get; set; }
-    public string CurrentScene { get; set; }
+    public string CurrentScene { get { return m_CurrentScene; } set { m_CurrentScene = value; } }
 
     public bool IsPromotionLeague
     {
@@ -195,7 +197,11 @@ public class GameManager : MonoBehaviour
     public const string k_ClubInfo = "CLUB STATS";
     public const string k_Login = "LOGIN";
     public const string k_Input = "INPUT";
-    
+
+    public static string UNITY_ADS_GAME_ID_ANDROID = "1015655";
+    private bool m_ShowAds = true;
+    private DateTime m_LastTimeShowedAds = DateTime.Now;
+    private static TimeSpan m_TimeBetweenAdds = new TimeSpan(0, 5, 0);
 
 	void Awake () 
     {
@@ -206,6 +212,7 @@ public class GameManager : MonoBehaviour
     {
         //StartCoroutine(SyncClientDB());
         //Instantiate(m_NextMatchPopup);
+        Advertisement.Initialize(UNITY_ADS_GAME_ID_ANDROID);
     }
 
     void Update()
@@ -221,7 +228,7 @@ public class GameManager : MonoBehaviour
                 Instantiate(m_NextMatchPopup);
                 Debug.Log("NEXT MATCH READY");
                 m_HasDisplayedNextMatchPopup = true;
-                HasWatchedMatch = false;
+                //HasWatchedMatch = false;
             }
         }
 
@@ -234,6 +241,17 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             GoBack();
+        }
+
+        if (m_ShowAds && !IsLoadingData && CurrentScene == k_Lobby && Advertisement.IsReady())
+        {
+            m_ShowAds = false;
+            m_LastTimeShowedAds = DateTime.Now;
+            Advertisement.Show();
+        }
+        else if (m_LastTimeShowedAds - DateTime.Now >= m_TimeBetweenAdds)
+        {
+            m_ShowAds = true;
         }
 
 #if UNITY_EDITOR
@@ -351,8 +369,8 @@ public class GameManager : MonoBehaviour
 
     public Sprite GetTeamLogoBig(int i_Idx)
     {
-        int currectIndx = i_Idx % m_TeamLogos.Length;
-        return m_TeamLogos[currectIndx];
+        int correctIndx = i_Idx % m_TeamLogos.Length;
+        return m_TeamLogos[correctIndx];
     }
 
     public Sprite GetMyTeamLogoBig()
@@ -480,7 +498,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void AddCash(int i_Value)
+    public void AddCash(long i_Value)
     {
        	m_User.Money += i_Value;
 		//StartCoroutine(addMoneyAnimation(i_Value));
@@ -520,7 +538,7 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
-    public void FansUpdate(int i_UpgradeCost)
+    public void FansUpdate(long i_UpgradeCost)
 	{
         /*
 		if ((m_myTeam.GetFansLevel () + 1) >= m_fansLevelPrice.Length)
@@ -538,7 +556,7 @@ public class GameManager : MonoBehaviour
         m_myTeam.UpdateFansLevel(1);
 	}
 
-    public void StadiumUpdate(int i_UpgradeCost)
+    public void StadiumUpdate(long i_UpgradeCost)
 	{
         /*
 		if ((m_myTeam.GetStadiumLevel () + 1) >= m_stadiumLevelPrice.Length)
@@ -556,7 +574,7 @@ public class GameManager : MonoBehaviour
 	}
 
 
-	public void FacilitiesUpdate(int i_UpgradeCost)
+	public void FacilitiesUpdate(long i_UpgradeCost)
 	{
         /*
 		if ((m_myTeam.GetFacilitiesLevel () + 1) >= m_facilitiesLevelPrice.Length)
@@ -695,7 +713,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public int GetCash()
+    public long GetCash()
     {
         return m_User.Money;
     }
@@ -719,6 +737,7 @@ public class GameManager : MonoBehaviour
 
     public IEnumerator SyncClientDB(string i_NextScene = null)
     {
+        Debug.Log(Environment.StackTrace);
         k_IsLoadingData = true;
         WWWForm form = new WWWForm();
         Debug.Log("sending sync request for user: " + PlayerPrefs.GetString("id"));

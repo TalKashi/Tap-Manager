@@ -26,7 +26,7 @@ public class ShopScript : MonoBehaviour {
 	public void OnFansClick()
 	{
 		//GameManager.s_GameManger.FansUpdate ();
-        int upgradeCost = GameManager.s_GameManger.m_GameSettings.GetFansCostForLevel(GameManager.s_GameManger.m_myTeam.GetFansLevel());
+        long upgradeCost = GameManager.s_GameManger.m_GameSettings.GetFansCostForLevel(GameManager.s_GameManger.m_myTeam.GetFansLevel());
         if (GameManager.s_GameManger.GetCash() >= upgradeCost)
         {
             StartCoroutine(sendFansClickToServer(upgradeCost));
@@ -37,7 +37,7 @@ public class ShopScript : MonoBehaviour {
         }
 	}
 
-    IEnumerator sendFansClickToServer(int i_UpgradeCost)
+    IEnumerator sendFansClickToServer(long i_UpgradeCost)
     {
         // TODO: Add 'loading' popup
         m_WaitingForServer = true;
@@ -81,7 +81,7 @@ public class ShopScript : MonoBehaviour {
 	public void OnFacilitiesClick()
 	{
 		//GameManager.s_GameManger.FacilitiesUpdate ();
-        int upgradeCost = GameManager.s_GameManger.m_GameSettings.GetFacilitiesCostForLevel(GameManager.s_GameManger.m_myTeam.GetFacilitiesLevel());
+        long upgradeCost = GameManager.s_GameManger.m_GameSettings.GetFacilitiesCostForLevel(GameManager.s_GameManger.m_myTeam.GetFacilitiesLevel());
         if (GameManager.s_GameManger.GetCash() >= upgradeCost)
         {
             StartCoroutine(sendFacilitiesClickToServer(upgradeCost));
@@ -92,7 +92,7 @@ public class ShopScript : MonoBehaviour {
         }
 	}
 
-    IEnumerator sendFacilitiesClickToServer(int i_UpgradeCost)
+    IEnumerator sendFacilitiesClickToServer(long i_UpgradeCost)
     {
         // TODO: Add 'loading' popup
         m_WaitingForServer = true;
@@ -137,7 +137,7 @@ public class ShopScript : MonoBehaviour {
 	{
 		//GameManager.s_GameManger.StadiumUpdate ();
 
-        int upgradeCost = GameManager.s_GameManger.m_GameSettings.GetStadiumCostForLevel(GameManager.s_GameManger.m_myTeam.GetStadiumLevel());
+        long upgradeCost = GameManager.s_GameManger.m_GameSettings.GetStadiumCostForLevel(GameManager.s_GameManger.m_myTeam.GetStadiumLevel());
         if (GameManager.s_GameManger.GetCash() >= upgradeCost)
         {
             StartCoroutine(sendStadiumClickToServer(upgradeCost));
@@ -148,7 +148,7 @@ public class ShopScript : MonoBehaviour {
         }
 	}
 
-    IEnumerator sendStadiumClickToServer(int i_UpgradeCost)
+    IEnumerator sendStadiumClickToServer(long i_UpgradeCost)
     {
         // TODO: Add 'loading' popup
         m_WaitingForServer = true;

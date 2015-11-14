@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public static class MyUtils
 {
@@ -41,15 +42,15 @@ Syncing you!";
         i_GenericPopupGameObject.SetActive(true);
     }
 
-    public static string ConvertNumber(int i_Number)
+    public static string ConvertNumber(long i_Number)
     {
         if (i_Number >= 1000000)
         {
-            return string.Format("{0}M", i_Number / 1000000f);
+            return string.Format("{0}M", i_Number / 1000000);
         }
         else if (i_Number >= 1000)
         {
-            return string.Format("{0}K", i_Number / 1000f);
+            return string.Format("{0}K", i_Number / 1000);
         }
         else
         {
@@ -291,7 +292,7 @@ Syncing you!";
 
     private static void extractUserData(Dictionary<string, object> i_UserDict, ref User o_User)
     {
-        object id, email, age, money, name, managerName, birthday, coinValue, fbId, messagesArrayObj;
+        object id, email, age, money, name, managerName, birthday, coinValue, fbId, messagesArrayObj, totalChapionshipsObj;
 
         if (i_UserDict.TryGetValue("id", out id))
         {
@@ -331,7 +332,7 @@ Syncing you!";
 
         if (i_UserDict.TryGetValue("money", out money))
         {
-            o_User.Money = (int)float.Parse(money.ToString());
+            o_User.Money = (long)double.Parse(money.ToString());
         }
         else
         {
@@ -382,6 +383,17 @@ Syncing you!";
         else
         {
             Debug.Log("WARN: Failed to get messages array from json");
+        }
+
+        float totalChapionships;
+        if (i_UserDict.TryGetValue("totalChampionships", out totalChapionshipsObj) &&
+            float.TryParse(totalChapionshipsObj.ToString(), out totalChapionships))
+        {
+            o_User.TotalChampionships = (int)totalChapionships;
+        }
+        else
+        {
+            Debug.Log("WARN: Failed to get totalChampionships data from json");
         }
         
     }
@@ -881,15 +893,24 @@ Syncing you!";
             Debug.Log("WARN: Failed to get GamesHistory data from json");
         }
 
-        int logoIdx;
-        if (i_TeamJson.TryGetValue("logo", out logo) && int.TryParse(logo.ToString(), out logoIdx))
+        try
         {
-            o_Team.LogoIdx = logoIdx % GameManager.s_GameManger.m_TeamLogos.Length;
+            int logoIdx;
+            if (i_TeamJson.TryGetValue("logo", out logo) && int.TryParse(logo.ToString(), out logoIdx))
+            {
+                o_Team.LogoIdx = logoIdx % GameManager.s_GameManger.m_TeamLogos.Length;
+            }
+            else
+            {
+                Debug.Log("WARN: Failed to get LogoIdx data from json");
+            }
         }
-        else
+        catch (Exception e)
         {
-            Debug.Log("WARN: Failed to get LogoIdx data from json");
+            Debug.Log(e.Message);
+            o_Team.LogoIdx = Random.Range(0, GameManager.s_GameManger.m_TeamLogos.Length);
         }
+        
 
         if (i_TeamJson.TryGetValue("lastGameInfo", out lastGameInfoDict))
         {
@@ -938,17 +959,6 @@ Syncing you!";
         else
         {
             Debug.Log("WARN: Failed to get myLeagueIndx data from json");
-        }
-
-        float totalChapionships;
-        if (i_TeamJson.TryGetValue("totalChampionships", out totalChapionshipsObj) &&
-            float.TryParse(totalChapionshipsObj.ToString(), out totalChapionships))
-        {
-            o_Team.TotalChampionships = (int)totalChapionships;
-        }
-        else
-        {
-            Debug.Log("WARN: Failed to get totalChampionships data from json");
         }
     }
 
@@ -1127,16 +1137,35 @@ Syncing you!";
         }
 
         int homeTeamLogoInt;
-        if (!i_LastGameInfoDict.TryGetValue("homeTeamLogo", out homeTeamLogo)|| !int.TryParse(homeTeamLogo.ToString(), out homeTeamLogoInt))
+        try
         {
-            homeTeamLogoInt = GameManager.s_GameManger.m_myTeam.LogoIdx;
+            if (!i_LastGameInfoDict.TryGetValue("homeTeamLogo", out homeTeamLogo) ||
+                !int.TryParse(homeTeamLogo.ToString(), out homeTeamLogoInt))
+            {
+                homeTeamLogoInt = GameManager.s_GameManger.m_myTeam.LogoIdx;
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e.Message);
+            homeTeamLogoInt = Random.Range(0, GameManager.s_GameManger.m_TeamLogos.Length);
         }
 
         int awayTeamLogoInt;
-        if (!i_LastGameInfoDict.TryGetValue("awayTeamLogo", out awayTeamLogo) || !int.TryParse(awayTeamLogo.ToString(), out awayTeamLogoInt))
+        try
         {
-            awayTeamLogoInt = GameManager.s_GameManger.m_myTeam.LogoIdx;
+            if (!i_LastGameInfoDict.TryGetValue("awayTeamLogo", out awayTeamLogo) ||
+                !int.TryParse(awayTeamLogo.ToString(), out awayTeamLogoInt))
+            {
+                awayTeamLogoInt = GameManager.s_GameManger.m_myTeam.LogoIdx;
+            }
         }
+        catch (Exception e)
+        {
+            Debug.Log(e.Message);
+            awayTeamLogoInt = Random.Range(0, GameManager.s_GameManger.m_TeamLogos.Length);
+        }
+        
 
         o_Team.SetLastGameInfo(new MatchInfo((string) homeTeam, (string) awayTeam, int.Parse(homeTeamGoals.ToString()),
             int.Parse(awayTeamGoals.ToString()), (int) float.Parse(crowdAtMatch.ToString()), playersScoreGoal.ToString(),

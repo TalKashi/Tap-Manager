@@ -146,6 +146,7 @@ public class NewMainGUI : MonoBehaviour
 
     public void OnNextMatchClick()
     {
+        GameManager.s_GameManger.HasWatchedMatch = false;
         StartCoroutine(GameManager.s_GameManger.SyncClientDB("MatchDevelopment"));
     }
 

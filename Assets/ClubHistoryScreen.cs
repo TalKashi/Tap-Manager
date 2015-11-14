@@ -40,7 +40,7 @@ public class ClubHistoryScreen : MonoBehaviour
 		m_TotalGoalsScored.text = allTimeStatistics.goalsFor.ToString();
 		m_TotalGoalsConceded.text = allTimeStatistics.goalsAgainst.ToString();
 		m_TotalCrowd.text = allTimeStatistics.crowd.ToString();
-        m_TotalChampionships.text = GameManager.s_GameManger.m_myTeam.TotalChampionships.ToString();
+        m_TotalChampionships.text = GameManager.s_GameManger.m_User.TotalChampionships.ToString();
     }
 
     void Update()

@@ -46,9 +46,10 @@ public class NewPlayerNamePopup : MonoBehaviour
             }
         }
 
-        StartCoroutine(changePlayerName(firstName, lastName));
         m_MyPlayer.SetFirstName(firstName);
         m_MyPlayer.SetLastName(lastName);
+        StartCoroutine(changePlayerName(firstName, lastName));
+        
         gameObject.SetActive(false);
     }
 

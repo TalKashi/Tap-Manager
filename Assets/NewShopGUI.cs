@@ -68,7 +68,7 @@ public class NewShopGUI : MonoBehaviour
     private void updateGUI()
     {
         int stadiumLevel = GameManager.s_GameManger.m_myTeam.Stadium;
-        int upgradeCost = GameManager.s_GameManger.m_GameSettings.GetStadiumCostForLevel(stadiumLevel);
+        long upgradeCost = GameManager.s_GameManger.m_GameSettings.GetStadiumCostForLevel(stadiumLevel);
         m_StadiumLevel.text = string.Format("LEVEL: {0}", stadiumLevel + 1);
         m_StadiumSeats.text = string.Format("SEATS: {0}", MyUtils.ConvertNumber(GameManager.s_GameManger.m_myTeam.TotalSeats));
 	    m_StadiumUpgradeCost.text = string.Format("{0}",
@@ -115,7 +115,7 @@ public class NewShopGUI : MonoBehaviour
     public void OnFansClick()
     {
         //GameManager.s_GameManger.FansUpdate ();
-        int upgradeCost = GameManager.s_GameManger.m_GameSettings.GetFansCostForLevel(GameManager.s_GameManger.m_myTeam.GetFansLevel());
+        long upgradeCost = GameManager.s_GameManger.m_GameSettings.GetFansCostForLevel(GameManager.s_GameManger.m_myTeam.GetFansLevel());
         if (GameManager.s_GameManger.GetCash() >= upgradeCost)
         {
             GameManager.s_GameManger.FansUpdate(upgradeCost);
@@ -216,7 +216,7 @@ public class NewShopGUI : MonoBehaviour
     public void OnFacilitiesClick()
     {
         //GameManager.s_GameManger.FacilitiesUpdate ();
-        int upgradeCost = GameManager.s_GameManger.m_GameSettings.GetFacilitiesCostForLevel(GameManager.s_GameManger.m_myTeam.GetFacilitiesLevel());
+        long upgradeCost = GameManager.s_GameManger.m_GameSettings.GetFacilitiesCostForLevel(GameManager.s_GameManger.m_myTeam.GetFacilitiesLevel());
         if (GameManager.s_GameManger.GetCash() >= upgradeCost)
         {
             print("Price=" + upgradeCost);
@@ -275,7 +275,7 @@ public class NewShopGUI : MonoBehaviour
     {
         //GameManager.s_GameManger.StadiumUpdate ();
 
-        int upgradeCost = GameManager.s_GameManger.m_GameSettings.GetStadiumCostForLevel(GameManager.s_GameManger.m_myTeam.GetStadiumLevel());
+        long upgradeCost = GameManager.s_GameManger.m_GameSettings.GetStadiumCostForLevel(GameManager.s_GameManger.m_myTeam.GetStadiumLevel());
         if (GameManager.s_GameManger.GetCash() >= upgradeCost)
         {
             GameManager.s_GameManger.StadiumUpdate(upgradeCost);
